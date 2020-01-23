@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity{
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         drawerToggle = new ActionBarDrawerToggle(this, mainDrawerLayout, R.string.open_drawer, R.string.close_drawer);
+        mainDrawerLayout.addDrawerListener(drawerToggle);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
     @Override
     protected void onPostCreate(Bundle savedInstanceState){

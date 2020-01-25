@@ -20,9 +20,9 @@ public class HomeActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_home);
+        NavigationView navigationView = findViewById(R.id.nav_view_home);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_home);
         appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_login, R.id.nav_settings)
                 .setDrawerLayout(drawer)
@@ -32,7 +32,7 @@ public class HomeActivity extends AppCompatActivity{
     }
     @Override
     public boolean onSupportNavigateUp(){
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_home);
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
 }

@@ -37,14 +37,17 @@ public class ServerService extends Service {
                     Log.d("weizheng", urlString);
                     URL url = new URL(urlString);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("GET");
+                    conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json; utf-8");
                     conn.setRequestProperty("Accept", "application/json");
                     conn.setDoOutput(true);
-                    OutputStream os = conn.getOutputStream();
-                    byte[] input = request.toString().getBytes("utf-8");
-                    os.write(input, 0, input.length);
-                    os.close();
+                    conn.connect();
+                    byte[] input = request.toString().getBytes("UTF-8");
+                    try(OutputStream os = conn.getOutputStream()) {
+                        Log.d("weizheng", input.toString());
+                        os.write(input);
+                        os.flush();
+                    }
                 } catch(Exception e){
                     e.printStackTrace();
                 }

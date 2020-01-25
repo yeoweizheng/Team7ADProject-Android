@@ -1,4 +1,4 @@
-package sg.edu.nus.team7adproject;
+package sg.edu.nus.team7adproject.Home;
 
 
 import android.os.Bundle;
@@ -9,17 +9,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class SettingsFragment extends Fragment {
+import sg.edu.nus.team7adproject.R;
 
 
-    public SettingsFragment() {
+public class LoginFragment extends Fragment {
+
+
+    public LoginFragment() {
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
 }

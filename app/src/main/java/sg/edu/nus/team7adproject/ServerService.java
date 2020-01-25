@@ -8,8 +8,13 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -41,13 +46,17 @@ public class ServerService extends Service {
                     conn.setRequestProperty("Content-Type", "application/json; utf-8");
                     conn.setRequestProperty("Accept", "application/json");
                     conn.setDoOutput(true);
-                    conn.connect();
-                    byte[] input = request.toString().getBytes("UTF-8");
-                    try(OutputStream os = conn.getOutputStream()) {
-                        Log.d("weizheng", input.toString());
-                        os.write(input);
-                        os.flush();
+                    OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
+                    writer.write(request.toString());
+                    writer.flush();
+                    InputStreamReader reader = new InputStreamReader(conn.getInputStream());
+                    StringWriter stringWriter = new StringWriter();
+                    int c;
+                    while((c = reader.read()) != -1){
+                        stringWriter.write(c);
                     }
+                    Log.d("weizheng", stringWriter.toString());
+                    conn.disconnect();
                 } catch(Exception e){
                     e.printStackTrace();
                 }

@@ -19,7 +19,6 @@ import org.json.JSONObject;
 import sg.edu.nus.team7adproject.R;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
-    ISettingsFragment iSettingsFragment;
     SharedPreferences serverAddressPref;
     SharedPreferences.Editor serverAddressPrefEditor;
     EditText urlEditText;
@@ -45,7 +44,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        iSettingsFragment = (ISettingsFragment) context;
     }
 
     @Override
@@ -59,9 +57,5 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         String urlString = urlEditText.getText().toString();
         serverAddressPrefEditor.putString("serverAddress", urlString);
         serverAddressPrefEditor.commit();
-    }
-
-    public interface ISettingsFragment{
-        void sendRequest(JSONObject request);
     }
 }

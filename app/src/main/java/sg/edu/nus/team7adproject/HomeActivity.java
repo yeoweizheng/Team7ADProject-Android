@@ -30,7 +30,7 @@ import sg.edu.nus.team7adproject.Home.SettingsFragment;
 
 public class HomeActivity extends AppCompatActivity
         implements ServiceConnection, ServerService.IServerService,
-        SettingsFragment.ISettingsFragment, LoginFragment.ILoginFragment {
+        LoginFragment.ILoginFragment {
     private AppBarConfiguration appBarConfiguration;
     private ServerService serverService;
     private SharedPreferences serverAddressPref;

@@ -79,6 +79,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     });
                 return;
             }
+            iLoginFragment.launchActivity(responseObj.get("UserType").toString());
         } catch(JSONException e){
             e.printStackTrace();
         }
@@ -86,5 +87,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public interface ILoginFragment{
         void sendRequest(JSONObject request);
         void setFragment(String name, Fragment fragment);
+        void launchActivity(String userType);
     }
 }

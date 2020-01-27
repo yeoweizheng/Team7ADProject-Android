@@ -31,8 +31,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
-        Button testConnectionBtn = view.findViewById(R.id.button_test_connection);
-        testConnectionBtn.setOnClickListener(this);
         Button saveSettingsBtn = view.findViewById(R.id.button_save_settings);
         saveSettingsBtn.setOnClickListener(this);
         serverAddressPref = this.getActivity().getSharedPreferences("serverAddress", Context.MODE_PRIVATE);
@@ -53,22 +51,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view){
         switch(view.getId()){
-            case R.id.button_test_connection: testConnection(); break;
             case R.id.button_save_settings: saveSettings(); break;
-        }
-    }
-
-    private void testConnection(){
-        JSONObject request = new JSONObject();
-        String serverAddress = urlEditText.getText().toString();
-        try {
-            //request.put("serverAddress", serverAddress);
-            request.put("url", "TestConnection");
-            request.put("requestBody", "message body");
-            iSettingsFragment.sendRequest(request);
-        }
-        catch(JSONException e){
-            e.printStackTrace();
         }
     }
 

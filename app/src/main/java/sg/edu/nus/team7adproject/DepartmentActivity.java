@@ -1,10 +1,8 @@
 package sg.edu.nus.team7adproject;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -25,43 +23,39 @@ import org.json.JSONObject;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-import sg.edu.nus.team7adproject.Home.LoginFragment;
-import sg.edu.nus.team7adproject.Home.SettingsFragment;
+public class DepartmentActivity extends AppCompatActivity
+        implements ServiceConnection, ServerService.IServerService {
 
-public class HomeActivity extends AppCompatActivity
-        implements ServiceConnection, ServerService.IServerService,
-        SettingsFragment.ISettingsFragment, LoginFragment.ILoginFragment {
     private AppBarConfiguration appBarConfiguration;
     private ServerService serverService;
     private SharedPreferences serverAddressPref;
     private HashMap<String, Fragment> fragmentHashMap = new HashMap<String, Fragment>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_home);
-        NavigationView navigationView = findViewById(R.id.nav_view_home);
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_home);
+        setContentView(R.layout.activity_department);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_department);
+        NavigationView navigationView = findViewById(R.id.nav_view_department);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department);
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_login, R.id.nav_settings)
+                R.id.nav_staff_stationery_requests, R.id.nav_notifications)
                 .setDrawerLayout(drawer)
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        Intent intent = new Intent(HomeActivity.this, ServerService.class);
+        Intent intent = new Intent(DepartmentActivity.this, ServerService.class);
         bindService(intent, this, BIND_AUTO_CREATE);
         serverAddressPref = getSharedPreferences("serverAddress", Context.MODE_PRIVATE);
-    }
-    @Override
-    public boolean onSupportNavigateUp(){
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_home);
-        return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
     @Override
     public void onResume(){
         super.onResume();
         if(serverService != null) serverService.setCallback(this);
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department);
+        return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
@@ -79,12 +73,6 @@ public class HomeActivity extends AppCompatActivity
         return serverAddressPref.getString("serverAddress", "");
     }
     @Override
-    public void sendRequest(JSONObject request){
-        if(serverService != null){
-            serverService.sendRequest(request);
-        }
-    }
-    @Override
     public void handleResponse(String response, String callbackFragment, String callbackMethod){
         try {
             Method method = fragmentHashMap.get(callbackFragment).getClass().getMethod(callbackMethod, String.class);
@@ -94,21 +82,8 @@ public class HomeActivity extends AppCompatActivity
         }
     }
     @Override
-    public void setFragment(String name, Fragment fragment){
-        fragmentHashMap.put(name, fragment);
-    }
-    @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         finish();
-    }
-    @Override
-    public void launchActivity(String userType){
-        switch(userType){
-            case "departmentStaff":
-                Intent intent = new Intent(this, DepartmentActivity.class);
-                startActivity(intent);
-                break;
-        }
     }
     @Override
     public void onDestroy(){

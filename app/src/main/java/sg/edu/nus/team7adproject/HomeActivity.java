@@ -17,6 +17,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -69,6 +70,14 @@ public class HomeActivity extends AppCompatActivity
         if(binder != null){
             serverService = binder.getService();
             serverService.setCallback(this);
+            while(!fragmentHashMap.containsKey("loginFragment")){
+                try {
+                    Thread.sleep(100);
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+            ((LoginFragment)fragmentHashMap.get("loginFragment")).loginWithSession();
         }
     }
     @Override
@@ -109,6 +118,10 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(intent);
                 break;
         }
+    }
+    @Override
+    public AppCompatActivity getActivity(){
+        return this;
     }
     @Override
     public void onDestroy(){

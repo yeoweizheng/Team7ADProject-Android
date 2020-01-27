@@ -82,6 +82,10 @@ public class DepartmentActivity extends AppCompatActivity
         }
     }
     @Override
+    public AppCompatActivity getActivity(){
+        return this;
+    }
+    @Override
     public void onBackPressed() {
         finish();
     }

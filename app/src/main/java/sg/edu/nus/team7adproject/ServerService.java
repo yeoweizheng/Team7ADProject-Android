@@ -1,10 +1,14 @@
 package sg.edu.nus.team7adproject;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,10 +60,15 @@ public class ServerService extends Service {
                     while((c = reader.read()) != -1){
                         stringWriter.write(c);
                     }
-                    String response = stringWriter.toString();
-                    String callbackFragment = request.getString("callbackFragment");
-                    String callbackMethod = request.getString("callbackMethod");
-                    iServerService.handleResponse(response, callbackFragment, callbackMethod);
+                    final String response = stringWriter.toString();
+                    final String callbackFragment = request.getString("callbackFragment");
+                    final String callbackMethod = request.getString("callbackMethod");
+                    iServerService.getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            iServerService.handleResponse(response, callbackFragment, callbackMethod);
+                        }
+                    });
                     conn.disconnect();
                 } catch(Exception e){
                     e.printStackTrace();
@@ -73,5 +82,6 @@ public class ServerService extends Service {
     public interface IServerService{
         String getServerAddressFromSharedPref();
         void handleResponse(String response, String callbackFragment, String callbackMethod);
+        AppCompatActivity getActivity();
     }
 }

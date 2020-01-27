@@ -2,6 +2,7 @@ package sg.edu.nus.team7adproject.Home;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -26,6 +27,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     LoginFragment.ILoginFragment iLoginFragment;
     EditText usernameEditText;
     EditText passwordEditText;
+    SharedPreferences sessionPref;
+    SharedPreferences.Editor sessionPrefEditor;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,9 +48,41 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         iLoginFragment.setFragment("loginFragment", this);
     }
     @Override
+    public void onStart(){
+        super.onStart();
+        sessionPref = this.getActivity().getSharedPreferences("session", Context.MODE_PRIVATE);
+        sessionPrefEditor = sessionPref.edit();
+    }
+    @Override
     public void onClick(View view){
         switch(view.getId()){
             case R.id.button_login: login(); break;
+        }
+    }
+    public void loginWithSession(){
+        if(sessionPref == null) return;
+        String sessionId = sessionPref.getString("sessionId", "");
+        JSONObject request = new JSONObject();
+        JSONObject body = new JSONObject();
+        try{
+            body.put("sessionId", sessionId);
+            request.put("url", "LoginWithSession");
+            request.put("requestBody", body.toString());
+            request.put("callbackFragment", "loginFragment");
+            request.put("callbackMethod", "loginWithSessionCallback");
+            iLoginFragment.sendRequest(request);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+    }
+    public void loginWithSessionCallback(String response){
+        try{
+            JSONObject responseObj = new JSONObject(response);
+            if(responseObj.has("user")){
+                iLoginFragment.launchActivity(responseObj.getJSONObject("user").get("UserType").toString());
+            }
+        } catch(JSONException e){
+            e.printStackTrace();
         }
     }
     private void login(){
@@ -70,16 +105,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void loginCallback(String response){
         try {
             JSONObject responseObj = new JSONObject(response);
-            if(!responseObj.has("Username")){
-                getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getContext(), "Login failed", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            if(!responseObj.has("user")){
+                Toast.makeText(getContext(), "Login failed", Toast.LENGTH_SHORT).show();
                 return;
             }
-            iLoginFragment.launchActivity(responseObj.get("UserType").toString());
+            sessionPrefEditor.putString("sessionId", responseObj.get("sessionId").toString());
+            sessionPrefEditor.commit();
+            iLoginFragment.launchActivity(responseObj.getJSONObject("user").get("UserType").toString());
         } catch(JSONException e){
             e.printStackTrace();
         }

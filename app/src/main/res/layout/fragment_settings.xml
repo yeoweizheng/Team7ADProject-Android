@@ -19,6 +19,7 @@
             android:text="Server:"
             android:textSize="18dp"></TextView>
         <EditText
+            android:id="@+id/editText_url"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -36,7 +37,7 @@
             android:layout_height="wrap_content"
             android:text="Test Connection"></Button>
         <Button
-            android:id="@+id/button_save"
+            android:id="@+id/button_save_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Save"></Button>

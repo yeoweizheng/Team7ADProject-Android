@@ -24,7 +24,7 @@
             android:textColor="@android:color/black"></TextView>
 
         <EditText
-            android:id="@+id/input_username"
+            android:id="@+id/edittext_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18dp"
@@ -32,7 +32,7 @@
             android:textAlignment="center"></EditText>
 
         <EditText
-            android:id="@+id/input_password"
+            android:id="@+id/edittext_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18dp"

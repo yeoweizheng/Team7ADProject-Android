@@ -20,6 +20,7 @@ import java.net.URL;
 
 public class ServerService extends Service {
     private final IBinder binder = new LocalBinder();
+    IServerService iServerService;
     public class LocalBinder extends Binder{
         ServerService getService(){
             return ServerService.this;
@@ -38,8 +39,8 @@ public class ServerService extends Service {
             @Override
             public void run() {
                 try {
-                    String urlString = "http://10.0.2.2:10000/Rest/" + request.get("url").toString();
-                    Log.d("weizheng", urlString);
+                    String serverAddress = iServerService.getServerAddressFromSharedPref();
+                    String urlString = "http://" + serverAddress + ":10000/Rest/" + request.get("url").toString();
                     URL url = new URL(urlString);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
@@ -55,12 +56,22 @@ public class ServerService extends Service {
                     while((c = reader.read()) != -1){
                         stringWriter.write(c);
                     }
-                    Log.d("weizheng", stringWriter.toString());
+                    String response = stringWriter.toString();
+                    String callbackFragment = request.getString("callbackFragment");
+                    String callbackMethod = request.getString("callbackMethod");
+                    iServerService.handleResponse(response, callbackFragment, callbackMethod);
                     conn.disconnect();
                 } catch(Exception e){
                     e.printStackTrace();
                 }
             }
         }).start();
+    }
+    public void setCallback(IServerService iServerService){
+        this.iServerService = iServerService;
+    }
+    public interface IServerService{
+        String getServerAddressFromSharedPref();
+        void handleResponse(String response, String callbackFragment, String callbackMethod);
     }
 }

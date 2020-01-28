@@ -25,6 +25,7 @@ public class StaffStationeryRequestsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getStationeryRequests();
         return inflater.inflate(R.layout.fragment_staff_stationery_requests, container, false);
     }
 

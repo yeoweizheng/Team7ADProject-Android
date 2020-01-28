@@ -15,20 +15,28 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
+import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-public class DepartmentActivity extends AppCompatActivity
-        implements ServiceConnection, ServerService.IServerService {
+import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragment;
+import sg.edu.nus.team7adproject.Home.LoginFragment;
 
+public class DepartmentActivity extends AppCompatActivity
+        implements ServiceConnection, ServerService.IServerService,
+        StaffStationeryRequestsFragment.IStaffStationeryRequestsFragment
+    {
     private AppBarConfiguration appBarConfiguration;
     private ServerService serverService;
     private SharedPreferences serverAddressPref;
+    private SharedPreferences sessionPref;
     private HashMap<String, Fragment> fragmentHashMap = new HashMap<String, Fragment>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +46,8 @@ public class DepartmentActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view_department);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department);
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_staff_stationery_requests, R.id.nav_notifications)
+                R.id.nav_staff_stationery_requests, R.id.nav_staff_disbursement_lists,
+                R.id.nav_notifications, R.id.nav_logout)
                 .setDrawerLayout(drawer)
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -46,6 +55,7 @@ public class DepartmentActivity extends AppCompatActivity
         Intent intent = new Intent(DepartmentActivity.this, ServerService.class);
         bindService(intent, this, BIND_AUTO_CREATE);
         serverAddressPref = getSharedPreferences("serverAddress", Context.MODE_PRIVATE);
+        sessionPref = getSharedPreferences("session", Context.MODE_PRIVATE);
     }
     @Override
     public void onResume(){
@@ -63,6 +73,14 @@ public class DepartmentActivity extends AppCompatActivity
         if(binder != null){
             serverService = binder.getService();
             serverService.setCallback(this);
+            while(!fragmentHashMap.containsKey("staffStationeryRequestsFragment")){
+                try {
+                    Thread.sleep(100);
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+            ((StaffStationeryRequestsFragment)fragmentHashMap.get("staffStationeryRequestsFragment")).getStationeryRequests();
         }
     }
     @Override
@@ -71,6 +89,22 @@ public class DepartmentActivity extends AppCompatActivity
     @Override
     public String getServerAddressFromSharedPref(){
         return serverAddressPref.getString("serverAddress", "");
+    }
+    @Override
+    public void sendRequest(JSONObject request){
+        try {
+            JSONObject body = request.getJSONObject("requestBody");
+            if(!body.has("sessionId")){
+                body.put("sessionId", sessionPref.getString("sessionId", ""));
+                request.remove("requestBody");
+                request.put("requestBody", body);
+            }
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+        if(serverService != null){
+            serverService.sendRequest(request);
+        }
     }
     @Override
     public void handleResponse(String response, String callbackFragment, String callbackMethod){
@@ -84,6 +118,10 @@ public class DepartmentActivity extends AppCompatActivity
     @Override
     public AppCompatActivity getActivity(){
         return this;
+    }
+    @Override
+    public void setFragment(String name, Fragment fragment){
+        fragmentHashMap.put(name, fragment);
     }
     @Override
     public void onBackPressed() {

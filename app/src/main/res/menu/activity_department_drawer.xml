@@ -7,7 +7,13 @@ tools:showIn="navigation_view">
         android:id="@+id/nav_staff_stationery_requests"
         android:title="Stationery Requests" />
     <item
+        android:id="@+id/nav_staff_disbursement_lists"
+        android:title="Disbursement Lists" />
+    <item
         android:id="@+id/nav_notifications"
         android:title="Notifications" />
+    <item
+        android:id="@+id/nav_logout"
+        android:title="Logout" />
 </group>
 </menu>

@@ -46,10 +46,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         super.onAttach(context);
         iLoginFragment = (LoginFragment.ILoginFragment) context;
         iLoginFragment.setFragment("loginFragment", this);
-    }
-    @Override
-    public void onStart(){
-        super.onStart();
         sessionPref = this.getActivity().getSharedPreferences("session", Context.MODE_PRIVATE);
         sessionPrefEditor = sessionPref.edit();
     }
@@ -67,7 +63,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         try{
             body.put("sessionId", sessionId);
             request.put("url", "LoginWithSession");
-            request.put("requestBody", body.toString());
+            request.put("requestBody", body);
             request.put("callbackFragment", "loginFragment");
             request.put("callbackMethod", "loginWithSessionCallback");
             iLoginFragment.sendRequest(request);
@@ -94,7 +90,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             body.put("username", username);
             body.put("password", password);
             request.put("url", "Login");
-            request.put("requestBody", body.toString());
+            request.put("requestBody", body);
             request.put("callbackFragment", "loginFragment");
             request.put("callbackMethod", "loginCallback");
             iLoginFragment.sendRequest(request);

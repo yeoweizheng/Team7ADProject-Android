@@ -11,9 +11,21 @@
         tools:layout="@layout/fragment_staff_stationery_requests" >
     </fragment>
     <fragment
+        android:id="@+id/nav_staff_disbursement_lists"
+        android:name="sg.edu.nus.team7adproject.Department.StaffDisbursementLists"
+        android:label="Disbursement Lists"
+        tools:layout="@layout/fragment_staff_disbursement_lists" >
+    </fragment>
+    <fragment
         android:id="@+id/nav_notifications"
-        android:name="sg.edu.nus.team7adproject.NotificationsFragment"
+        android:name="sg.edu.nus.team7adproject.Shared.NotificationsFragment"
         android:label="Notifications"
         tools:layout="@layout/fragment_notifications" >
+    </fragment>
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="sg.edu.nus.team7adproject.Shared.LogoutFragment"
+        android:label="Logout"
+        tools:layout="@layout/fragment_logout" >
     </fragment>
 </navigation>

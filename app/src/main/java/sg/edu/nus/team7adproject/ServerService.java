@@ -43,6 +43,10 @@ public class ServerService extends Service {
             @Override
             public void run() {
                 try {
+                    JSONObject body = request.getJSONObject("requestBody");
+                    request.remove("requestBody");
+                    request.put("requestBody", body.toString());
+                    Log.d("weizheng", request.toString());
                     String serverAddress = iServerService.getServerAddressFromSharedPref();
                     String urlString = "http://" + serverAddress + ":10000/Rest/" + request.get("url").toString();
                     URL url = new URL(urlString);

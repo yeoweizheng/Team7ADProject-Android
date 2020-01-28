@@ -1,4 +1,4 @@
-package sg.edu.nus.team7adproject;
+package sg.edu.nus.team7adproject.Shared;
 
 
 import android.os.Bundle;

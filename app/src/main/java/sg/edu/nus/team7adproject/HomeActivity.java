@@ -70,14 +70,6 @@ public class HomeActivity extends AppCompatActivity
         if(binder != null){
             serverService = binder.getService();
             serverService.setCallback(this);
-            while(!fragmentHashMap.containsKey("loginFragment")){
-                try {
-                    Thread.sleep(100);
-                } catch(InterruptedException e){
-                    e.printStackTrace();
-                }
-            }
-            ((LoginFragment)fragmentHashMap.get("loginFragment")).loginWithSession();
         }
     }
     @Override
@@ -88,10 +80,20 @@ public class HomeActivity extends AppCompatActivity
         return serverAddressPref.getString("serverAddress", "");
     }
     @Override
-    public void sendRequest(JSONObject request){
-        if(serverService != null){
-            serverService.sendRequest(request);
-        }
+    public void sendRequest(final JSONObject request){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(serverService == null) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                serverService.sendRequest(request);
+            }
+        }).start();
     }
     @Override
     public void handleResponse(String response, String callbackFragment, String callbackMethod){

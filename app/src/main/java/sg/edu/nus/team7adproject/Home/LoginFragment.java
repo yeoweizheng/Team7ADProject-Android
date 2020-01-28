@@ -48,6 +48,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         iLoginFragment.setFragment("loginFragment", this);
         sessionPref = this.getActivity().getSharedPreferences("session", Context.MODE_PRIVATE);
         sessionPrefEditor = sessionPref.edit();
+        loginWithSession();
     }
     @Override
     public void onClick(View view){

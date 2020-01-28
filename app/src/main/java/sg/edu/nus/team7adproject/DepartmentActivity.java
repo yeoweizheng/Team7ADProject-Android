@@ -73,14 +73,6 @@ public class DepartmentActivity extends AppCompatActivity
         if(binder != null){
             serverService = binder.getService();
             serverService.setCallback(this);
-            while(!fragmentHashMap.containsKey("staffStationeryRequestsFragment")){
-                try {
-                    Thread.sleep(100);
-                } catch(InterruptedException e){
-                    e.printStackTrace();
-                }
-            }
-            ((StaffStationeryRequestsFragment)fragmentHashMap.get("staffStationeryRequestsFragment")).getStationeryRequests();
         }
     }
     @Override
@@ -91,7 +83,7 @@ public class DepartmentActivity extends AppCompatActivity
         return serverAddressPref.getString("serverAddress", "");
     }
     @Override
-    public void sendRequest(JSONObject request){
+    public void sendRequest(final JSONObject request){
         try {
             JSONObject body = request.getJSONObject("requestBody");
             if(!body.has("sessionId")){
@@ -102,9 +94,19 @@ public class DepartmentActivity extends AppCompatActivity
         } catch(JSONException e){
             e.printStackTrace();
         }
-        if(serverService != null){
-            serverService.sendRequest(request);
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(serverService == null) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                serverService.sendRequest(request);
+            }
+        }).start();
     }
     @Override
     public void handleResponse(String response, String callbackFragment, String callbackMethod){

@@ -25,7 +25,6 @@ public class StaffStationeryRequestsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getStationeryRequests();
         return inflater.inflate(R.layout.fragment_staff_stationery_requests, container, false);
     }
 
@@ -34,6 +33,7 @@ public class StaffStationeryRequestsFragment extends Fragment {
         super.onAttach(context);
         iStaffStationeryRequestsFragment = (StaffStationeryRequestsFragment.IStaffStationeryRequestsFragment) context;
         iStaffStationeryRequestsFragment.setFragment("staffStationeryRequestsFragment", this);
+        getStationeryRequests();
     }
     public void getStationeryRequests(){
         JSONObject request = new JSONObject();

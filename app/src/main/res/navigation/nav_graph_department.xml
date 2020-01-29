@@ -9,10 +9,13 @@
         android:name="sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragment"
         android:label="Stationery Requests"
         tools:layout="@layout/fragment_staff_stationery_requests" >
+        <action
+            android:id="@+id/action_nav_staff_stationery_requests_to_nav_stationery_request_detail"
+            app:destination="@id/nav_stationery_request_detail" />
     </fragment>
     <fragment
         android:id="@+id/nav_staff_disbursement_lists"
-        android:name="sg.edu.nus.team7adproject.Department.StaffDisbursementLists"
+        android:name="sg.edu.nus.team7adproject.Department.StaffDisbursementListsFragment"
         android:label="Disbursement Lists"
         tools:layout="@layout/fragment_staff_disbursement_lists" >
     </fragment>
@@ -27,5 +30,14 @@
         android:name="sg.edu.nus.team7adproject.Shared.LogoutFragment"
         android:label="Logout"
         tools:layout="@layout/fragment_logout" >
+    </fragment>
+    <fragment
+        android:id="@+id/nav_stationery_request_detail"
+        android:name="sg.edu.nus.team7adproject.Department.StationeryRequestDetailFragment"
+        android:label="Stationery Request Detail"
+        tools:layout="@layout/fragment_stationery_request_detail" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
 </navigation>

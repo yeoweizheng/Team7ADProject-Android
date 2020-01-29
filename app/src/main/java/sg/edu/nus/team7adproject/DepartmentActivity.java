@@ -1,9 +1,11 @@
 package sg.edu.nus.team7adproject;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -27,11 +29,14 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragment;
+import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragmentDirections;
+import sg.edu.nus.team7adproject.Department.StationeryRequestDetailFragment;
 import sg.edu.nus.team7adproject.Home.LoginFragment;
 
 public class DepartmentActivity extends AppCompatActivity
         implements ServiceConnection, ServerService.IServerService,
-        StaffStationeryRequestsFragment.IStaffStationeryRequestsFragment
+        StaffStationeryRequestsFragment.IStaffStationeryRequestsFragment,
+        StationeryRequestDetailFragment.IStationeryRequestDetailFragment
     {
     private AppBarConfiguration appBarConfiguration;
     private ServerService serverService;
@@ -124,6 +129,15 @@ public class DepartmentActivity extends AppCompatActivity
     @Override
     public void setFragment(String name, Fragment fragment){
         fragmentHashMap.put(name, fragment);
+    }
+    @Override
+    public void gotoFragment(String name, int id){
+        switch(name){
+            case "stationeryRequestDetail":
+                NavDirections action = StaffStationeryRequestsFragmentDirections.actionNavStaffStationeryRequestsToNavStationeryRequestDetail(id);
+                Navigation.findNavController(this, R.id.nav_host_fragment_department).navigate(action);
+                break;
+        }
     }
     @Override
     public void onBackPressed() {

@@ -7,10 +7,10 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,7 +24,8 @@ import java.util.List;
 
 import sg.edu.nus.team7adproject.R;
 
-public class StaffStationeryRequestsFragment extends Fragment {
+public class StaffStationeryRequestsFragment extends Fragment implements
+        AdapterView.OnItemClickListener {
     IStaffStationeryRequestsFragment iStaffStationeryRequestsFragment;
     public StaffStationeryRequestsFragment() {
     }
@@ -32,6 +33,7 @@ public class StaffStationeryRequestsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getStationeryRequests();
         return inflater.inflate(R.layout.fragment_staff_stationery_requests, container, false);
     }
 
@@ -40,7 +42,6 @@ public class StaffStationeryRequestsFragment extends Fragment {
         super.onAttach(context);
         iStaffStationeryRequestsFragment = (StaffStationeryRequestsFragment.IStaffStationeryRequestsFragment) context;
         iStaffStationeryRequestsFragment.setFragment("staffStationeryRequestsFragment", this);
-        getStationeryRequests();
     }
     public void getStationeryRequests(){
         JSONObject request = new JSONObject();
@@ -56,29 +57,31 @@ public class StaffStationeryRequestsFragment extends Fragment {
             e.printStackTrace();
         }
     }
-    public void getStationeryRequestsCallback(String response){
-        Log.d("weizheng", response);
+    public void getStationeryRequestsCallback(String response) throws JSONException{
         ArrayList<RowItem> rowItemList = new ArrayList<RowItem>();
         ListView listView = getActivity().findViewById(R.id.listview_staff_stationery_requests);
-        try {
-            JSONArray stationeryRequests = new JSONArray(response);
-            for(int i = 0; i < stationeryRequests.length(); i++){
-                JSONObject stationeryRequest = stationeryRequests.getJSONObject(i);
-                RowItem rowItem = new RowItem(
-                        stationeryRequest.getString("id"),
-                        stationeryRequest.getString("date"),
-                        stationeryRequest.getString("status"));
-                rowItemList.add(rowItem);
-            }
-        } catch(JSONException e){
-            e.printStackTrace();
+        JSONArray stationeryRequests = new JSONArray(response);
+        for(int i = 0; i < stationeryRequests.length(); i++){
+            JSONObject stationeryRequest = stationeryRequests.getJSONObject(i);
+            RowItem rowItem = new RowItem(
+                    stationeryRequest.getString("id"),
+                    stationeryRequest.getString("date"),
+                    stationeryRequest.getString("status"));
+            rowItemList.add(rowItem);
         }
         RowAdapter rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_staff_stationery_requests, rowItemList);
         listView.setAdapter(rowAdapter);
+        listView.setOnItemClickListener(this);
+    }
+    @Override
+    public void onItemClick(AdapterView<?> adapter, View view, int pos, long id){
+        RowItem rowItem = (RowItem) adapter.getItemAtPosition(pos);
+        iStaffStationeryRequestsFragment.gotoFragment("stationeryRequestDetail", Integer.parseInt(rowItem.id));
     }
     public interface IStaffStationeryRequestsFragment{
         void sendRequest(JSONObject request);
         void setFragment(String name, Fragment fragment);
+        void gotoFragment(String name, int id);
     }
 
     public class RowItem{
@@ -104,7 +107,7 @@ public class StaffStationeryRequestsFragment extends Fragment {
             RowItem rowItem = (RowItem) getItem(position);
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             if(view == null){
-                view = inflater.inflate(R.layout.rowitem_staff_stationery_request, null);
+                view = inflater.inflate(R.layout.rowitem_staff_stationery_requests, null);
                 row = new RowItemView();
                 row.idView = view.findViewById(R.id.textview_staff_stationery_request_id);
                 row.dateView = view.findViewById(R.id.textview_staff_stationery_request_date);

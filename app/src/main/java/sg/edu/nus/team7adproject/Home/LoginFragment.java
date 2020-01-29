@@ -32,6 +32,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        loginWithSession();
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
     @Override
@@ -48,7 +49,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         iLoginFragment.setFragment("loginFragment", this);
         sessionPref = this.getActivity().getSharedPreferences("session", Context.MODE_PRIVATE);
         sessionPrefEditor = sessionPref.edit();
-        loginWithSession();
     }
     @Override
     public void onClick(View view){
@@ -72,14 +72,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
         }
     }
-    public void loginWithSessionCallback(String response){
-        try{
-            JSONObject responseObj = new JSONObject(response);
-            if(responseObj.has("user")){
-                iLoginFragment.launchActivity(responseObj.getJSONObject("user").get("UserType").toString());
-            }
-        } catch(JSONException e){
-            e.printStackTrace();
+    public void loginWithSessionCallback(String response) throws JSONException{
+        JSONObject responseObj = new JSONObject(response);
+        if(responseObj.has("user")){
+            iLoginFragment.launchActivity(responseObj.getJSONObject("user").get("UserType").toString());
         }
     }
     private void login(){
@@ -99,19 +95,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
         }
     }
-    public void loginCallback(String response){
-        try {
-            JSONObject responseObj = new JSONObject(response);
-            if(!responseObj.has("user")){
-                Toast.makeText(getContext(), "Login failed", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            sessionPrefEditor.putString("sessionId", responseObj.get("sessionId").toString());
-            sessionPrefEditor.commit();
-            iLoginFragment.launchActivity(responseObj.getJSONObject("user").get("UserType").toString());
-        } catch(JSONException e){
-            e.printStackTrace();
+    public void loginCallback(String response) throws JSONException{
+        JSONObject responseObj = new JSONObject(response);
+        if(!responseObj.has("user")){
+            Toast.makeText(getContext(), "Login failed", Toast.LENGTH_SHORT).show();
+            return;
         }
+        sessionPrefEditor.putString("sessionId", responseObj.get("sessionId").toString());
+        sessionPrefEditor.commit();
+        iLoginFragment.launchActivity(responseObj.getJSONObject("user").get("UserType").toString());
     }
     public interface ILoginFragment{
         void sendRequest(JSONObject request);

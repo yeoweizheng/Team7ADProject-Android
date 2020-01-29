@@ -14,10 +14,10 @@ import sg.edu.nus.team7adproject.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StaffDisbursementLists extends Fragment {
+public class StaffDisbursementListsFragment extends Fragment {
 
 
-    public StaffDisbursementLists() {
+    public StaffDisbursementListsFragment() {
         // Required empty public constructor
     }
 

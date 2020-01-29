@@ -3,13 +3,13 @@
 android:orientation="horizontal" android:layout_width="match_parent"
 android:layout_height="match_parent">
 <TextView
-    android:id="@+id/textview_stationery_request_stationery_description"
+    android:id="@+id/textview_stationery_request_description"
     style="@style/TableContent"
     ></TextView>
 <TextView
     android:id="@+id/textview_stationery_request_quantity_requested"
     style="@style/TableContent"></TextView>
 <TextView
-    android:id="@+id/textview_stationery_request_stationery_unit_of_measure"
+    android:id="@+id/textview_stationery_request_unit_of_measure"
     style="@style/TableContent"></TextView>
 </LinearLayout>

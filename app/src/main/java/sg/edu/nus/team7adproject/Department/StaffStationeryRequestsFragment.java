@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,7 +28,7 @@ import java.util.List;
 import sg.edu.nus.team7adproject.R;
 
 public class StaffStationeryRequestsFragment extends Fragment implements
-        AdapterView.OnItemClickListener {
+        AdapterView.OnItemClickListener, View.OnClickListener {
     IStaffStationeryRequestsFragment iStaffStationeryRequestsFragment;
     public StaffStationeryRequestsFragment() {
     }
@@ -35,6 +38,12 @@ public class StaffStationeryRequestsFragment extends Fragment implements
                              Bundle savedInstanceState) {
         getStationeryRequests();
         return inflater.inflate(R.layout.fragment_staff_stationery_requests, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+        FloatingActionButton fab = view.findViewById(R.id.fab_staff_stationery_requests);
+        fab.setOnClickListener(this);
     }
 
     @Override
@@ -77,6 +86,14 @@ public class StaffStationeryRequestsFragment extends Fragment implements
     public void onItemClick(AdapterView<?> adapter, View view, int pos, long id){
         RowItem rowItem = (RowItem) adapter.getItemAtPosition(pos);
         iStaffStationeryRequestsFragment.gotoFragment("stationeryRequestDetail", Integer.parseInt(rowItem.id));
+    }
+    @Override
+    public void onClick(View view){
+        switch(view.getId()){
+            case R.id.fab_staff_stationery_requests:
+                iStaffStationeryRequestsFragment.gotoFragment("addStationeryRequest", -1);
+                break;
+        }
     }
     public interface IStaffStationeryRequestsFragment{
         void sendRequest(JSONObject request);

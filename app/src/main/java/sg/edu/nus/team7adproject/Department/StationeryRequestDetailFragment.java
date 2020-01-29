@@ -17,6 +17,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +31,8 @@ import sg.edu.nus.team7adproject.R;
 public class StationeryRequestDetailFragment extends Fragment {
 
     StationeryRequestDetailFragment.IStationeryRequestDetailFragment iStationeryRequestDetailFragment;
-    public StationeryRequestDetailFragment() {
+
+    public StationeryRequestDetailFragment(){
     }
 
     @Override
@@ -76,8 +79,6 @@ public class StationeryRequestDetailFragment extends Fragment {
         dateView.setText(stationeryRequestDetail.get("date").toString());
         remarksView.setText(stationeryRequestDetail.get("remarks").toString());
         statusView.setText(stationeryRequestDetail.get("status").toString());
-        Log.d("weizheng", stationeryRequestDetail.toString());
-        Log.d("weizheng", stationeryQuantities.toString());
         ListView listView = getActivity().findViewById(R.id.listview_stationery_request_detail);
         ArrayList<RowItem> rowItemList = new ArrayList<>();
         for(int i = 0; i < stationeryQuantities.length(); i++){
@@ -94,7 +95,6 @@ public class StationeryRequestDetailFragment extends Fragment {
     public interface IStationeryRequestDetailFragment{
         void sendRequest(JSONObject request);
         void setFragment(String name, Fragment fragment);
-        void gotoFragment(String name, int id);
     }
     public class RowItem{
         String description;
@@ -121,9 +121,9 @@ public class StationeryRequestDetailFragment extends Fragment {
             if(view == null){
                 view = inflater.inflate(R.layout.rowitem_stationery_request_detail, null);
                 row = new RowItemView();
-                row.descriptionView = view.findViewById(R.id.textview_stationery_request_stationery_description);
+                row.descriptionView = view.findViewById(R.id.textview_stationery_request_description);
                 row.quantityRequestedView = view.findViewById(R.id.textview_stationery_request_quantity_requested);
-                row.unitOfMeasureView= view.findViewById(R.id.textview_stationery_request_stationery_unit_of_measure);
+                row.unitOfMeasureView= view.findViewById(R.id.textview_stationery_request_unit_of_measure);
                 view.setTag(row);
             } else {
                 row = (RowItemView) view.getTag();

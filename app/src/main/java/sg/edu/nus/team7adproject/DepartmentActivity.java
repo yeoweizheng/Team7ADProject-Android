@@ -1,5 +1,6 @@
 package sg.edu.nus.team7adproject;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -28,6 +29,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
+import sg.edu.nus.team7adproject.Department.AddStationeryRequestFragment;
 import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragment;
 import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragmentDirections;
 import sg.edu.nus.team7adproject.Department.StationeryRequestDetailFragment;
@@ -36,7 +38,8 @@ import sg.edu.nus.team7adproject.Home.LoginFragment;
 public class DepartmentActivity extends AppCompatActivity
         implements ServiceConnection, ServerService.IServerService,
         StaffStationeryRequestsFragment.IStaffStationeryRequestsFragment,
-        StationeryRequestDetailFragment.IStationeryRequestDetailFragment
+        StationeryRequestDetailFragment.IStationeryRequestDetailFragment,
+        AddStationeryRequestFragment.IAddStationeryRequestFragment
     {
     private AppBarConfiguration appBarConfiguration;
     private ServerService serverService;
@@ -132,12 +135,17 @@ public class DepartmentActivity extends AppCompatActivity
     }
     @Override
     public void gotoFragment(String name, int id){
+        NavDirections action = null;
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department);
         switch(name){
             case "stationeryRequestDetail":
-                NavDirections action = StaffStationeryRequestsFragmentDirections.actionNavStaffStationeryRequestsToNavStationeryRequestDetail(id);
-                Navigation.findNavController(this, R.id.nav_host_fragment_department).navigate(action);
+                action = StaffStationeryRequestsFragmentDirections.actionNavStaffStationeryRequestsToNavStationeryRequestDetail(id);
+                break;
+            case "addStationeryRequest":
+                action = StaffStationeryRequestsFragmentDirections.actionNavStaffStationeryRequestsToNavAddStationeryRequest();
                 break;
         }
+        navController.navigate(action);
     }
     @Override
     public void onBackPressed() {

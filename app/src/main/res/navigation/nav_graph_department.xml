@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_nav_staff_stationery_requests_to_nav_stationery_request_detail"
             app:destination="@id/nav_stationery_request_detail" />
+        <action
+            android:id="@+id/action_nav_staff_stationery_requests_to_nav_add_stationery_request"
+            app:destination="@id/nav_add_stationery_request" />
     </fragment>
     <fragment
         android:id="@+id/nav_staff_disbursement_lists"
@@ -39,5 +42,11 @@
         <argument
             android:name="id"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_add_stationery_request"
+        android:name="sg.edu.nus.team7adproject.Department.AddStationeryRequestFragment"
+        android:label="Add Stationery Request"
+        tools:layout="@layout/fragment_add_stationery_request" >
     </fragment>
 </navigation>

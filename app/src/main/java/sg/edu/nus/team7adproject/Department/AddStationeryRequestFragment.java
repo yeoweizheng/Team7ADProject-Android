@@ -24,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import sg.edu.nus.team7adproject.R;
@@ -31,14 +32,15 @@ import sg.edu.nus.team7adproject.R;
 public class AddStationeryRequestFragment extends Fragment implements View.OnClickListener{
 
     AddStationeryRequestFragment.IAddStationeryRequestFragment iAddStationeryRequestFragment;
+    HashMap<Integer, EditText> quantityRequestedEditTexts;
     public AddStationeryRequestFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        quantityRequestedEditTexts = new HashMap<Integer, EditText>();
         getStationeries();
-
         return inflater.inflate(R.layout.fragment_add_stationery_request, container, false);
     }
 
@@ -68,28 +70,49 @@ public class AddStationeryRequestFragment extends Fragment implements View.OnCli
             e.printStackTrace();
         }
     }
-    RowAdapter rowAdapter;
-    ArrayList<RowItem> rowItemList;
     public void getStationeriesCallback(String response) throws JSONException{
-        rowItemList = new ArrayList<RowItem>();
+        ArrayList<RowItem> rowItemList = new ArrayList<RowItem>();
         ListView listView = getActivity().findViewById(R.id.listview_add_stationery_request);
         JSONArray stationeries = new JSONArray(response);
         for(int i = 0; i < stationeries.length(); i++){
             JSONObject stationery =  stationeries.getJSONObject(i);
             RowItem rowItem = new RowItem(
+                    stationery.getInt("id"),
                     stationery.getString("category"),
                     stationery.getString("description"),
                     stationery.getString("unitOfMeasure"));
             rowItemList.add(rowItem);
         }
-        rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_add_stationery_request, rowItemList);
+        RowAdapter rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_add_stationery_request, rowItemList);
         listView.setAdapter(rowAdapter);
     }
     public void submitStationeryRequest(){
-        for(int i = 0; i < rowItemList.size(); i++){
+        JSONObject request = new JSONObject();
+        JSONObject body = new JSONObject();
+        JSONArray stationeryRequests = new JSONArray();
+        try {
+            for (int i : quantityRequestedEditTexts.keySet()) {
+                String quantityRequestedStr = quantityRequestedEditTexts.get(i).getText().toString();
+                if (quantityRequestedStr.isEmpty()) continue;
+                int quantityRequested = Integer.parseInt(quantityRequestedStr);
+                stationeryRequests.put(new JSONObject("{"
+                        +"\"stationeryId\":" + i + ","
+                        +"\"quantity\":" + quantityRequested
+                        + "}"));
+            }
+            body.put("action", "addStationeryRequest");
+            body.put("stationeryRequests", stationeryRequests);
+            request.put("url", "AddStationeryRequest");
+            request.put("requestBody", body);
+            request.put("callbackFragment", "addStationeryRequestFragment");
+            request.put("callbackMethod", "submitStationeryRequestCallback");
+            iAddStationeryRequestFragment.sendRequest(request);
+        } catch(JSONException e){
+            e.printStackTrace();
         }
     }
     public void submitStationeryRequestCallback(String response) throws JSONException{
+        iAddStationeryRequestFragment.onBackPressed();
     }
     @Override
     public void onClick(View view){
@@ -102,13 +125,16 @@ public class AddStationeryRequestFragment extends Fragment implements View.OnCli
     public interface IAddStationeryRequestFragment{
         void sendRequest(JSONObject request);
         void setFragment(String name, Fragment fragment);
-        void gotoFragment(String name, int id);
+        void gotoFragment(String name);
+        void onBackPressed();
     }
     public class RowItem{
+        int id;
         String category;
         String description;
         String unitOfMeasure;
-        public RowItem(String category, String description, String unitOfMeasure){
+        public RowItem(int id, String category, String description, String unitOfMeasure){
+            this.id = id;
             this.category = category;
             this.description = description;
             this.unitOfMeasure = unitOfMeasure;
@@ -132,7 +158,7 @@ public class AddStationeryRequestFragment extends Fragment implements View.OnCli
                 row.categoryView = view.findViewById(R.id.textview_add_stationery_request_category);
                 row.descriptionView = view.findViewById(R.id.textview_add_stationery_request_description);
                 row.unitOfMeasureView= view.findViewById(R.id.textview_add_stationery_request_unit_of_measure);
-                row.quantityRequested = view.findViewById(R.id.edittext_add_stationery_request_quantity_requested);
+                row.quantityRequestedView = view.findViewById(R.id.edittext_add_stationery_request_quantity_requested);
                 view.setTag(row);
             } else {
                 row = (RowItemView) view.getTag();
@@ -140,6 +166,7 @@ public class AddStationeryRequestFragment extends Fragment implements View.OnCli
             row.categoryView.setText(rowItem.category);
             row.descriptionView.setText(rowItem.description);
             row.unitOfMeasureView.setText(rowItem.unitOfMeasure);
+            quantityRequestedEditTexts.put(rowItem.id, row.quantityRequestedView);
             return view;
         }
     }
@@ -148,6 +175,6 @@ public class AddStationeryRequestFragment extends Fragment implements View.OnCli
         TextView categoryView;
         TextView descriptionView;
         TextView unitOfMeasureView;
-        EditText quantityRequested;
+        EditText quantityRequestedView;
     }
 }

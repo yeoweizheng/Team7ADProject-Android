@@ -141,15 +141,25 @@ public class DepartmentActivity extends AppCompatActivity
             case "stationeryRequestDetail":
                 action = StaffStationeryRequestsFragmentDirections.actionNavStaffStationeryRequestsToNavStationeryRequestDetail(id);
                 break;
-            case "addStationeryRequest":
-                action = StaffStationeryRequestsFragmentDirections.actionNavStaffStationeryRequestsToNavAddStationeryRequest();
-                break;
         }
         navController.navigate(action);
     }
     @Override
-    public void onBackPressed() {
-        finish();
+    public void gotoFragment(String name){
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department);
+        switch(name){
+            case "addStationeryRequest":
+                navController.navigate(R.id.nav_add_stationery_request);
+                break;
+            case "staffStationeryRequests":
+                navController.navigate(R.id.nav_staff_stationery_requests);
+                break;
+        }
+    }
+    @Override
+    public void onBackPressed(){
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department);
+        navController.navigateUp();
     }
     @Override
     public void onDestroy(){

@@ -91,7 +91,7 @@ public class StaffStationeryRequestsFragment extends Fragment implements
     public void onClick(View view){
         switch(view.getId()){
             case R.id.fab_staff_stationery_requests:
-                iStaffStationeryRequestsFragment.gotoFragment("addStationeryRequest", -1);
+                iStaffStationeryRequestsFragment.gotoFragment("addStationeryRequest");
                 break;
         }
     }
@@ -99,6 +99,7 @@ public class StaffStationeryRequestsFragment extends Fragment implements
         void sendRequest(JSONObject request);
         void setFragment(String name, Fragment fragment);
         void gotoFragment(String name, int id);
+        void gotoFragment(String name);
     }
 
     public class RowItem{

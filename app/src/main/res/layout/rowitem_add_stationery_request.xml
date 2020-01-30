@@ -14,5 +14,6 @@ android:layout_height="match_parent">
         style="@style/TableContent"></TextView>
     <EditText
         android:id="@+id/edittext_add_stationery_request_quantity_requested"
-        style="@style/TableContentEdit"></EditText>
+        style="@style/TableContentEdit"
+        android:inputType="number"></EditText>
 </LinearLayout>

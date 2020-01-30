@@ -91,6 +91,10 @@ public class DepartmentActivity extends AppCompatActivity
         return serverAddressPref.getString("serverAddress", "");
     }
     @Override
+    public String getServerPortFromSharedPref(){
+        return serverAddressPref.getString("port", "");
+    }
+    @Override
     public void sendRequest(final JSONObject request){
         try {
             JSONObject body = request.getJSONObject("requestBody");

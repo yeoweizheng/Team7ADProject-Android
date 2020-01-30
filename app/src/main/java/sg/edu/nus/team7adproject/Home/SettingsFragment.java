@@ -21,7 +21,7 @@ import sg.edu.nus.team7adproject.R;
 public class SettingsFragment extends Fragment implements View.OnClickListener {
     SharedPreferences serverAddressPref;
     SharedPreferences.Editor serverAddressPrefEditor;
-    EditText urlEditText;
+    EditText urlEditText, portEditText;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,11 +34,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         saveSettingsBtn.setOnClickListener(this);
         serverAddressPref = this.getActivity().getSharedPreferences("serverAddress", Context.MODE_PRIVATE);
         serverAddressPrefEditor = serverAddressPref.edit();
-        urlEditText = view.findViewById(R.id.editText_url);
+        urlEditText = view.findViewById(R.id.editText_settings_url);
+        portEditText = view.findViewById(R.id.editText_settings_port);
         String storedURL = serverAddressPref.getString("serverAddress", "");
-        if(storedURL != ""){
-            urlEditText.setText(storedURL);
-        }
+        String storedPort = serverAddressPref.getString("port", "");
+        if(storedURL != "") urlEditText.setText(storedURL);
+        if(storedPort != "") portEditText.setText(storedPort);
     }
 
     @Override
@@ -55,7 +56,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     private void saveSettings(){
         String urlString = urlEditText.getText().toString();
+        String portString = portEditText.getText().toString();
         serverAddressPrefEditor.putString("serverAddress", urlString);
+        serverAddressPrefEditor.putString("port", portString);
         serverAddressPrefEditor.commit();
     }
 }

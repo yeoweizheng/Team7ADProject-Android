@@ -80,6 +80,10 @@ public class HomeActivity extends AppCompatActivity
         return serverAddressPref.getString("serverAddress", "");
     }
     @Override
+    public String getServerPortFromSharedPref(){
+        return serverAddressPref.getString("port", "");
+    }
+    @Override
     public void sendRequest(final JSONObject request){
         new Thread(new Runnable() {
             @Override

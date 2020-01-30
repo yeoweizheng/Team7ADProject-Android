@@ -44,7 +44,8 @@ public class ServerService extends Service {
             request.remove("requestBody");
             request.put("requestBody", body.toString());
             String serverAddress = iServerService.getServerAddressFromSharedPref();
-            String urlString = "http://" + serverAddress + ":10000/Rest/" + request.get("url").toString();
+            String serverPort = iServerService.getServerPortFromSharedPref();
+            String urlString = "http://" + serverAddress + ":" + serverPort +"/Rest/" + request.get("url").toString();
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -79,6 +80,7 @@ public class ServerService extends Service {
     }
     public interface IServerService{
         String getServerAddressFromSharedPref();
+        String getServerPortFromSharedPref();
         void handleResponse(String response, String callbackFragment, String callbackMethod);
         AppCompatActivity getActivity();
     }

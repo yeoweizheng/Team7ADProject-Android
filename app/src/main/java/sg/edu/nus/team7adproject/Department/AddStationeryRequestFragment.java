@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +28,7 @@ import java.util.List;
 
 import sg.edu.nus.team7adproject.R;
 
-public class AddStationeryRequestFragment extends Fragment {
+public class AddStationeryRequestFragment extends Fragment implements View.OnClickListener{
 
     AddStationeryRequestFragment.IAddStationeryRequestFragment iAddStationeryRequestFragment;
     public AddStationeryRequestFragment() {
@@ -36,7 +38,14 @@ public class AddStationeryRequestFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getStationeries();
+
         return inflater.inflate(R.layout.fragment_add_stationery_request, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+        FloatingActionButton fab = view.findViewById(R.id.fab_submit_stationery_request);
+        fab.setOnClickListener(this);
     }
 
     @Override
@@ -59,9 +68,10 @@ public class AddStationeryRequestFragment extends Fragment {
             e.printStackTrace();
         }
     }
+    RowAdapter rowAdapter;
+    ArrayList<RowItem> rowItemList;
     public void getStationeriesCallback(String response) throws JSONException{
-        Log.d("weizheng", response);
-        ArrayList<RowItem> rowItemList = new ArrayList<RowItem>();
+        rowItemList = new ArrayList<RowItem>();
         ListView listView = getActivity().findViewById(R.id.listview_add_stationery_request);
         JSONArray stationeries = new JSONArray(response);
         for(int i = 0; i < stationeries.length(); i++){
@@ -72,12 +82,22 @@ public class AddStationeryRequestFragment extends Fragment {
                     stationery.getString("unitOfMeasure"));
             rowItemList.add(rowItem);
         }
-        RowAdapter rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_add_stationery_request, rowItemList);
+        rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_add_stationery_request, rowItemList);
         listView.setAdapter(rowAdapter);
     }
-    public void addStationeryRequest(){
+    public void submitStationeryRequest(){
+        for(int i = 0; i < rowItemList.size(); i++){
+        }
     }
-    public void addStationeryRequestCallback(String response) throws JSONException{
+    public void submitStationeryRequestCallback(String response) throws JSONException{
+    }
+    @Override
+    public void onClick(View view){
+        switch(view.getId()){
+            case R.id.fab_submit_stationery_request:
+                submitStationeryRequest();
+                break;
+        }
     }
     public interface IAddStationeryRequestFragment{
         void sendRequest(JSONObject request);

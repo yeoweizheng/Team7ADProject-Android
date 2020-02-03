@@ -79,6 +79,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
     }
     private void login(){
+
         String username = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
         JSONObject request = new JSONObject();
@@ -97,6 +98,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
     public void loginCallback(String response) throws JSONException{
         JSONObject responseObj = new JSONObject(response);
+        Log.d("xiaomin", response);
         if(!responseObj.has("user")){
             Toast.makeText(getContext(), "Login failed", Toast.LENGTH_SHORT).show();
             return;

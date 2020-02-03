@@ -123,6 +123,10 @@ public class HomeActivity extends AppCompatActivity
                 Intent intent = new Intent(this, DepartmentActivity.class);
                 startActivity(intent);
                 break;
+            case "storeClerk":
+                Intent intent1 = new Intent(this, StoreActivity.class);
+                startActivity(intent1);
+                break;
         }
     }
     @Override

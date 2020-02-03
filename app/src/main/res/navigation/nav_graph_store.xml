@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_store"
+    app:startDestination="@+id/nav_store_department_requests">
+
+    <fragment
+        android:id="@+id/nav_store_department_requests"
+        android:name="sg.edu.nus.team7adproject.Store.StoreDepartmentRequestsFragment"
+        android:label="Department Requests"
+        tools:layout="@layout/fragment_store_department_requests">
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_store_stationery_retrieval_lists"
+        android:name="sg.edu.nus.team7adproject.Store.StoreStationeryRetrievalListsFragment"
+        android:label="Stationery Retrieval List"
+        tools:layout="@layout/fragment_store_stationery_retrieval_lists" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_store_disbursement_lists"
+        android:name="sg.edu.nus.team7adproject.Store.StoreDisbursementListsFragment"
+        android:label="Disbursement Lists"
+        tools:layout="@layout/fragment_store_disbursement_lists" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_store_stock_lists"
+        android:name="sg.edu.nus.team7adproject.Store.StoreStockListsFragment"
+        android:label="Stock Lists"
+        tools:layout="@layout/fragment_store_stock_lists" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_store_adjustment_vouchers"
+        android:name="sg.edu.nus.team7adproject.Store.StoreAdjustmentVouchersFragment"
+        android:label="Adjustment Vouchers"
+        tools:layout="@layout/fragment_store_adjustment_vouchers" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_store_orders"
+        android:name="sg.edu.nus.team7adproject.Store.StoreOrdersFragment"
+        android:label="Orders"
+        tools:layout="@layout/fragment_store_orders" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_notifications"
+        android:name="sg.edu.nus.team7adproject.Shared.NotificationsFragment"
+        android:label="Notifications"
+        tools:layout="@layout/fragment_notifications" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="sg.edu.nus.team7adproject.Shared.LogoutFragment"
+        android:label="Logout"
+        tools:layout="@layout/fragment_logout" >
+    </fragment>
+</navigation>

@@ -83,5 +83,6 @@ public class ServerService extends Service {
         String getServerPortFromSharedPref();
         void handleResponse(String response, String callbackFragment, String callbackMethod);
         AppCompatActivity getActivity();
+        void finish();
     }
 }

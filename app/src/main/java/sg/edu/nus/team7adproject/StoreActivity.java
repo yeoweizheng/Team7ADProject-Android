@@ -27,6 +27,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import sg.edu.nus.team7adproject.Shared.LogoutFragment;
+import sg.edu.nus.team7adproject.Shared.NotificationsFragment;
 import sg.edu.nus.team7adproject.Store.StoreAdjustmentVouchersFragment;
 import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestsFragment;
 import sg.edu.nus.team7adproject.Store.StoreDisbursementListsFragment;
@@ -42,6 +43,7 @@ public class StoreActivity extends AppCompatActivity
         StoreStockListsFragment.IStoreStockListsFragment,
         StoreAdjustmentVouchersFragment.IStoreAdjustmentVouchersFragment,
         StoreOrdersFragment.IStoreOrdersFragment,
+        NotificationsFragment.INotificationsFragment,
         LogoutFragment.ILogoutFragment
 {
     private AppBarConfiguration appBarConfiguration;

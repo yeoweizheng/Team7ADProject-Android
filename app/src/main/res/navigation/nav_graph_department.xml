@@ -14,10 +14,10 @@
             app:destination="@id/nav_stationery_request_detail" />
     </fragment>
     <fragment
-        android:id="@+id/nav_staff_disbursement_lists"
-        android:name="sg.edu.nus.team7adproject.Department.StaffDisbursementListsFragment"
-        android:label="Disbursement Lists"
-        tools:layout="@layout/fragment_staff_disbursement_lists" >
+        android:id="@+id/nav_staff_department_requests"
+        android:name="sg.edu.nus.team7adproject.Department.StaffDepartmentRequestsFragment"
+        android:label="Department Requests"
+        tools:layout="@layout/fragment_staff_department_requests" >
     </fragment>
     <fragment
         android:id="@+id/nav_notifications"

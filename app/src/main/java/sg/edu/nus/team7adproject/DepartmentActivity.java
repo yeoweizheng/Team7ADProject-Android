@@ -30,17 +30,21 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import sg.edu.nus.team7adproject.Department.AddStationeryRequestFragment;
+import sg.edu.nus.team7adproject.Department.StaffDepartmentRequestsFragment;
 import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragment;
 import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragmentDirections;
 import sg.edu.nus.team7adproject.Department.StationeryRequestDetailFragment;
 import sg.edu.nus.team7adproject.Home.LoginFragment;
 import sg.edu.nus.team7adproject.Shared.LogoutFragment;
+import sg.edu.nus.team7adproject.Shared.NotificationsFragment;
 
 public class DepartmentActivity extends AppCompatActivity
         implements ServiceConnection, ServerService.IServerService,
         StaffStationeryRequestsFragment.IStaffStationeryRequestsFragment,
         StationeryRequestDetailFragment.IStationeryRequestDetailFragment,
         AddStationeryRequestFragment.IAddStationeryRequestFragment,
+        StaffDepartmentRequestsFragment.IStaffDepartmentRequestsFragment,
+        NotificationsFragment.INotificationsFragment,
         LogoutFragment.ILogoutFragment {
     private AppBarConfiguration appBarConfiguration;
     private ServerService serverService;
@@ -55,7 +59,7 @@ public class DepartmentActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view_department);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department);
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_staff_stationery_requests, R.id.nav_staff_disbursement_lists,
+                R.id.nav_staff_stationery_requests, R.id.nav_staff_department_requests,
                 R.id.nav_notifications, R.id.nav_logout)
                 .setDrawerLayout(drawer)
                 .build();

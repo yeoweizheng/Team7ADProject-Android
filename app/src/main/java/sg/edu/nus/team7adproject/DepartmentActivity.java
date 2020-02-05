@@ -34,13 +34,14 @@ import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragment;
 import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragmentDirections;
 import sg.edu.nus.team7adproject.Department.StationeryRequestDetailFragment;
 import sg.edu.nus.team7adproject.Home.LoginFragment;
+import sg.edu.nus.team7adproject.Shared.LogoutFragment;
 
 public class DepartmentActivity extends AppCompatActivity
         implements ServiceConnection, ServerService.IServerService,
         StaffStationeryRequestsFragment.IStaffStationeryRequestsFragment,
         StationeryRequestDetailFragment.IStationeryRequestDetailFragment,
-        AddStationeryRequestFragment.IAddStationeryRequestFragment
-    {
+        AddStationeryRequestFragment.IAddStationeryRequestFragment,
+        LogoutFragment.ILogoutFragment {
     private AppBarConfiguration appBarConfiguration;
     private ServerService serverService;
     private SharedPreferences serverAddressPref;

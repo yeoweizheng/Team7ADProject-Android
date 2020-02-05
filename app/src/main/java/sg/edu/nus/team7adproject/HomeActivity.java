@@ -118,14 +118,15 @@ public class HomeActivity extends AppCompatActivity
     }
     @Override
     public void launchActivity(String userType){
+        Intent intent;
         switch(userType){
             case "departmentStaff":
-                Intent intent = new Intent(this, DepartmentActivity.class);
+                intent = new Intent(this, DepartmentActivity.class);
                 startActivity(intent);
                 break;
             case "storeClerk":
-                Intent intent1 = new Intent(this, StoreActivity.class);
-                startActivity(intent1);
+                intent = new Intent(this, StoreActivity.class);
+                startActivity(intent);
                 break;
         }
     }

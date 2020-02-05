@@ -16,7 +16,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
+import android.util.JsonReader;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -33,14 +33,14 @@ import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestsFragment;
 import sg.edu.nus.team7adproject.Store.StoreDisbursementListsFragment;
 import sg.edu.nus.team7adproject.Store.StoreOrdersFragment;
 import sg.edu.nus.team7adproject.Store.StoreStationeryRetrievalListsFragment;
-import sg.edu.nus.team7adproject.Store.StoreStockListsFragment;
+import sg.edu.nus.team7adproject.Store.StockListFragment;
 
 public class StoreActivity extends AppCompatActivity
     implements ServiceConnection, ServerService.IServerService,
         StoreDepartmentRequestsFragment.IStoreDepartmentRequestsFragment,
         StoreStationeryRetrievalListsFragment.IStoreStationeryRetrievalListsFragment,
         StoreDisbursementListsFragment.IStoreDisbursementListsFragment,
-        StoreStockListsFragment.IStoreStockListsFragment,
+        StockListFragment.IStockListFragment,
         StoreAdjustmentVouchersFragment.IStoreAdjustmentVouchersFragment,
         StoreOrdersFragment.IStoreOrdersFragment,
         NotificationsFragment.INotificationsFragment,
@@ -61,7 +61,7 @@ public class StoreActivity extends AppCompatActivity
         appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_store_adjustment_vouchers, R.id.nav_store_department_requests,
                 R.id.nav_store_disbursement_lists, R.id.nav_store_stationery_retrieval_lists,
-                R.id.nav_store_orders, R.id.nav_store_stock_lists,
+                R.id.nav_store_orders, R.id.nav_stock_list,
                 R.id.nav_notifications, R.id.nav_logout)
                 .setDrawerLayout(drawer)
                 .build();
@@ -105,14 +105,15 @@ public class StoreActivity extends AppCompatActivity
     @Override
     public void handleResponse(String response, String callbackFragment, String callbackMethod) {
         try {
-            JSONObject resObj = new JSONObject(response);
-            if(resObj.getString("result").equals("failed")) {
-                finish();
-                return;
-            }
+            try {
+                JSONObject resObj = new JSONObject(response);
+                if (resObj.getString("result").equals("failed")) {
+                    finish();
+                    return;
+                }
+            } catch(JSONException e){}
             Method method = fragmentHashMap.get(callbackFragment).getClass().getMethod(callbackMethod, String.class);
             method.invoke(fragmentHashMap.get(callbackFragment), response);
-        } catch(JSONException e){
         } catch(Exception e){
             e.printStackTrace();
         }

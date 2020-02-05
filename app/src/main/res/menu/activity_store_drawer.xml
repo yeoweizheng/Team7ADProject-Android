@@ -13,8 +13,8 @@
             android:id="@+id/nav_store_disbursement_lists"
             android:title="Disbursement Lists" />
         <item
-            android:id="@+id/nav_store_stock_lists"
-            android:title="Stock Lists" />
+            android:id="@+id/nav_stock_list"
+            android:title="Stock List" />
         <item
             android:id="@+id/nav_store_adjustment_vouchers"
             android:title="Adjustment Vouchers" />

@@ -128,14 +128,15 @@ public class DepartmentActivity extends AppCompatActivity
     @Override
     public void handleResponse(String response, String callbackFragment, String callbackMethod){
         try {
-            JSONObject resObj = new JSONObject(response);
-            if(resObj.getString("result").equals("failed")) {
-                finish();
-                return;
-            }
+            try {
+                JSONObject resObj = new JSONObject(response);
+                if (resObj.getString("result").equals("failed")) {
+                    finish();
+                    return;
+                }
+            } catch(JSONException e){}
             Method method = fragmentHashMap.get(callbackFragment).getClass().getMethod(callbackMethod, String.class);
             method.invoke(fragmentHashMap.get(callbackFragment), response);
-        } catch(JSONException e){
         } catch(Exception e){
             e.printStackTrace();
         }

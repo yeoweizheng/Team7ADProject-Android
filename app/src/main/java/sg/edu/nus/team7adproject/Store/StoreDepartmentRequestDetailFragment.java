@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,11 +27,13 @@ import java.util.List;
 import sg.edu.nus.team7adproject.Department.StationeryRequestDetailFragmentArgs;
 import sg.edu.nus.team7adproject.R;
 
-public class StoreDepartmentRequestDetailFragment extends Fragment {
+public class StoreDepartmentRequestDetailFragment extends Fragment
+    implements View.OnClickListener{
 
     IStoreDepartmentRequestDetailFragment iStoreDepartmentRequestDetailFragment;
     Button addToRetrievalButton;
     Button addToDisbursementButton;
+    int departmentRequestId;
 
     public StoreDepartmentRequestDetailFragment(){
     }
@@ -43,10 +46,12 @@ public class StoreDepartmentRequestDetailFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
-        int id = StoreDepartmentRequestDetailFragmentArgs.fromBundle(getArguments()).getDepartmentRequestId();
-        getStoreDepartmentRequestDetail(id);
+        this.departmentRequestId = StoreDepartmentRequestDetailFragmentArgs.fromBundle(getArguments()).getDepartmentRequestId();
+        getStoreDepartmentRequestDetail();
         addToRetrievalButton = view.findViewById(R.id.button_store_department_request_detail_add_to_retrieval);
         addToDisbursementButton = view.findViewById(R.id.button_store_department_request_detail_add_to_disbursement);
+        addToRetrievalButton.setOnClickListener(this);
+        addToDisbursementButton.setOnClickListener(this);
     }
 
     @Override
@@ -55,12 +60,12 @@ public class StoreDepartmentRequestDetailFragment extends Fragment {
         iStoreDepartmentRequestDetailFragment = (IStoreDepartmentRequestDetailFragment) context;
         iStoreDepartmentRequestDetailFragment.setFragment("storeDepartmentRequestDetailFragment", this);
     }
-    public void getStoreDepartmentRequestDetail(int id){
+    public void getStoreDepartmentRequestDetail(){
         JSONObject request = new JSONObject();
         JSONObject body = new JSONObject();
         try {
             body.put("action", "getStoreDepartmentRequestDetail");
-            body.put("departmentRequestId", id);
+            body.put("departmentRequestId", departmentRequestId);
             request.put("url", "DepartmentRequestDetail");
             request.put("requestBody", body);
             request.put("callbackFragment", "storeDepartmentRequestDetailFragment");
@@ -93,12 +98,69 @@ public class StoreDepartmentRequestDetailFragment extends Fragment {
         }
         RowAdapter rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_store_department_request_detail, rowItemList);
         listView.setAdapter(rowAdapter);
+        addToRetrievalButton.setVisibility(View.GONE);
+        addToDisbursementButton.setVisibility(View.GONE);
         switch(storeDepartmentRequestDetail.get("status").toString()){
             case "Not Retrieved":
                 addToRetrievalButton.setVisibility(View.VISIBLE);
                 break;
             case "Retrieved":
                 addToDisbursementButton.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+    public void addToRetrieval(){
+        JSONObject request = new JSONObject();
+        JSONObject body = new JSONObject();
+        try {
+            body.put("action", "addToRetrieval");
+            body.put("departmentRequestId", departmentRequestId);
+            request.put("url", "AddToRetrieval");
+            request.put("requestBody", body);
+            request.put("callbackFragment", "storeDepartmentRequestDetailFragment");
+            request.put("callbackMethod", "addToRetrievalCallback");
+            iStoreDepartmentRequestDetailFragment.sendRequest(request);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+    }
+    public void addToRetrievalCallback(String response) throws JSONException{
+        JSONObject responseObj = new JSONObject(response);
+        if(responseObj.getString("result").equals("success")){
+            Toast.makeText(getActivity().getApplicationContext(), "Added to retrieval", Toast.LENGTH_SHORT).show();
+            getStoreDepartmentRequestDetail();
+        }
+    }
+    public void addToDisbursement(){
+        JSONObject request = new JSONObject();
+        JSONObject body = new JSONObject();
+        try {
+            body.put("action", "addToDisbursement");
+            body.put("departmentRequestId", departmentRequestId);
+            request.put("url", "AddToDisbursement");
+            request.put("requestBody", body);
+            request.put("callbackFragment", "storeDepartmentRequestDetailFragment");
+            request.put("callbackMethod", "addToDisbursementCallback");
+            iStoreDepartmentRequestDetailFragment.sendRequest(request);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+    }
+    public void addToDisbursementCallback(String response) throws JSONException{
+        JSONObject responseObj = new JSONObject(response);
+        if(responseObj.getString("result").equals("success")){
+            Toast.makeText(getActivity().getApplicationContext(), "Added to disbursement", Toast.LENGTH_SHORT).show();
+            getStoreDepartmentRequestDetail();
+        }
+    }
+    @Override
+    public void onClick(View view){
+        switch(view.getId()){
+            case R.id.button_store_department_request_detail_add_to_retrieval:
+                addToRetrieval();
+                break;
+            case R.id.button_store_department_request_detail_add_to_disbursement:
+                addToDisbursement();
                 break;
         }
     }

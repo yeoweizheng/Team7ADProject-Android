@@ -16,7 +16,6 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.JsonReader;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -28,24 +27,16 @@ import java.util.HashMap;
 
 import sg.edu.nus.team7adproject.Shared.LogoutFragment;
 import sg.edu.nus.team7adproject.Shared.NotificationsFragment;
+import sg.edu.nus.team7adproject.Store.StockListFragment;
 import sg.edu.nus.team7adproject.Store.StoreAdjustmentVouchersFragment;
 import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestsFragment;
 import sg.edu.nus.team7adproject.Store.StoreDisbursementListsFragment;
 import sg.edu.nus.team7adproject.Store.StoreOrdersFragment;
 import sg.edu.nus.team7adproject.Store.StoreStationeryRetrievalListsFragment;
-import sg.edu.nus.team7adproject.Store.StockListFragment;
 
-public class StoreActivity extends AppCompatActivity
-    implements ServiceConnection, ServerService.IServerService,
-        StoreDepartmentRequestsFragment.IStoreDepartmentRequestsFragment,
-        StoreStationeryRetrievalListsFragment.IStoreStationeryRetrievalListsFragment,
-        StoreDisbursementListsFragment.IStoreDisbursementListsFragment,
-        StockListFragment.IStockListFragment,
-        StoreAdjustmentVouchersFragment.IStoreAdjustmentVouchersFragment,
-        StoreOrdersFragment.IStoreOrdersFragment,
-        NotificationsFragment.INotificationsFragment,
-        LogoutFragment.ILogoutFragment
-{
+public class StoreSupActivity extends AppCompatActivity
+        implements ServiceConnection, ServerService.IServerService,
+        StockListFragment.IStockListFragment, LogoutFragment.ILogoutFragment {
     private AppBarConfiguration appBarConfiguration;
     private ServerService serverService;
     private SharedPreferences serverAddressPref;
@@ -54,20 +45,17 @@ public class StoreActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_store);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_store);
-        NavigationView navigationView = findViewById(R.id.nav_view_store);
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store);
+        setContentView(R.layout.activity_store_sup);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_store_sup);
+        NavigationView navigationView = findViewById(R.id.nav_view_store_sup);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store_sup);
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_store_adjustment_vouchers, R.id.nav_store_department_requests,
-                R.id.nav_store_disbursement_lists, R.id.nav_store_stationery_retrieval_lists,
-                R.id.nav_store_orders, R.id.nav_stock_list,
-                R.id.nav_notifications, R.id.nav_logout)
+                R.id.nav_stock_list, R.id.nav_logout)
                 .setDrawerLayout(drawer)
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        Intent intent = new Intent(StoreActivity.this, ServerService.class);
+        Intent intent = new Intent(StoreSupActivity.this, ServerService.class);
         bindService(intent, this, BIND_AUTO_CREATE);
         serverAddressPref = getSharedPreferences("serverAddress", Context.MODE_PRIVATE);
         sessionPref = getSharedPreferences("session", Context.MODE_PRIVATE);
@@ -77,7 +65,7 @@ public class StoreActivity extends AppCompatActivity
         if(serverService != null) serverService.setCallback(this);
     }
     public boolean onSupportNavigateUp(){
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store_sup);
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
     @Override
@@ -90,7 +78,7 @@ public class StoreActivity extends AppCompatActivity
     }
     @Override
     public void onServiceDisconnected(ComponentName name){
-        }
+    }
 
     @Override
     public String getServerAddressFromSharedPref() {
@@ -99,7 +87,7 @@ public class StoreActivity extends AppCompatActivity
 
     @Override
     public String getServerPortFromSharedPref() {
-            return serverAddressPref.getString("port", "");
+        return serverAddressPref.getString("port", "");
     }
 
     @Override
@@ -126,29 +114,29 @@ public class StoreActivity extends AppCompatActivity
 
     @Override
     public void sendRequest(final JSONObject request) {
-            try {
-                JSONObject body = request.getJSONObject("requestBody");
-                if(!body.has("sessionId")){
-                    body.put("sessionId", sessionPref.getString("sessionId", ""));
-                    request.remove("requestBody");
-                    request.put("requestBody", body);
-                }
-            } catch(JSONException e){
-                e.printStackTrace();
+        try {
+            JSONObject body = request.getJSONObject("requestBody");
+            if(!body.has("sessionId")){
+                body.put("sessionId", sessionPref.getString("sessionId", ""));
+                request.remove("requestBody");
+                request.put("requestBody", body);
             }
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while(serverService == null) {
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(serverService == null) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                    serverService.sendRequest(request);
                 }
-            }).start();
+                serverService.sendRequest(request);
+            }
+        }).start();
     }
     @Override
     public void setFragment(String name, Fragment fragment) {
@@ -157,16 +145,16 @@ public class StoreActivity extends AppCompatActivity
     @Override
     public void gotoFragment(String name, int id) {
         NavDirections action = null;
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store_sup);
 
     }
     @Override
     public void gotoFragment(String name) {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store_sup);
     }
     @Override
     public void onBackPressed(){
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store_sup);
         navController.navigateUp();
     }
     @Override

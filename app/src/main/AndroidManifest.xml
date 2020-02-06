@@ -12,8 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".StoreActivity"></activity>
-        <activity android:name=".DepartmentActivity" />
+        <activity android:name=".StoreSupActivity"></activity>
+        <activity android:name=".DepartmentHeadActivity" />
+        <activity android:name=".StoreClerkActivity" />
+        <activity android:name=".DepartmentStaffActivity" />
 
         <service
             android:name=".ServerService"

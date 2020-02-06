@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph_store"
+    android:id="@+id/nav_graph_store_clerk"
     app:startDestination="@+id/nav_store_department_requests">
 
     <fragment
@@ -52,6 +52,13 @@
         android:name="sg.edu.nus.team7adproject.Shared.NotificationsFragment"
         android:label="Notifications"
         tools:layout="@layout/fragment_notifications" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_scheduled_jobs"
+        android:name="sg.edu.nus.team7adproject.Store.ScheduledJobsFragment"
+        android:label="Scheduled Jobs"
+        tools:layout="@layout/fragment_scheduled_jobs" >
     </fragment>
 
     <fragment

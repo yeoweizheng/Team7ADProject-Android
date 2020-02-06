@@ -1,7 +1,5 @@
 package sg.edu.nus.team7adproject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -18,8 +16,6 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
-import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -34,11 +30,10 @@ import sg.edu.nus.team7adproject.Department.StaffDepartmentRequestsFragment;
 import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragment;
 import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragmentDirections;
 import sg.edu.nus.team7adproject.Department.StationeryRequestDetailFragment;
-import sg.edu.nus.team7adproject.Home.LoginFragment;
 import sg.edu.nus.team7adproject.Shared.LogoutFragment;
 import sg.edu.nus.team7adproject.Shared.NotificationsFragment;
 
-public class DepartmentActivity extends AppCompatActivity
+public class DepartmentStaffActivity extends AppCompatActivity
         implements ServiceConnection, ServerService.IServerService,
         StaffStationeryRequestsFragment.IStaffStationeryRequestsFragment,
         StationeryRequestDetailFragment.IStationeryRequestDetailFragment,
@@ -54,10 +49,10 @@ public class DepartmentActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_department);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_department);
-        NavigationView navigationView = findViewById(R.id.nav_view_department);
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department);
+        setContentView(R.layout.activity_department_staff);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_department_staff);
+        NavigationView navigationView = findViewById(R.id.nav_view_department_staff);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department_staff);
         appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_staff_stationery_requests, R.id.nav_staff_department_requests,
                 R.id.nav_notifications, R.id.nav_logout)
@@ -65,7 +60,7 @@ public class DepartmentActivity extends AppCompatActivity
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        Intent intent = new Intent(DepartmentActivity.this, ServerService.class);
+        Intent intent = new Intent(DepartmentStaffActivity.this, ServerService.class);
         bindService(intent, this, BIND_AUTO_CREATE);
         serverAddressPref = getSharedPreferences("serverAddress", Context.MODE_PRIVATE);
         sessionPref = getSharedPreferences("session", Context.MODE_PRIVATE);
@@ -77,7 +72,7 @@ public class DepartmentActivity extends AppCompatActivity
     }
     @Override
     public boolean onSupportNavigateUp(){
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department_staff);
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
     @Override
@@ -152,7 +147,7 @@ public class DepartmentActivity extends AppCompatActivity
     @Override
     public void gotoFragment(String name, int id){
         NavDirections action = null;
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department_staff);
         switch(name){
             case "stationeryRequestDetail":
                 action = StaffStationeryRequestsFragmentDirections.actionNavStaffStationeryRequestsToNavStationeryRequestDetail(id);
@@ -162,7 +157,7 @@ public class DepartmentActivity extends AppCompatActivity
     }
     @Override
     public void gotoFragment(String name){
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department_staff);
         switch(name){
             case "addStationeryRequest":
                 navController.navigate(R.id.nav_add_stationery_request);
@@ -174,7 +169,7 @@ public class DepartmentActivity extends AppCompatActivity
     }
     @Override
     public void onBackPressed(){
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department_staff);
         navController.navigateUp();
     }
     @Override

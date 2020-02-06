@@ -25,6 +25,9 @@
             android:id="@+id/nav_notifications"
             android:title="Notifications" />
         <item
+            android:id="@+id/nav_scheduled_jobs"
+            android:title="Scheduled Jobs" />
+        <item
             android:id="@+id/nav_logout"
             android:title="Logout" />
     </group>

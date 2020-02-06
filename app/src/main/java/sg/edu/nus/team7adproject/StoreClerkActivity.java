@@ -41,6 +41,7 @@ import sg.edu.nus.team7adproject.Store.StockListFragment;
 public class StoreClerkActivity extends AppCompatActivity
     implements ServiceConnection, ServerService.IServerService,
         StoreDepartmentRequestsFragment.IStoreDepartmentRequestsFragment,
+        StoreDepartmentRequestDetailFragment.IStoreDepartmentRequestDetailFragment,
         StoreStationeryRetrievalListsFragment.IStoreStationeryRetrievalListsFragment,
         StoreDisbursementListsFragment.IStoreDisbursementListsFragment,
         StockListFragment.IStockListFragment,

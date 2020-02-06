@@ -1,14 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Store.StoreDepartmentRequestDetailFragment">
+    tools:context=".Store.StoreDepartmentRequestDetailFragment"
+    android:orientation="vertical"
+    android:padding="10dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Request ID"
+            style="@style/TableHeading"
+            android:layout_weight="1"></TextView>
+        <TextView
+            android:id="@+id/textview_store_department_request_detail_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TableContent"
+            android:layout_weight="1"></TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Request Date"
+            style="@style/TableHeading"
+            android:layout_weight="1"></TextView>
+        <TextView
+            android:id="@+id/textview_store_department_request_detail_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TableContent"
+            android:layout_weight="1"></TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Remarks"
+            style="@style/TableHeading"
+            android:layout_weight="1"></TextView>
+        <TextView
+            android:id="@+id/textview_store_department_request_detail_remarks"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TableContent"
+            android:layout_weight="1"></TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            style="@style/TableHeading"
+            android:layout_weight="1"></TextView>
+        <TextView
+            android:id="@+id/textview_store_department_request_detail_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TableContent"
+            android:layout_weight="1"></TextView>
+    </LinearLayout>
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:text="Description"
+            style="@style/TableHeading"></TextView>
+        <TextView
+            android:text="Quantity Requested"
+            style="@style/TableHeading"></TextView>
+        <TextView
+            android:text="Unit of Measure"
+            style="@style/TableHeading"></TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <ListView
+            android:id="@+id/listview_store_department_request_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_store_department_request_detail_add_to_retrieval"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add to Retrieval"
+        android:textSize="18dp"
+        android:visibility="gone"></Button>
+
+    <Button
+        android:id="@+id/button_store_department_request_detail_add_to_disbursement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add to Disbursement"
+        android:textSize="18dp"
+        android:visibility="gone"></Button>
+</LinearLayout>

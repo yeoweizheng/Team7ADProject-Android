@@ -8,10 +8,10 @@
             android:title="Department Requests" />
         <item
             android:id="@+id/nav_store_stationery_retrieval_lists"
-            android:title="Stationery Retrieval Lists" />
+            android:title="Stationery Retrieval List" />
         <item
             android:id="@+id/nav_store_disbursement_lists"
-            android:title="Disbursement Lists" />
+            android:title="Disbursement List" />
         <item
             android:id="@+id/nav_stock_list"
             android:title="Stock List" />

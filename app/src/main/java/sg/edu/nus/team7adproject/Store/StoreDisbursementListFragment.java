@@ -16,10 +16,10 @@ import sg.edu.nus.team7adproject.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StoreDisbursementListsFragment extends Fragment {
+public class StoreDisbursementListFragment extends Fragment {
 
 
-    public StoreDisbursementListsFragment() {
+    public StoreDisbursementListFragment() {
         // Required empty public constructor
     }
 
@@ -28,7 +28,7 @@ public class StoreDisbursementListsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_store_disbursement_lists, container, false);
+        return inflater.inflate(R.layout.fragment_store_disbursement_list, container, false);
     }
 
     public interface IStoreDisbursementListsFragment{

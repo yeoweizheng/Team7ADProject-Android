@@ -25,7 +25,6 @@ import org.json.JSONObject;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragmentDirections;
 import sg.edu.nus.team7adproject.Shared.LogoutFragment;
 import sg.edu.nus.team7adproject.Shared.NotificationsFragment;
 import sg.edu.nus.team7adproject.Store.ScheduledJobsFragment;
@@ -33,24 +32,23 @@ import sg.edu.nus.team7adproject.Store.StoreAdjustmentVouchersFragment;
 import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestDetailFragment;
 import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestsFragment;
 import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestsFragmentDirections;
-import sg.edu.nus.team7adproject.Store.StoreDisbursementListsFragment;
+import sg.edu.nus.team7adproject.Store.StoreDisbursementListFragment;
 import sg.edu.nus.team7adproject.Store.StoreOrdersFragment;
-import sg.edu.nus.team7adproject.Store.StoreStationeryRetrievalListsFragment;
+import sg.edu.nus.team7adproject.Store.StoreStationeryRetrievalListFragment;
 import sg.edu.nus.team7adproject.Store.StockListFragment;
 
 public class StoreClerkActivity extends AppCompatActivity
     implements ServiceConnection, ServerService.IServerService,
         StoreDepartmentRequestsFragment.IStoreDepartmentRequestsFragment,
         StoreDepartmentRequestDetailFragment.IStoreDepartmentRequestDetailFragment,
-        StoreStationeryRetrievalListsFragment.IStoreStationeryRetrievalListsFragment,
-        StoreDisbursementListsFragment.IStoreDisbursementListsFragment,
+        StoreStationeryRetrievalListFragment.IStoreStationeryRetrievalListFragment,
+        StoreDisbursementListFragment.IStoreDisbursementListsFragment,
         StockListFragment.IStockListFragment,
         StoreAdjustmentVouchersFragment.IStoreAdjustmentVouchersFragment,
         StoreOrdersFragment.IStoreOrdersFragment,
         NotificationsFragment.INotificationsFragment,
         ScheduledJobsFragment.IScheduledJobsFragment,
-        LogoutFragment.ILogoutFragment
-{
+        LogoutFragment.ILogoutFragment {
     private AppBarConfiguration appBarConfiguration;
     private ServerService serverService;
     private SharedPreferences serverAddressPref;

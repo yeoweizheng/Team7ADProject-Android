@@ -25,11 +25,14 @@ import org.json.JSONObject;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
+import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragmentDirections;
 import sg.edu.nus.team7adproject.Shared.LogoutFragment;
 import sg.edu.nus.team7adproject.Shared.NotificationsFragment;
 import sg.edu.nus.team7adproject.Store.ScheduledJobsFragment;
 import sg.edu.nus.team7adproject.Store.StoreAdjustmentVouchersFragment;
+import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestDetailFragment;
 import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestsFragment;
+import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestsFragmentDirections;
 import sg.edu.nus.team7adproject.Store.StoreDisbursementListsFragment;
 import sg.edu.nus.team7adproject.Store.StoreOrdersFragment;
 import sg.edu.nus.team7adproject.Store.StoreStationeryRetrievalListsFragment;
@@ -160,6 +163,12 @@ public class StoreClerkActivity extends AppCompatActivity
     public void gotoFragment(String name, int id) {
         NavDirections action = null;
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store_clerk);
+        switch(name) {
+            case "departmentRequestDetail":
+                action = StoreDepartmentRequestsFragmentDirections.actionNavStoreDepartmentRequestsToNavStoreDepartmentRequestDetail(id);
+                navController.navigate(action);
+                break;
+        }
 
     }
     @Override

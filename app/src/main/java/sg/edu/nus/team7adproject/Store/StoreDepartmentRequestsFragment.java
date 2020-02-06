@@ -22,9 +22,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
+
+import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragment;
 import sg.edu.nus.team7adproject.R;
 
-public class StoreDepartmentRequestsFragment extends Fragment {
+public class StoreDepartmentRequestsFragment extends Fragment implements
+    AdapterView.OnItemClickListener {
     IStoreDepartmentRequestsFragment iStoreDepartmentRequestsFragment;
     public StoreDepartmentRequestsFragment() {
     }
@@ -71,6 +74,12 @@ public class StoreDepartmentRequestsFragment extends Fragment {
         }
         RowAdapter rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_store_department_requests, rowItemList);
         listView.setAdapter(rowAdapter);
+        listView.setOnItemClickListener(this);
+    }
+    @Override
+    public void onItemClick(AdapterView<?> adapter, View view, int pos, long id){
+        RowItem rowItem = (RowItem) adapter.getItemAtPosition(pos);
+        iStoreDepartmentRequestsFragment.gotoFragment("departmentRequestDetail", Integer.parseInt(rowItem.id));
     }
     public interface IStoreDepartmentRequestsFragment{
         void sendRequest(JSONObject request);

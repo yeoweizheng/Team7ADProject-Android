@@ -22,9 +22,35 @@
             style="@style/TableHeading"></TextView>
     </LinearLayout>
     <ListView
-        android:id="@+id/listview_store_stationery_retrieval_list"
+        android:id="@+id/listview1_store_stationery_retrieval_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:text="Item Number"
+            style="@style/TableHeading"></TextView>
+        <TextView
+            android:text="Description"
+            style="@style/TableHeading"></TextView>
+        <TextView
+            android:text="Quantity Requested"
+            style="@style/TableHeading"></TextView>
+        <TextView
+            android:text="Quantity Retrieved"
+            style="@style/TableHeading"></TextView>
+    </LinearLayout>
+    <ListView
+        android:id="@+id/listview2_store_stationery_retrieval_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"></ListView>
-
+    <Button
+        android:id="@+id/button_store_stationery_retrieval_list_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        android:textSize="18dp"></Button>
 </LinearLayout>

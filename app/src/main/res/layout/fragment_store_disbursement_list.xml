@@ -1,14 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Store.StoreDisbursementListFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Store.StoreDisbursementListFragment"
+    android:orientation="vertical"
+    android:padding="10dp">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:text="ID"
+            style="@style/TableHeading"></TextView>
+        <TextView
+            android:text="Date"
+            style="@style/TableHeading"></TextView>
+        <TextView
+            android:text="Department"
+            style="@style/TableHeading"></TextView>
+    </LinearLayout>
+    <ListView
+        android:id="@+id/listview1_store_disbursement_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:text="Item Number"
+            style="@style/TableHeading"></TextView>
+        <TextView
+            android:text="Description"
+            style="@style/TableHeading"></TextView>
+        <TextView
+            android:text="Quantity Requested"
+            style="@style/TableHeading"></TextView>
+        <TextView
+            android:text="Quantity Retrieved"
+            style="@style/TableHeading"></TextView>
+    </LinearLayout>
+    <ListView
+        android:id="@+id/listview2_store_disbursement_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"></ListView>
+</LinearLayout>

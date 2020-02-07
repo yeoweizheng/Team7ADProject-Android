@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,7 +29,8 @@ import java.util.List;
 
 import sg.edu.nus.team7adproject.R;
 
-public class StoreStationeryRetrievalListFragment extends Fragment implements View.OnClickListener {
+public class StoreStationeryRetrievalListFragment extends Fragment implements
+    View.OnClickListener, AdapterView.OnItemClickListener {
     IStoreStationeryRetrievalListFragment iStoreStationeryRetrievalListFragment;
     HashMap<Integer, EditText> quantityRetrievedEditTexts;
     HashMap<Integer, Integer> quantityRequested;
@@ -88,6 +90,7 @@ public class StoreStationeryRetrievalListFragment extends Fragment implements Vi
         }
         RowAdapter1 rowAdapter = new RowAdapter1(getActivity(), R.layout.fragment_store_stationery_retrieval_list, rowItemList);
         listView.setAdapter(rowAdapter);
+        listView.setOnItemClickListener(this);
     }
     public void getStationeryQuantities(){
         JSONObject request = new JSONObject();
@@ -212,6 +215,11 @@ public class StoreStationeryRetrievalListFragment extends Fragment implements Vi
         }
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapter, View view, int pos, long id){
+        RowItem1 rowItem = (RowItem1) adapter.getItemAtPosition(pos);
+        iStoreStationeryRetrievalListFragment.gotoFragment("departmentRequestDetailFromRetrieval", Integer.parseInt(rowItem.id));
+    }
     public interface IStoreStationeryRetrievalListFragment{
         void sendRequest(JSONObject request);
         void setFragment(String name, Fragment fragment);

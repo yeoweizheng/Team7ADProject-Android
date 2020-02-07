@@ -33,6 +33,8 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
     IStoreDepartmentRequestDetailFragment iStoreDepartmentRequestDetailFragment;
     Button addToRetrievalButton;
     Button addToDisbursementButton;
+    Button removeFromRetrievalButton;
+    Button removeFromDisbursementButton;
     int departmentRequestId;
 
     public StoreDepartmentRequestDetailFragment(){
@@ -50,8 +52,12 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
         getStoreDepartmentRequestDetail();
         addToRetrievalButton = view.findViewById(R.id.button_store_department_request_detail_add_to_retrieval);
         addToDisbursementButton = view.findViewById(R.id.button_store_department_request_detail_add_to_disbursement);
+        removeFromRetrievalButton = view.findViewById(R.id.button_store_department_request_detail_remove_from_retrieval);
+        removeFromDisbursementButton = view.findViewById(R.id.button_store_department_request_detail_remove_from_disbursement);
         addToRetrievalButton.setOnClickListener(this);
         addToDisbursementButton.setOnClickListener(this);
+        removeFromRetrievalButton.setOnClickListener(this);
+        removeFromDisbursementButton.setOnClickListener(this);
     }
 
     @Override
@@ -101,12 +107,20 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
         listView.setAdapter(rowAdapter);
         addToRetrievalButton.setVisibility(View.GONE);
         addToDisbursementButton.setVisibility(View.GONE);
+        removeFromRetrievalButton.setVisibility(View.GONE);
+        removeFromDisbursementButton.setVisibility(View.GONE);
         switch(storeDepartmentRequestDetail.get("status").toString()){
             case "Not Retrieved":
                 addToRetrievalButton.setVisibility(View.VISIBLE);
                 break;
+            case "Added to Retrieval":
+                removeFromRetrievalButton.setVisibility(View.VISIBLE);
+                break;
             case "Retrieved":
                 addToDisbursementButton.setVisibility(View.VISIBLE);
+                break;
+            case "Added to Disbursement":
+                removeFromDisbursementButton.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -129,6 +143,50 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
         JSONObject responseObj = new JSONObject(response);
         if(responseObj.getString("result").equals("success")){
             Toast.makeText(getActivity().getApplicationContext(), "Added to retrieval", Toast.LENGTH_SHORT).show();
+            getStoreDepartmentRequestDetail();
+        }
+    }
+    public void removeFromRetrieval(){
+        JSONObject request = new JSONObject();
+        JSONObject body = new JSONObject();
+        try {
+            body.put("action", "removeFromRetrieval");
+            body.put("departmentRequestId", departmentRequestId);
+            request.put("url", "RemoveFromRetrieval");
+            request.put("requestBody", body);
+            request.put("callbackFragment", "storeDepartmentRequestDetailFragment");
+            request.put("callbackMethod", "removeFromRetrievalCallback");
+            iStoreDepartmentRequestDetailFragment.sendRequest(request);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+    }
+    public void removeFromRetrievalCallback(String response) throws JSONException{
+        JSONObject responseObj = new JSONObject(response);
+        if(responseObj.getString("result").equals("success")){
+            Toast.makeText(getActivity().getApplicationContext(), "Removed from retrieval", Toast.LENGTH_SHORT).show();
+            getStoreDepartmentRequestDetail();
+        }
+    }
+    public void removeFromDisbursement(){
+        JSONObject request = new JSONObject();
+        JSONObject body = new JSONObject();
+        try {
+            body.put("action", "removeFromDisbursement");
+            body.put("departmentRequestId", departmentRequestId);
+            request.put("url", "RemoveFromDisbursement");
+            request.put("requestBody", body);
+            request.put("callbackFragment", "storeDepartmentRequestDetailFragment");
+            request.put("callbackMethod", "removeFromDisbursementCallback");
+            iStoreDepartmentRequestDetailFragment.sendRequest(request);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+    }
+    public void removeFromDisbursementCallback(String response) throws JSONException{
+        JSONObject responseObj = new JSONObject(response);
+        if(responseObj.getString("result").equals("success")){
+            Toast.makeText(getActivity().getApplicationContext(), "Removed from disbursement", Toast.LENGTH_SHORT).show();
             getStoreDepartmentRequestDetail();
         }
     }
@@ -160,8 +218,14 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
             case R.id.button_store_department_request_detail_add_to_retrieval:
                 addToRetrieval();
                 break;
+            case R.id.button_store_department_request_detail_remove_from_retrieval:
+                removeFromRetrieval();
+                break;
             case R.id.button_store_department_request_detail_add_to_disbursement:
                 addToDisbursement();
+                break;
+            case R.id.button_store_department_request_detail_remove_from_disbursement:
+                removeFromDisbursement();
                 break;
         }
     }

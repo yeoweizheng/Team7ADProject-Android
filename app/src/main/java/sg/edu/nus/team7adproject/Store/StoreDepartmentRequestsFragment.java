@@ -79,7 +79,7 @@ public class StoreDepartmentRequestsFragment extends Fragment implements
     @Override
     public void onItemClick(AdapterView<?> adapter, View view, int pos, long id){
         RowItem rowItem = (RowItem) adapter.getItemAtPosition(pos);
-        iStoreDepartmentRequestsFragment.gotoFragment("departmentRequestDetail", Integer.parseInt(rowItem.id));
+        iStoreDepartmentRequestsFragment.gotoFragment("departmentRequestDetailFromDepartmentRequests", Integer.parseInt(rowItem.id));
     }
     public interface IStoreDepartmentRequestsFragment{
         void sendRequest(JSONObject request);

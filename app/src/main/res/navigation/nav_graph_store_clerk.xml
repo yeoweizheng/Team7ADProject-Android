@@ -16,10 +16,13 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_store_stationery_retrieval_lists"
+        android:id="@+id/nav_store_stationery_retrieval_list"
         android:name="sg.edu.nus.team7adproject.Store.StoreStationeryRetrievalListFragment"
         android:label="Stationery Retrieval List"
         tools:layout="@layout/fragment_store_stationery_retrieval_list" >
+        <action
+            android:id="@+id/action_nav_store_stationery_retrieval_list_to_nav_store_department_request_detail"
+            app:destination="@id/nav_store_department_request_detail" />
     </fragment>
 
     <fragment

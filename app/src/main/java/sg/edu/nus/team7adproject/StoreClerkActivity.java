@@ -36,6 +36,7 @@ import sg.edu.nus.team7adproject.Store.StoreDisbursementListFragment;
 import sg.edu.nus.team7adproject.Store.StoreOrdersFragment;
 import sg.edu.nus.team7adproject.Store.StoreStationeryRetrievalListFragment;
 import sg.edu.nus.team7adproject.Store.StockListFragment;
+import sg.edu.nus.team7adproject.Store.StoreStationeryRetrievalListFragmentDirections;
 
 public class StoreClerkActivity extends AppCompatActivity
     implements ServiceConnection, ServerService.IServerService,
@@ -63,7 +64,7 @@ public class StoreClerkActivity extends AppCompatActivity
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store_clerk);
         appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_store_adjustment_vouchers, R.id.nav_store_department_requests,
-                R.id.nav_store_disbursement_lists, R.id.nav_store_stationery_retrieval_lists,
+                R.id.nav_store_disbursement_lists, R.id.nav_store_stationery_retrieval_list,
                 R.id.nav_store_orders, R.id.nav_stock_list,
                 R.id.nav_notifications, R.id.nav_scheduled_jobs,
                 R.id.nav_logout)
@@ -163,8 +164,12 @@ public class StoreClerkActivity extends AppCompatActivity
         NavDirections action = null;
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store_clerk);
         switch(name) {
-            case "departmentRequestDetail":
+            case "departmentRequestDetailFromDepartmentRequests":
                 action = StoreDepartmentRequestsFragmentDirections.actionNavStoreDepartmentRequestsToNavStoreDepartmentRequestDetail(id);
+                navController.navigate(action);
+                break;
+            case "departmentRequestDetailFromRetrieval":
+                action = StoreStationeryRetrievalListFragmentDirections.actionNavStoreStationeryRetrievalListToNavStoreDepartmentRequestDetail(id);
                 navController.navigate(action);
                 break;
         }

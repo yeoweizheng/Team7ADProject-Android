@@ -7,7 +7,7 @@
             android:id="@+id/nav_store_department_requests"
             android:title="Department Requests" />
         <item
-            android:id="@+id/nav_store_stationery_retrieval_lists"
+            android:id="@+id/nav_store_stationery_retrieval_list"
             android:title="Stationery Retrieval List" />
         <item
             android:id="@+id/nav_store_disbursement_lists"

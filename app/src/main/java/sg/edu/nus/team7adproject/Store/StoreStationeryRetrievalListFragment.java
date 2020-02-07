@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +37,7 @@ public class StoreStationeryRetrievalListFragment extends Fragment implements
     HashMap<Integer, EditText> quantityRetrievedEditTexts;
     HashMap<Integer, Integer> quantityRequested;
     HashMap<Integer, Integer> suggestedQuantities;
+    HashMap<Integer, Integer> quantityRetrievedInput;
     public StoreStationeryRetrievalListFragment() {
     }
 
@@ -44,6 +47,7 @@ public class StoreStationeryRetrievalListFragment extends Fragment implements
         quantityRetrievedEditTexts = new HashMap<Integer, EditText>();
         quantityRequested = new HashMap<Integer, Integer>();
         suggestedQuantities = new HashMap<Integer, Integer>();
+        quantityRetrievedInput = new HashMap<Integer, Integer>();
         getRetrievalList();
         getStationeryQuantities();
         return inflater.inflate(R.layout.fragment_store_stationery_retrieval_list, container, false);
@@ -163,6 +167,7 @@ public class StoreStationeryRetrievalListFragment extends Fragment implements
                 suggestedQty = quantityRequested.get(stationeryQuantity.getInt("stationeryId"));
             }
             suggestedQuantities.put(stationeryQuantity.getInt("stationeryId"), suggestedQty);
+            quantityRetrievedInput.put(stationeryQuantity.getInt("stationeryId"), suggestedQty);
         }
         populateListView2();
     }
@@ -172,10 +177,8 @@ public class StoreStationeryRetrievalListFragment extends Fragment implements
         JSONObject body = new JSONObject();
         JSONArray stationeryQuantities = new JSONArray();
         try {
-            for (int i : quantityRetrievedEditTexts.keySet()) {
-                String quantityRetrievedStr = quantityRetrievedEditTexts.get(i).getText().toString();
-                if (quantityRetrievedStr.isEmpty()) continue;
-                int quantityRetrieved = Integer.parseInt(quantityRetrievedStr);
+            for (int i : quantityRetrievedInput.keySet()) {
+                int quantityRetrieved = quantityRetrievedInput.get(i);
                 if(quantityRetrieved > quantityRequested.get(i)){
                     Toast.makeText(getActivity().getApplicationContext(), "Quantity retrieved cannot be more than quantity requested", Toast.LENGTH_SHORT).show();
                     return;
@@ -294,7 +297,7 @@ public class StoreStationeryRetrievalListFragment extends Fragment implements
         @Override
         public View getView(int position, View view, ViewGroup parent){
             RowItem2View row = null;
-            RowItem2 rowItem = (RowItem2) getItem(position);
+            final RowItem2 rowItem = (RowItem2) getItem(position);
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             if(view == null){
                 view = inflater.inflate(R.layout.rowitem2_store_stationery_retrieval_list, null);
@@ -312,6 +315,20 @@ public class StoreStationeryRetrievalListFragment extends Fragment implements
             row.quantityRequestedView.setText(rowItem.quantityRequested);
             if(!quantityRetrievedEditTexts.containsKey(rowItem.id)) {
                 row.quantityRequestedEditText.setText(suggestedQuantities.get(rowItem.id) + "");
+                row.quantityRequestedEditText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if(s.toString().isEmpty()){
+                            quantityRetrievedInput.put(rowItem.id, 0);
+                        } else {
+                            quantityRetrievedInput.put(rowItem.id, Integer.parseInt(s.toString()));
+                        }
+                    }
+                    @Override
+                    public void afterTextChanged(Editable s) { }
+                });
             }
             quantityRetrievedEditTexts.put(rowItem.id, row.quantityRequestedEditText);
             return view;

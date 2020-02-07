@@ -43,7 +43,7 @@ public class StoreClerkActivity extends AppCompatActivity
         StoreDepartmentRequestsFragment.IStoreDepartmentRequestsFragment,
         StoreDepartmentRequestDetailFragment.IStoreDepartmentRequestDetailFragment,
         StoreStationeryRetrievalListFragment.IStoreStationeryRetrievalListFragment,
-        StoreDisbursementListFragment.IStoreDisbursementListsFragment,
+        StoreDisbursementListFragment.IStoreDisbursementListFragment,
         StockListFragment.IStockListFragment,
         StoreAdjustmentVouchersFragment.IStoreAdjustmentVouchersFragment,
         StoreOrdersFragment.IStoreOrdersFragment,

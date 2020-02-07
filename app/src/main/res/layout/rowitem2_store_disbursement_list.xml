@@ -11,4 +11,7 @@
     <TextView
         android:id="@+id/textview_store_disbursement_list_quantity_requested"
         style="@style/TableContent"></TextView>
+    <TextView
+        android:id="@+id/textview_store_disbursement_list_quantity_retrieved"
+        style="@style/TableContent"></TextView>
 </LinearLayout>

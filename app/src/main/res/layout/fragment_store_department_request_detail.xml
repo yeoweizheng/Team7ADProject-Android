@@ -84,7 +84,10 @@
             android:text="Quantity Requested"
             style="@style/TableHeading"></TextView>
         <TextView
-            android:text="Unit of Measure"
+            android:text="Quantity Retrieved"
+            style="@style/TableHeading"></TextView>
+        <TextView
+            android:text="Quantity Disbursed"
             style="@style/TableHeading"></TextView>
     </LinearLayout>
 

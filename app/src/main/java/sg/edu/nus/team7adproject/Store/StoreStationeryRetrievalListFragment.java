@@ -7,33 +7,50 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import sg.edu.nus.team7adproject.R;
 
-public class StoreStationeryRetrievalListFragment extends Fragment {
+public class StoreStationeryRetrievalListFragment extends Fragment implements View.OnClickListener {
     IStoreStationeryRetrievalListFragment iStoreStationeryRetrievalListFragment;
+    HashMap<Integer, EditText> quantityRetrievedEditTexts;
+    HashMap<Integer, Integer> quantityRequested;
+    HashMap<Integer, Integer> suggestedQuantities;
     public StoreStationeryRetrievalListFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        quantityRetrievedEditTexts = new HashMap<Integer, EditText>();
+        quantityRequested = new HashMap<Integer, Integer>();
+        suggestedQuantities = new HashMap<Integer, Integer>();
         getRetrievalList();
         getStationeryQuantities();
         return inflater.inflate(R.layout.fragment_store_stationery_retrieval_list, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        Button updateButton = view.findViewById(R.id.button_store_stationery_retrieval_list_update);
+        updateButton.setOnClickListener(this);
     }
 
     @Override
@@ -86,22 +103,115 @@ public class StoreStationeryRetrievalListFragment extends Fragment {
             e.printStackTrace();
         }
     }
+    ListView listView2;
+    ArrayList<RowItem2> rowItem2List;
+    RowAdapter2 rowAdapter2;
     public void getStationeryQuantitiesCallback(String response) throws JSONException{
-        ArrayList<RowItem2> rowItemList = new ArrayList<RowItem2>();
-        ListView listView = getActivity().findViewById(R.id.listview2_store_stationery_retrieval_list);
+        rowItem2List = new ArrayList<RowItem2>();
+        listView2 = getActivity().findViewById(R.id.listview2_store_stationery_retrieval_list);
         JSONObject responseObj  = new JSONObject(response);
         JSONArray stationeryQuantities = responseObj.getJSONArray("stationeryQuantities");
         for(int i = 0; i < stationeryQuantities.length(); i++){
             JSONObject stationeryQuantity = stationeryQuantities.getJSONObject(i);
             RowItem2 rowItem = new RowItem2(
+                    stationeryQuantity.getInt("id"),
                     stationeryQuantity.getString("itemNumber"),
                     stationeryQuantity.getString("description"),
                     stationeryQuantity.getString("quantityRequested"));
-            rowItemList.add(rowItem);
+                    quantityRequested.put(stationeryQuantity.getInt("id"), stationeryQuantity.getInt("quantityRequested"));
+            rowItem2List.add(rowItem);
         }
-        RowAdapter2 rowAdapter = new RowAdapter2(getActivity(), R.layout.fragment_store_stationery_retrieval_list, rowItemList);
-        listView.setAdapter(rowAdapter);
+        //rowAdapter2 = new RowAdapter2(getActivity(), R.layout.fragment_store_stationery_retrieval_list, rowItem2List);
+        //listView2.setAdapter(rowAdapter);
+        getStockLevel();
     }
+
+    private void populateListView2(){
+        rowAdapter2 = new RowAdapter2(getActivity(), R.layout.fragment_store_stationery_retrieval_list, rowItem2List);
+        listView2.setAdapter(rowAdapter2);
+    }
+
+    public void getStockLevel(){
+        JSONObject request = new JSONObject();
+        JSONObject body = new JSONObject();
+        try {
+            body.put("action", "getStockLevel");
+            request.put("url", "StockLevel");
+            request.put("requestBody", body);
+            request.put("callbackFragment", "storeStationeryRetrievalListFragment");
+            request.put("callbackMethod", "getStockLevelCallback");
+            iStoreStationeryRetrievalListFragment.sendRequest(request);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void getStockLevelCallback(String response) throws JSONException{
+        JSONObject responseObj  = new JSONObject(response);
+        JSONArray stationeryQuantities = responseObj.getJSONArray("stationeryQuantities");
+        for(int i = 0; i < stationeryQuantities.length(); i++){
+            JSONObject stationeryQuantity = stationeryQuantities.getJSONObject(i);
+            if(!quantityRequested.containsKey(stationeryQuantity.getInt("stationeryId"))) continue;
+            int quantityInStock = stationeryQuantity.getInt("quantity");
+            int suggestedQty = 0;
+            if(quantityInStock < quantityRequested.get(stationeryQuantity.getInt("stationeryId"))){
+                suggestedQty = quantityInStock;
+            } else {
+                suggestedQty = quantityRequested.get(stationeryQuantity.getInt("stationeryId"));
+            }
+            suggestedQuantities.put(stationeryQuantity.getInt("stationeryId"), suggestedQty);
+        }
+        populateListView2();
+    }
+
+    public void updateRetrieval(){
+        JSONObject request = new JSONObject();
+        JSONObject body = new JSONObject();
+        JSONArray stationeryQuantities = new JSONArray();
+        try {
+            for (int i : quantityRetrievedEditTexts.keySet()) {
+                String quantityRetrievedStr = quantityRetrievedEditTexts.get(i).getText().toString();
+                if (quantityRetrievedStr.isEmpty()) continue;
+                int quantityRetrieved = Integer.parseInt(quantityRetrievedStr);
+                if(quantityRetrieved > quantityRequested.get(i)){
+                    Toast.makeText(getActivity().getApplicationContext(), "Quantity retrieved cannot be more than quantity requested", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                stationeryQuantities.put(new JSONObject("{"
+                        +"\"stationeryId\":" + i + ","
+                        +"\"quantityRetrieved\":" + quantityRetrieved
+                        + "}"));
+            }
+            body.put("action", "updateRetrieval");
+            body.put("stationeryQuantities", stationeryQuantities);
+            request.put("url", "UpdateRetrieval");
+            request.put("requestBody", body);
+            request.put("callbackFragment", "storeStationeryRetrievalListFragment");
+            request.put("callbackMethod", "updateRetrievalCallback");
+            iStoreStationeryRetrievalListFragment.sendRequest(request);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void updateRetrievalCallback(String response) throws JSONException{
+        JSONObject responseObj = new JSONObject(response);
+        if(responseObj.getString("result").equals("success")){
+            iStoreStationeryRetrievalListFragment.gotoFragment("departmentRequests");
+        } else {
+            Toast.makeText(getActivity().getApplicationContext(), "Insufficient stock", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onClick(View view){
+        switch(view.getId()){
+            case R.id.button_store_stationery_retrieval_list_update:
+                updateRetrieval();
+                break;
+        }
+    }
+
     public interface IStoreStationeryRetrievalListFragment{
         void sendRequest(JSONObject request);
         void setFragment(String name, Fragment fragment);
@@ -155,10 +265,12 @@ public class StoreStationeryRetrievalListFragment extends Fragment {
     }
 
     public class RowItem2{
+        int id;
         String itemNumber;
         String description;
         String quantityRequested;
-        public RowItem2(String itemNumber, String description, String quantityRequested){
+        public RowItem2(int id, String itemNumber, String description, String quantityRequested){
+            this.id = id;
             this.itemNumber = itemNumber;
             this.description = description;
             this.quantityRequested = quantityRequested;
@@ -182,6 +294,7 @@ public class StoreStationeryRetrievalListFragment extends Fragment {
                 row.itemNumberView = view.findViewById(R.id.textview_store_stationery_retrieval_list_item_number);
                 row.descriptionView = view.findViewById(R.id.textview_store_stationery_retrieval_list_description);
                 row.quantityRequestedView = view.findViewById(R.id.textview_store_stationery_retrieval_list_quantity_requested);
+                row.quantityRequestedEditText = view.findViewById(R.id.edittext_store_stationery_retrieval_quantity_retrieved);
                 view.setTag(row);
             } else {
                 row = (RowItem2View) view.getTag();
@@ -189,6 +302,10 @@ public class StoreStationeryRetrievalListFragment extends Fragment {
             row.itemNumberView.setText(rowItem.itemNumber);
             row.descriptionView.setText(rowItem.description);
             row.quantityRequestedView.setText(rowItem.quantityRequested);
+            if(!quantityRetrievedEditTexts.containsKey(rowItem.id)) {
+                row.quantityRequestedEditText.setText(suggestedQuantities.get(rowItem.id) + "");
+            }
+            quantityRetrievedEditTexts.put(rowItem.id, row.quantityRequestedEditText);
             return view;
         }
     }
@@ -197,5 +314,6 @@ public class StoreStationeryRetrievalListFragment extends Fragment {
         TextView itemNumberView;
         TextView descriptionView;
         TextView quantityRequestedView;
+        EditText quantityRequestedEditText;
     }
 }

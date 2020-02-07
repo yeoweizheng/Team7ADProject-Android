@@ -111,7 +111,7 @@ public class StoreClerkActivity extends AppCompatActivity
         try {
             try {
                 JSONObject resObj = new JSONObject(response);
-                if (resObj.getString("result").equals("failed")) {
+                if (resObj.getString("result").equals("forbidden")) {
                     finish();
                     return;
                 }
@@ -173,6 +173,11 @@ public class StoreClerkActivity extends AppCompatActivity
     @Override
     public void gotoFragment(String name) {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store_clerk);
+        switch(name){
+            case "departmentRequests":
+                navController.navigate(R.id.nav_store_department_requests);
+                break;
+        }
     }
     @Override
     public void onBackPressed(){

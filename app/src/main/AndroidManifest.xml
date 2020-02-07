@@ -12,17 +12,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".StoreSupActivity"></activity>
-        <activity android:name=".DepartmentHeadActivity" />
-        <activity android:name=".StoreClerkActivity" />
-        <activity android:name=".DepartmentStaffActivity" />
+        <activity android:name=".StoreSupActivity"
+            android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".DepartmentHeadActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".StoreClerkActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".DepartmentStaffActivity"
+            android:windowSoftInputMode="adjustPan"/>
 
         <service
             android:name=".ServerService"
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".HomeActivity">
+        <activity android:name=".HomeActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

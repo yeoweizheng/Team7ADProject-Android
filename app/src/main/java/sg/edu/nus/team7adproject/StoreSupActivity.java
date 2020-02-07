@@ -89,7 +89,7 @@ public class StoreSupActivity extends AppCompatActivity
         try {
             try {
                 JSONObject resObj = new JSONObject(response);
-                if (resObj.getString("result").equals("failed")) {
+                if (resObj.getString("result").equals("forbidden")) {
                     finish();
                     return;
                 }

@@ -10,6 +10,9 @@
         android:id="@+id/textview_store_department_request_quantity_requested"
         style="@style/TableContent"></TextView>
     <TextView
-        android:id="@+id/textview_store_department_request_unit_of_measure"
+        android:id="@+id/textview_store_department_request_quantity_retrieved"
+        style="@style/TableContent"></TextView>
+    <TextView
+        android:id="@+id/textview_store_department_request_quantity_disbursed"
         style="@style/TableContent"></TextView>
 </LinearLayout>

@@ -93,7 +93,8 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
             RowItem rowItem = new RowItem(
                     stationeryQuantity.getString("description"),
                     stationeryQuantity.getString("quantityRequested"),
-                    stationeryQuantity.getString("unitOfMeasure"));
+                    stationeryQuantity.getString("quantityRetrieved"),
+                    stationeryQuantity.getString("quantityDisbursed"));
             rowItemList.add(rowItem);
         }
         RowAdapter rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_store_department_request_detail, rowItemList);
@@ -171,11 +172,13 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
     public class RowItem{
         String description;
         String quantityRequested;
-        String unitOfMeasure;
-        public RowItem(String description, String quantityRequested, String unitOfMeasure){
+        String quantityRetrieved;
+        String quantityDisbursed;
+        public RowItem(String description, String quantityRequested, String quantityRetrieved, String quantityDisbursed){
             this.description = description;
             this.quantityRequested = quantityRequested;
-            this.unitOfMeasure = unitOfMeasure;
+            this.quantityRetrieved = quantityRetrieved;
+            this.quantityDisbursed = quantityDisbursed;
         }
     }
 
@@ -195,14 +198,16 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
                 row = new RowItemView();
                 row.descriptionView = view.findViewById(R.id.textview_store_department_request_description);
                 row.quantityRequestedView = view.findViewById(R.id.textview_store_department_request_quantity_requested);
-                row.unitOfMeasureView= view.findViewById(R.id.textview_store_department_request_unit_of_measure);
+                row.quantityRetrievedView = view.findViewById(R.id.textview_store_department_request_quantity_retrieved);
+                row.quantityDisbursedView = view.findViewById(R.id.textview_store_department_request_quantity_disbursed);
                 view.setTag(row);
             } else {
                 row = (RowItemView) view.getTag();
             }
             row.descriptionView.setText(rowItem.description);
             row.quantityRequestedView.setText(rowItem.quantityRequested);
-            row.unitOfMeasureView.setText(rowItem.unitOfMeasure);
+            row.quantityRetrievedView.setText(rowItem.quantityRetrieved);
+            row.quantityDisbursedView.setText(rowItem.quantityDisbursed);
             return view;
         }
     }
@@ -210,6 +215,7 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
     public class RowItemView{
         TextView descriptionView;
         TextView quantityRequestedView;
-        TextView unitOfMeasureView;
+        TextView quantityRetrievedView;
+        TextView quantityDisbursedView;
     }
 }

@@ -126,6 +126,14 @@
         android:visibility="gone"></Button>
 
     <Button
+        android:id="@+id/button_store_department_request_detail_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        android:textSize="18dp"
+        android:visibility="gone"></Button>
+
+    <Button
         android:id="@+id/button_store_department_request_detail_remove_from_disbursement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

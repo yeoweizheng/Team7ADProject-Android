@@ -116,7 +116,7 @@ public class StoreDisbursementListFragment extends Fragment implements
     @Override
     public void onItemClick(AdapterView<?> adapter, View view, int pos, long id){
         RowItem1 rowItem = (RowItem1) adapter.getItemAtPosition(pos);
-        iStoreDisbursementListFragment.gotoFragment("departmentRequestDetailFromRetrieval", Integer.parseInt(rowItem.id));
+        iStoreDisbursementListFragment.gotoFragment("departmentRequestDetailFromDisbursement", Integer.parseInt(rowItem.id));
     }
     public interface IStoreDisbursementListFragment{
         void sendRequest(JSONObject request);

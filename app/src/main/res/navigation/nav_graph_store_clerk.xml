@@ -30,6 +30,9 @@
         android:name="sg.edu.nus.team7adproject.Store.StoreDisbursementListFragment"
         android:label="Disbursement List"
         tools:layout="@layout/fragment_store_disbursement_list" >
+        <action
+            android:id="@+id/action_nav_store_disbursement_lists_to_nav_store_department_request_detail"
+            app:destination="@id/nav_store_department_request_detail" />
     </fragment>
 
     <fragment

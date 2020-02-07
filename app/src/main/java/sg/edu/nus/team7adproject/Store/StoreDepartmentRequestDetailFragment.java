@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +36,9 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
     Button addToDisbursementButton;
     Button removeFromRetrievalButton;
     Button removeFromDisbursementButton;
+    Button updateButton;
     int departmentRequestId;
+    String departmentRequestStatus;
 
     public StoreDepartmentRequestDetailFragment(){
     }
@@ -54,10 +57,12 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
         addToDisbursementButton = view.findViewById(R.id.button_store_department_request_detail_add_to_disbursement);
         removeFromRetrievalButton = view.findViewById(R.id.button_store_department_request_detail_remove_from_retrieval);
         removeFromDisbursementButton = view.findViewById(R.id.button_store_department_request_detail_remove_from_disbursement);
+        updateButton = view.findViewById(R.id.button_store_department_request_detail_update);
         addToRetrievalButton.setOnClickListener(this);
         addToDisbursementButton.setOnClickListener(this);
         removeFromRetrievalButton.setOnClickListener(this);
         removeFromDisbursementButton.setOnClickListener(this);
+        updateButton.setOnClickListener(this);
     }
 
     @Override
@@ -103,13 +108,15 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
                     stationeryQuantity.getString("quantityDisbursed"));
             rowItemList.add(rowItem);
         }
+        departmentRequestStatus = storeDepartmentRequestDetail.get("status").toString();
         RowAdapter rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_store_department_request_detail, rowItemList);
         listView.setAdapter(rowAdapter);
         addToRetrievalButton.setVisibility(View.GONE);
         addToDisbursementButton.setVisibility(View.GONE);
         removeFromRetrievalButton.setVisibility(View.GONE);
         removeFromDisbursementButton.setVisibility(View.GONE);
-        switch(storeDepartmentRequestDetail.get("status").toString()){
+        updateButton.setVisibility(View.GONE);
+        switch(departmentRequestStatus){
             case "Not Retrieved":
                 addToRetrievalButton.setVisibility(View.VISIBLE);
                 break;
@@ -120,6 +127,7 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
                 addToDisbursementButton.setVisibility(View.VISIBLE);
                 break;
             case "Added to Disbursement":
+                updateButton.setVisibility(View.VISIBLE);
                 removeFromDisbursementButton.setVisibility(View.VISIBLE);
                 break;
         }
@@ -264,9 +272,17 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
                 row.quantityRequestedView = view.findViewById(R.id.textview_store_department_request_quantity_requested);
                 row.quantityRetrievedView = view.findViewById(R.id.textview_store_department_request_quantity_retrieved);
                 row.quantityDisbursedView = view.findViewById(R.id.textview_store_department_request_quantity_disbursed);
+                row.quantityDisbursedEdittext = view.findViewById(R.id.edittext_store_department_request_quantity_disbursed);
                 view.setTag(row);
             } else {
                 row = (RowItemView) view.getTag();
+            }
+            if(departmentRequestStatus.equals("Added to Disbursement")){
+                row.quantityDisbursedView.setVisibility(View.GONE);
+                row.quantityDisbursedEdittext.setVisibility(View.VISIBLE);
+            } else {
+                row.quantityDisbursedView.setVisibility(View.VISIBLE);
+                row.quantityDisbursedEdittext.setVisibility(View.GONE);
             }
             row.descriptionView.setText(rowItem.description);
             row.quantityRequestedView.setText(rowItem.quantityRequested);
@@ -281,5 +297,6 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
         TextView quantityRequestedView;
         TextView quantityRetrievedView;
         TextView quantityDisbursedView;
+        EditText quantityDisbursedEdittext;
     }
 }

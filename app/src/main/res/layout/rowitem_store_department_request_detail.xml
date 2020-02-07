@@ -15,4 +15,7 @@
     <TextView
         android:id="@+id/textview_store_department_request_quantity_disbursed"
         style="@style/TableContent"></TextView>
+    <EditText
+        android:id="@+id/edittext_store_department_request_quantity_disbursed"
+        style="@style/TableContentEdit"></EditText>
 </LinearLayout>

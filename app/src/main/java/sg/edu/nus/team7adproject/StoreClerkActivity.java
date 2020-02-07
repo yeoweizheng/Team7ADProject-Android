@@ -33,6 +33,7 @@ import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestDetailFragment;
 import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestsFragment;
 import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestsFragmentDirections;
 import sg.edu.nus.team7adproject.Store.StoreDisbursementListFragment;
+import sg.edu.nus.team7adproject.Store.StoreDisbursementListFragmentDirections;
 import sg.edu.nus.team7adproject.Store.StoreOrdersFragment;
 import sg.edu.nus.team7adproject.Store.StoreStationeryRetrievalListFragment;
 import sg.edu.nus.team7adproject.Store.StockListFragment;
@@ -170,6 +171,10 @@ public class StoreClerkActivity extends AppCompatActivity
                 break;
             case "departmentRequestDetailFromRetrieval":
                 action = StoreStationeryRetrievalListFragmentDirections.actionNavStoreStationeryRetrievalListToNavStoreDepartmentRequestDetail(id);
+                navController.navigate(action);
+                break;
+            case "departmentRequestDetailFromDisbursement":
+                action = StoreDisbursementListFragmentDirections.actionNavStoreDisbursementListsToNavStoreDepartmentRequestDetail(id);
                 navController.navigate(action);
                 break;
         }

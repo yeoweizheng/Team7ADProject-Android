@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="horizontal" android:layout_width="match_parent"
+android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/textview_add_order_description"
+        style="@style/TableContent" ></TextView>
+    <TextView
+        android:id="@+id/textview_add_order_unit_of_measure"
+        style="@style/TableContent"></TextView>
+    <EditText
+        android:id="@+id/edittext_add_order_quantity"
+        style="@style/TableContentEdit"></EditText>
+    <Spinner
+        android:id="@+id/spinner_add_order_supplier"
+        style="@style/TableContent"
+        android:spinnerMode="dialog"></Spinner>
+</LinearLayout>

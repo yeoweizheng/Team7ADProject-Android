@@ -28,6 +28,7 @@ import java.util.HashMap;
 import sg.edu.nus.team7adproject.Shared.LogoutFragment;
 import sg.edu.nus.team7adproject.Shared.NotificationsFragment;
 import sg.edu.nus.team7adproject.Store.AddAdjustmentVoucherFragment;
+import sg.edu.nus.team7adproject.Store.AddOrderFragment;
 import sg.edu.nus.team7adproject.Store.AdjustmentVoucherDetailFragment;
 import sg.edu.nus.team7adproject.Store.AdjustmentVouchersFragmentDirections;
 import sg.edu.nus.team7adproject.Store.ScheduledJobsFragment;
@@ -56,6 +57,7 @@ public class StoreClerkActivity extends AppCompatActivity
         AddAdjustmentVoucherFragment.IAddAdjustmentVoucherFragment,
         AdjustmentVoucherDetailFragment.IAdjustmentVoucherDetailFragment,
         StoreOrdersFragment.IStoreOrdersFragment,
+        AddOrderFragment.IAddOrderFragment,
         NotificationsFragment.INotificationsFragment,
         ScheduledJobsFragment.IScheduledJobsFragment,
         LogoutFragment.ILogoutFragment {
@@ -200,6 +202,9 @@ public class StoreClerkActivity extends AppCompatActivity
                 break;
             case "addAdjustmentVoucher":
                 navController.navigate(R.id.nav_add_adjustment_voucher);
+                break;
+            case "addOrder":
+                navController.navigate(R.id.nav_add_order);
                 break;
         }
     }

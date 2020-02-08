@@ -90,6 +90,13 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_add_order"
+        android:name="sg.edu.nus.team7adproject.Store.AddOrderFragment"
+        android:label="Add Order"
+        tools:layout="@layout/fragment_add_order" >
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_notifications"
         android:name="sg.edu.nus.team7adproject.Shared.NotificationsFragment"
         android:label="Notifications"

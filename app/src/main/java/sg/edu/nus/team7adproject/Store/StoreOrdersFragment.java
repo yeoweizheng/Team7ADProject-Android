@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,8 +25,10 @@ import java.util.List;
 
 import sg.edu.nus.team7adproject.R;
 
-public class StoreOrdersFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class StoreOrdersFragment extends Fragment
+        implements AdapterView.OnItemClickListener, View.OnClickListener {
     IStoreOrdersFragment iStoreOrdersFragment;
+    Button addOrderButton;
 
     public StoreOrdersFragment() {
     }
@@ -35,6 +38,12 @@ public class StoreOrdersFragment extends Fragment implements AdapterView.OnItemC
                              Bundle savedInstanceState) {
         getStoreOrders();
         return inflater.inflate(R.layout.fragment_store_orders, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        addOrderButton = view.findViewById(R.id.button_orders_add);
+        addOrderButton.setOnClickListener(this);
     }
 
     @Override
@@ -73,6 +82,14 @@ public class StoreOrdersFragment extends Fragment implements AdapterView.OnItemC
         RowAdapter rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_store_orders, rowItemList);
         listView.setAdapter(rowAdapter);
         listView.setOnItemClickListener(this);
+    }
+    @Override
+    public void onClick(View view){
+        switch(view.getId()){
+            case R.id.button_orders_add:
+                iStoreOrdersFragment.gotoFragment("addOrder");
+                break;
+        }
     }
     @Override
     public void onItemClick(AdapterView<?> adapter, View view, int pos, long id){

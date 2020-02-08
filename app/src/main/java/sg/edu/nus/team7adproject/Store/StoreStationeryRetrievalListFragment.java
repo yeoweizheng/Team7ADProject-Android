@@ -243,6 +243,15 @@ public class StoreStationeryRetrievalListFragment extends Fragment implements
 
     public class RowAdapter1 extends ArrayAdapter {
         Context context;
+        // Disable listView recycling
+        @Override
+        public int getViewTypeCount(){
+            return getCount();
+        }
+        @Override
+        public int getItemViewType(int position){
+            return position;
+        }
         public RowAdapter1(Context context, int resourceId, List<RowItem1> items){
             super(context, resourceId, items);
             this.context = context;

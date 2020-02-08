@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/textview_staff_department_request_detail_description"
+        style="@style/TableContent"
+        ></TextView>
+    <TextView
+        android:id="@+id/textview_staff_department_request_detail_quantity_requested"
+        style="@style/TableContent"></TextView>
+    <TextView
+        android:id="@+id/textview_staff_department_request_detail_quantity_retrieved"
+        style="@style/TableContent"></TextView>
+    <TextView
+        android:id="@+id/textview_staff_department_request_detail_quantity_disbursed"
+        style="@style/TableContent"></TextView>
+</LinearLayout>

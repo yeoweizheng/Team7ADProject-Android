@@ -28,7 +28,7 @@ import java.util.List;
 
 import sg.edu.nus.team7adproject.R;
 
-public class StaffDepartmentRequestsFragment extends Fragment {
+public class StaffDepartmentRequestsFragment extends Fragment implements AdapterView.OnItemClickListener{
     IStaffDepartmentRequestsFragment iStaffDepartmentRequestsFragment;
     public StaffDepartmentRequestsFragment() {
     }
@@ -74,6 +74,12 @@ public class StaffDepartmentRequestsFragment extends Fragment {
         }
         RowAdapter rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_staff_department_requests, rowItemList);
         listView.setAdapter(rowAdapter);
+        listView.setOnItemClickListener(this);
+    }
+    @Override
+    public void onItemClick(AdapterView<?> adapter, View view, int pos, long id){
+        RowItem rowItem = (RowItem) adapter.getItemAtPosition(pos);
+        iStaffDepartmentRequestsFragment.gotoFragment("departmentRequestDetail", Integer.parseInt(rowItem.id));
     }
     public interface IStaffDepartmentRequestsFragment{
         void sendRequest(JSONObject request);
@@ -95,6 +101,15 @@ public class StaffDepartmentRequestsFragment extends Fragment {
 
     public class RowAdapter extends ArrayAdapter {
         Context context;
+        // Disable listView recycling
+        @Override
+        public int getViewTypeCount(){
+            return getCount();
+        }
+        @Override
+        public int getItemViewType(int position){
+            return position;
+        }
         public RowAdapter(Context context, int resourceId, List<RowItem> items){
             super(context, resourceId, items);
             this.context = context;

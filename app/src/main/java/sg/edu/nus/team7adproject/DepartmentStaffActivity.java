@@ -26,7 +26,9 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import sg.edu.nus.team7adproject.Department.AddStationeryRequestFragment;
+import sg.edu.nus.team7adproject.Department.StaffDepartmentRequestDetailFragment;
 import sg.edu.nus.team7adproject.Department.StaffDepartmentRequestsFragment;
+import sg.edu.nus.team7adproject.Department.StaffDepartmentRequestsFragmentDirections;
 import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragment;
 import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragmentDirections;
 import sg.edu.nus.team7adproject.Department.StationeryRequestDetailFragment;
@@ -39,6 +41,7 @@ public class DepartmentStaffActivity extends AppCompatActivity
         StationeryRequestDetailFragment.IStationeryRequestDetailFragment,
         AddStationeryRequestFragment.IAddStationeryRequestFragment,
         StaffDepartmentRequestsFragment.IStaffDepartmentRequestsFragment,
+        StaffDepartmentRequestDetailFragment.IStaffDepartmentRequestDetailFragment,
         NotificationsFragment.INotificationsFragment,
         LogoutFragment.ILogoutFragment {
     private AppBarConfiguration appBarConfiguration;
@@ -151,6 +154,9 @@ public class DepartmentStaffActivity extends AppCompatActivity
         switch(name){
             case "stationeryRequestDetail":
                 action = StaffStationeryRequestsFragmentDirections.actionNavStaffStationeryRequestsToNavStationeryRequestDetail(id);
+                break;
+            case "departmentRequestDetail":
+                action = StaffDepartmentRequestsFragmentDirections.actionNavStaffDepartmentRequestsToNavStaffDepartmentRequestDetail(id);
                 break;
         }
         navController.navigate(action);

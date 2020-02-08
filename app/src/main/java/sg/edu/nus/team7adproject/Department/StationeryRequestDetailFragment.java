@@ -109,6 +109,15 @@ public class StationeryRequestDetailFragment extends Fragment {
 
     public class RowAdapter extends ArrayAdapter{
         Context context;
+        // Disable listView recycling
+        @Override
+        public int getViewTypeCount(){
+            return getCount();
+        }
+        @Override
+        public int getItemViewType(int position){
+            return position;
+        }
         public RowAdapter(Context context, int resourceId, List<RowItem> items){
             super(context, resourceId, items);
             this.context = context;

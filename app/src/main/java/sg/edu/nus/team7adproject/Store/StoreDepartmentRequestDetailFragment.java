@@ -8,6 +8,9 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import sg.edu.nus.team7adproject.Department.StationeryRequestDetailFragmentArgs;
@@ -39,6 +43,10 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
     Button updateButton;
     int departmentRequestId;
     String departmentRequestStatus;
+    HashMap<Integer, Integer> quantityRetrieved;
+    HashMap<Integer, Integer> quantityDisbursedInput;
+    HashMap<Integer, EditText> quantityDisbursedEdittexts;
+    HashMap<Integer, TextWatcher> textWatchers;
 
     public StoreDepartmentRequestDetailFragment(){
     }
@@ -46,6 +54,10 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        quantityRetrieved = new HashMap<Integer, Integer>();
+        quantityDisbursedInput = new HashMap<Integer, Integer>();
+        quantityDisbursedEdittexts = new HashMap<Integer, EditText>();
+        textWatchers = new HashMap<Integer, TextWatcher>();
         return inflater.inflate(R.layout.fragment_store_department_request_detail, container, false);
     }
 
@@ -102,11 +114,14 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
         for(int i = 0; i < stationeryQuantities.length(); i++){
             JSONObject stationeryQuantity = stationeryQuantities.getJSONObject(i);
             RowItem rowItem = new RowItem(
+                    stationeryQuantity.getInt("stationeryId"),
                     stationeryQuantity.getString("description"),
                     stationeryQuantity.getString("quantityRequested"),
                     stationeryQuantity.getString("quantityRetrieved"),
                     stationeryQuantity.getString("quantityDisbursed"));
             rowItemList.add(rowItem);
+            quantityRetrieved.put(stationeryQuantity.getInt("stationeryId"), stationeryQuantity.getInt("quantityRetrieved"));
+            quantityDisbursedInput.put(stationeryQuantity.getInt("stationeryId"), stationeryQuantity.getInt("quantityRetrieved"));
         }
         departmentRequestStatus = storeDepartmentRequestDetail.get("status").toString();
         RowAdapter rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_store_department_request_detail, rowItemList);
@@ -220,6 +235,40 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
             getStoreDepartmentRequestDetail();
         }
     }
+    public void updateDisbursement(){
+        JSONObject request = new JSONObject();
+        JSONObject body = new JSONObject();
+        JSONArray stationeryQuantities = new JSONArray();
+        try {
+            for (int i : quantityDisbursedInput.keySet()) {
+                if(quantityRetrieved.get(i) < quantityDisbursedInput.get(i)){
+                    Toast.makeText(getActivity().getApplicationContext(), "Quantity disbursed cannot be more than quantity retrieved", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                stationeryQuantities.put(new JSONObject("{"
+                        +"\"stationeryId\":" + i + ","
+                        +"\"quantityDisbursed\":" + quantityDisbursedInput.get(i)
+                        + "}"));
+            }
+            body.put("action", "updateDisbursement");
+            body.put("departmentRequestId", departmentRequestId);
+            body.put("stationeryQuantities", stationeryQuantities);
+            request.put("url", "UpdateDisbursement");
+            request.put("requestBody", body);
+            request.put("callbackFragment", "storeDepartmentRequestDetailFragment");
+            request.put("callbackMethod", "updateDisbursementCallback");
+            iStoreDepartmentRequestDetailFragment.sendRequest(request);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+    }
+    public void updateDisbursementCallback(String response) throws JSONException{
+        JSONObject responseObj = new JSONObject(response);
+        if(responseObj.getString("result").equals("success")){
+            Toast.makeText(getActivity().getApplicationContext(), "Disbursement list updated", Toast.LENGTH_SHORT).show();
+            getStoreDepartmentRequestDetail();
+        }
+    }
     @Override
     public void onClick(View view){
         switch(view.getId()){
@@ -235,6 +284,9 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
             case R.id.button_store_department_request_detail_remove_from_disbursement:
                 removeFromDisbursement();
                 break;
+            case R.id.button_store_department_request_detail_update:
+                updateDisbursement();
+                break;
         }
     }
     public interface IStoreDepartmentRequestDetailFragment{
@@ -242,11 +294,13 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
         void setFragment(String name, Fragment fragment);
     }
     public class RowItem{
+        int id;
         String description;
         String quantityRequested;
         String quantityRetrieved;
         String quantityDisbursed;
-        public RowItem(String description, String quantityRequested, String quantityRetrieved, String quantityDisbursed){
+        public RowItem(int id, String description, String quantityRequested, String quantityRetrieved, String quantityDisbursed){
+            this.id = id;
             this.description = description;
             this.quantityRequested = quantityRequested;
             this.quantityRetrieved = quantityRetrieved;
@@ -260,10 +314,19 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
             super(context, resourceId, items);
             this.context = context;
         }
+        // Disable listView recycling
+        @Override
+        public int getViewTypeCount(){
+            return getCount();
+        }
+        @Override
+        public int getItemViewType(int position){
+            return position;
+        }
         @Override
         public View getView(int position, View view, ViewGroup parent){
             RowItemView row = null;
-            RowItem rowItem = (RowItem) getItem(position);
+            final RowItem rowItem = (RowItem) getItem(position);
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             if(view == null){
                 view = inflater.inflate(R.layout.rowitem_store_department_request_detail, null);
@@ -280,6 +343,25 @@ public class StoreDepartmentRequestDetailFragment extends Fragment
             if(departmentRequestStatus.equals("Added to Disbursement")){
                 row.quantityDisbursedView.setVisibility(View.GONE);
                 row.quantityDisbursedEdittext.setVisibility(View.VISIBLE);
+                if(!quantityDisbursedEdittexts.containsKey(rowItem.id)){
+                    row.quantityDisbursedEdittext.setText(quantityRetrieved.get(rowItem.id) + "");
+                    row.quantityDisbursedEdittext.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            if(s.toString().isEmpty()) {
+                                quantityDisbursedInput.put(rowItem.id, 0);
+                            } else {
+                                quantityDisbursedInput.put(rowItem.id, Integer.parseInt(s.toString()));
+                            }
+                        }
+                        @Override
+                        public void afterTextChanged(Editable s) { }
+                    });
+                    quantityDisbursedEdittexts.put(rowItem.id, row.quantityDisbursedEdittext);
+                }
+                row.quantityDisbursedEdittext.setText(quantityDisbursedInput.get(rowItem.id) + "");
             } else {
                 row.quantityDisbursedView.setVisibility(View.VISIBLE);
                 row.quantityDisbursedEdittext.setVisibility(View.GONE);

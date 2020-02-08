@@ -294,6 +294,15 @@ public class StoreStationeryRetrievalListFragment extends Fragment implements
             super(context, resourceId, items);
             this.context = context;
         }
+        // Disable listView recycling
+        @Override
+        public int getViewTypeCount(){
+            return getCount();
+        }
+        @Override
+        public int getItemViewType(int position){
+            return position;
+        }
         @Override
         public View getView(int position, View view, ViewGroup parent){
             RowItem2View row = null;

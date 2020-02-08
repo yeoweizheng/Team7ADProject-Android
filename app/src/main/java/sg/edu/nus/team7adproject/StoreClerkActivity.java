@@ -27,10 +27,13 @@ import java.util.HashMap;
 
 import sg.edu.nus.team7adproject.Shared.LogoutFragment;
 import sg.edu.nus.team7adproject.Shared.NotificationsFragment;
+import sg.edu.nus.team7adproject.Store.AddAdjustmentVoucherFragment;
+import sg.edu.nus.team7adproject.Store.AdjustmentVoucherDetailFragment;
+import sg.edu.nus.team7adproject.Store.AdjustmentVouchersFragmentDirections;
 import sg.edu.nus.team7adproject.Store.ScheduledJobsFragment;
 import sg.edu.nus.team7adproject.Store.StockDetailFragment;
 import sg.edu.nus.team7adproject.Store.StockListFragmentDirections;
-import sg.edu.nus.team7adproject.Store.StoreAdjustmentVouchersFragment;
+import sg.edu.nus.team7adproject.Store.AdjustmentVouchersFragment;
 import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestDetailFragment;
 import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestsFragment;
 import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestsFragmentDirections;
@@ -49,7 +52,9 @@ public class StoreClerkActivity extends AppCompatActivity
         StoreDisbursementListFragment.IStoreDisbursementListFragment,
         StockListFragment.IStockListFragment,
         StockDetailFragment.IStockDetailFragment,
-        StoreAdjustmentVouchersFragment.IStoreAdjustmentVouchersFragment,
+        AdjustmentVouchersFragment.IAdjustmentVouchersFragment,
+        AddAdjustmentVoucherFragment.IAddAdjustmentVoucherFragment,
+        AdjustmentVoucherDetailFragment.IAdjustmentVoucherDetailFragment,
         StoreOrdersFragment.IStoreOrdersFragment,
         NotificationsFragment.INotificationsFragment,
         ScheduledJobsFragment.IScheduledJobsFragment,
@@ -67,7 +72,7 @@ public class StoreClerkActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view_store_clerk);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store_clerk);
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_store_adjustment_vouchers, R.id.nav_store_department_requests,
+                R.id.nav_adjustment_vouchers, R.id.nav_store_department_requests,
                 R.id.nav_store_disbursement_lists, R.id.nav_store_stationery_retrieval_list,
                 R.id.nav_store_orders, R.id.nav_stock_list,
                 R.id.nav_notifications, R.id.nav_scheduled_jobs,
@@ -180,6 +185,9 @@ public class StoreClerkActivity extends AppCompatActivity
             case "stockDetail":
                 action = StockListFragmentDirections.actionNavStockListToNavStockDetail(id);
                 break;
+            case "adjustmentVoucherDetail":
+                action = AdjustmentVouchersFragmentDirections.actionNavAdjustmentVouchersToNavAdjustmentVoucherDetail(id);
+                break;
         }
         navController.navigate(action);
     }
@@ -189,6 +197,9 @@ public class StoreClerkActivity extends AppCompatActivity
         switch(name){
             case "departmentRequests":
                 navController.navigate(R.id.nav_store_department_requests);
+                break;
+            case "addAdjustmentVoucher":
+                navController.navigate(R.id.nav_add_adjustment_voucher);
                 break;
         }
     }

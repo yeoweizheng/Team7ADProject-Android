@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Store.AdjustmentVouchersFragment"
+    android:orientation="vertical"
+    android:padding="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:text="Item"
+            style="@style/TableHeading"></TextView>
+        <TextView
+            android:text="Quantity"
+            style="@style/TableHeading"></TextView>
+        <TextView
+            android:text="Status"
+            style="@style/TableHeading"></TextView>
+    </LinearLayout>
+    <ListView
+        android:id="@+id/listview_adjustment_vouchers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"></ListView>
+
+    <Button
+        android:id="@+id/button_adjustment_vouchers_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        android:textSize="18dp"></Button>
+</LinearLayout>

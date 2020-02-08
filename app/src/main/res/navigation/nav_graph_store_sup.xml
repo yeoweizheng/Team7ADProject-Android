@@ -9,6 +9,48 @@
         android:name="sg.edu.nus.team7adproject.Store.StockListFragment"
         android:label="Stock List"
         tools:layout="@layout/fragment_stock_list">
+        <action
+            android:id="@+id/action_nav_stock_list_to_nav_stock_detail"
+            app:destination="@id/nav_stock_detail" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_stock_detail"
+        android:name="sg.edu.nus.team7adproject.Store.StockDetailFragment"
+        android:label="Stock Detail"
+        tools:layout="@layout/fragment_stock_detail">
+        <argument
+            android:name="stationeryId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_adjustment_vouchers"
+        android:name="sg.edu.nus.team7adproject.Store.AdjustmentVouchersFragment"
+        android:label="Adjustment Vouchers"
+        tools:layout="@layout/fragment_adjustment_vouchers">
+        <action
+            android:id="@+id/action_nav_adjustment_vouchers_to_nav_adjustment_voucher_detail"
+            app:destination="@id/nav_adjustment_voucher_detail" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_adjustment_voucher_detail"
+        android:name="sg.edu.nus.team7adproject.Store.AdjustmentVoucherDetailFragment"
+        android:label="Adjustment Voucher Detail"
+        tools:layout="@layout/fragment_adjustment_voucher_detail">
+        <argument
+            android:name="adjustmentVoucherId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_store_orders"
+        android:name="sg.edu.nus.team7adproject.Store.StoreOrdersFragment"
+        android:label="Orders"
+        tools:layout="@layout/fragment_store_orders">
+    </fragment>
+    <fragment
+        android:id="@+id/nav_notifications"
+        android:name="sg.edu.nus.team7adproject.Shared.NotificationsFragment"
+        android:label="Notifications"
+        tools:layout="@layout/fragment_notifications">
     </fragment>
     <fragment
         android:id="@+id/nav_logout"

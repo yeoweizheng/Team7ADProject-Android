@@ -26,11 +26,24 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import sg.edu.nus.team7adproject.Shared.LogoutFragment;
+import sg.edu.nus.team7adproject.Shared.NotificationsFragment;
+import sg.edu.nus.team7adproject.Store.AdjustmentVoucherDetailFragment;
+import sg.edu.nus.team7adproject.Store.AdjustmentVouchersFragment;
+import sg.edu.nus.team7adproject.Store.AdjustmentVouchersFragmentDirections;
+import sg.edu.nus.team7adproject.Store.StockDetailFragment;
 import sg.edu.nus.team7adproject.Store.StockListFragment;
+import sg.edu.nus.team7adproject.Store.StockListFragmentDirections;
+import sg.edu.nus.team7adproject.Store.StoreOrdersFragment;
 
 public class StoreSupActivity extends AppCompatActivity
         implements ServiceConnection, ServerService.IServerService,
-        StockListFragment.IStockListFragment, LogoutFragment.ILogoutFragment {
+        StockListFragment.IStockListFragment,
+        StockDetailFragment.IStockDetailFragment,
+        AdjustmentVouchersFragment.IAdjustmentVouchersFragment,
+        AdjustmentVoucherDetailFragment.IAdjustmentVoucherDetailFragment,
+        StoreOrdersFragment.IStoreOrdersFragment,
+        NotificationsFragment.INotificationsFragment,
+        LogoutFragment.ILogoutFragment {
     private AppBarConfiguration appBarConfiguration;
     private ServerService serverService;
     private SharedPreferences serverAddressPref;
@@ -44,7 +57,11 @@ public class StoreSupActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view_store_sup);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store_sup);
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_stock_list, R.id.nav_logout)
+                R.id.nav_stock_list,
+                R.id.nav_adjustment_vouchers,
+                R.id.nav_store_orders,
+                R.id.nav_notifications,
+                R.id.nav_logout)
                 .setDrawerLayout(drawer)
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -140,7 +157,15 @@ public class StoreSupActivity extends AppCompatActivity
     public void gotoFragment(String name, int id) {
         NavDirections action = null;
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store_sup);
-
+        switch(name) {
+            case "stockDetail":
+                action = StockListFragmentDirections.actionNavStockListToNavStockDetail(id);
+                break;
+            case "adjustmentVoucherDetail":
+                action = AdjustmentVouchersFragmentDirections.actionNavAdjustmentVouchersToNavAdjustmentVoucherDetail(id);
+                break;
+        }
+        navController.navigate(action);
     }
     @Override
     public void gotoFragment(String name) {

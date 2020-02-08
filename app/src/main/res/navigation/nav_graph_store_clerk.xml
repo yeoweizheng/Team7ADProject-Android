@@ -56,10 +56,30 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_store_adjustment_vouchers"
-        android:name="sg.edu.nus.team7adproject.Store.StoreAdjustmentVouchersFragment"
+        android:id="@+id/nav_adjustment_vouchers"
+        android:name="sg.edu.nus.team7adproject.Store.AdjustmentVouchersFragment"
         android:label="Adjustment Vouchers"
-        tools:layout="@layout/fragment_store_adjustment_vouchers" >
+        tools:layout="@layout/fragment_adjustment_vouchers" >
+        <action
+            android:id="@+id/action_nav_adjustment_vouchers_to_nav_adjustment_voucher_detail"
+            app:destination="@id/nav_adjustment_voucher_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_add_adjustment_voucher"
+        android:name="sg.edu.nus.team7adproject.Store.AddAdjustmentVoucherFragment"
+        android:label="Add Adjustment Voucher"
+        tools:layout="@layout/fragment_add_adjustment_voucher" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_adjustment_voucher_detail"
+        android:name="sg.edu.nus.team7adproject.Store.AdjustmentVoucherDetailFragment"
+        android:label="Adjustment Voucher Detail"
+        tools:layout="@layout/fragment_adjustment_voucher_detail" >
+        <argument
+            android:name="adjustmentVoucherId"
+            app:argType="integer" />
     </fragment>
 
     <fragment

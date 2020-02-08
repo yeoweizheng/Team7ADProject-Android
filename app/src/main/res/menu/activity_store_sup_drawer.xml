@@ -7,6 +7,15 @@
             android:id="@+id/nav_stock_list"
             android:title="Stock List" />
         <item
+            android:id="@+id/nav_adjustment_vouchers"
+            android:title="Adjustment Vouchers" />
+        <item
+            android:id="@+id/nav_store_orders"
+            android:title="Orders" />
+        <item
+            android:id="@+id/nav_notifications"
+            android:title="Notifications" />
+        <item
             android:id="@+id/nav_logout"
             android:title="Logout" />
     </group>

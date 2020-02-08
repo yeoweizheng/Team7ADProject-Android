@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -42,8 +43,8 @@ public class StaffStationeryRequestsFragment extends Fragment implements
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
-        FloatingActionButton fab = view.findViewById(R.id.fab_staff_stationery_requests);
-        fab.setOnClickListener(this);
+        Button addButton = view.findViewById(R.id.button_staff_stationery_requests_add);
+        addButton.setOnClickListener(this);
     }
 
     @Override
@@ -90,7 +91,7 @@ public class StaffStationeryRequestsFragment extends Fragment implements
     @Override
     public void onClick(View view){
         switch(view.getId()){
-            case R.id.fab_staff_stationery_requests:
+            case R.id.button_staff_stationery_requests_add:
                 iStaffStationeryRequestsFragment.gotoFragment("addStationeryRequest");
                 break;
         }

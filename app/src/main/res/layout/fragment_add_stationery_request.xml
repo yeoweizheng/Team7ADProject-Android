@@ -14,11 +14,11 @@
         android:layout_height="0dp"
         android:layout_weight="1"></ListView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_submit_stationery_request"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/button_add_stationery_request_submit"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"
-        app:srcCompat="@drawable/ic_check"></com.google.android.material.floatingactionbutton.FloatingActionButton>
+        android:text="Submit"
+        android:textSize="18dp"></Button>
+
 </LinearLayout>

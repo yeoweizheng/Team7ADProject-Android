@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/textview_store_orders_order_id"
+        style="@style/TableContent" ></TextView>
+    <TextView
+        android:id="@+id/textview_store_orders_date_created"
+        style="@style/TableContent" ></TextView>
+    <TextView
+        android:id="@+id/textview_store_orders_supplier"
+        style="@style/TableContent" ></TextView>
+    <TextView
+        android:id="@+id/textview_store_orders_status"
+        style="@style/TableContent" ></TextView>
+</LinearLayout>

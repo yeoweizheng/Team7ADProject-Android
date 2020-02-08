@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -46,8 +47,8 @@ public class AddStationeryRequestFragment extends Fragment implements View.OnCli
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
-        FloatingActionButton fab = view.findViewById(R.id.fab_submit_stationery_request);
-        fab.setOnClickListener(this);
+        Button submitButton = view.findViewById(R.id.button_add_stationery_request_submit);
+        submitButton.setOnClickListener(this);
     }
 
     @Override
@@ -117,7 +118,7 @@ public class AddStationeryRequestFragment extends Fragment implements View.OnCli
     @Override
     public void onClick(View view){
         switch(view.getId()){
-            case R.id.fab_submit_stationery_request:
+            case R.id.button_add_stationery_request_submit:
                 submitStationeryRequest();
                 break;
         }

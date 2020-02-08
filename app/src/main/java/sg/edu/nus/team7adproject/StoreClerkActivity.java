@@ -28,6 +28,8 @@ import java.util.HashMap;
 import sg.edu.nus.team7adproject.Shared.LogoutFragment;
 import sg.edu.nus.team7adproject.Shared.NotificationsFragment;
 import sg.edu.nus.team7adproject.Store.ScheduledJobsFragment;
+import sg.edu.nus.team7adproject.Store.StockDetailFragment;
+import sg.edu.nus.team7adproject.Store.StockListFragmentDirections;
 import sg.edu.nus.team7adproject.Store.StoreAdjustmentVouchersFragment;
 import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestDetailFragment;
 import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestsFragment;
@@ -46,6 +48,7 @@ public class StoreClerkActivity extends AppCompatActivity
         StoreStationeryRetrievalListFragment.IStoreStationeryRetrievalListFragment,
         StoreDisbursementListFragment.IStoreDisbursementListFragment,
         StockListFragment.IStockListFragment,
+        StockDetailFragment.IStockDetailFragment,
         StoreAdjustmentVouchersFragment.IStoreAdjustmentVouchersFragment,
         StoreOrdersFragment.IStoreOrdersFragment,
         NotificationsFragment.INotificationsFragment,
@@ -167,18 +170,18 @@ public class StoreClerkActivity extends AppCompatActivity
         switch(name) {
             case "departmentRequestDetailFromDepartmentRequests":
                 action = StoreDepartmentRequestsFragmentDirections.actionNavStoreDepartmentRequestsToNavStoreDepartmentRequestDetail(id);
-                navController.navigate(action);
                 break;
             case "departmentRequestDetailFromRetrieval":
                 action = StoreStationeryRetrievalListFragmentDirections.actionNavStoreStationeryRetrievalListToNavStoreDepartmentRequestDetail(id);
-                navController.navigate(action);
                 break;
             case "departmentRequestDetailFromDisbursement":
                 action = StoreDisbursementListFragmentDirections.actionNavStoreDisbursementListsToNavStoreDepartmentRequestDetail(id);
-                navController.navigate(action);
+                break;
+            case "stockDetail":
+                action = StockListFragmentDirections.actionNavStockListToNavStockDetail(id);
                 break;
         }
-
+        navController.navigate(action);
     }
     @Override
     public void gotoFragment(String name) {

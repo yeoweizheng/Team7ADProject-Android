@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,7 +24,7 @@ import java.util.List;
 
 import sg.edu.nus.team7adproject.R;
 
-public class StockListFragment extends Fragment {
+public class StockListFragment extends Fragment implements AdapterView.OnItemClickListener {
     IStockListFragment iStockListFragment;
 
     public StockListFragment() {
@@ -63,6 +64,7 @@ public class StockListFragment extends Fragment {
         for(int i = 0; i < stationerys.length(); i++){
             JSONObject stationery = stationerys.getJSONObject(i);
             RowItem rowItem = new RowItem(
+                    stationery.getInt("id"),
                     stationery.getString("itemNo"),
                     stationery.getString("category"),
                     stationery.getString("description"));
@@ -70,6 +72,12 @@ public class StockListFragment extends Fragment {
         }
         RowAdapter rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_stock_list, rowItemList);
         listView.setAdapter(rowAdapter);
+        listView.setOnItemClickListener(this);
+    }
+    @Override
+    public void onItemClick(AdapterView<?> adapter, View view, int pos, long id){
+        RowItem rowItem = (RowItem) adapter.getItemAtPosition(pos);
+        iStockListFragment.gotoFragment("stockDetail", rowItem.id);
     }
     public interface IStockListFragment{
         void sendRequest(JSONObject request);
@@ -79,10 +87,12 @@ public class StockListFragment extends Fragment {
     }
 
     public class RowItem{
+        int id;
         String itemNo;
         String category;
         String description;
-        public RowItem(String itemNo, String category, String description){
+        public RowItem(int id, String itemNo, String category, String description){
+            this.id = id;
             this.itemNo = itemNo;
             this.category = category;
             this.description = description;

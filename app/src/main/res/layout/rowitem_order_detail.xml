@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/textview_order_detail_description"
+        style="@style/TableContent" ></TextView>
+    <TextView
+        android:id="@+id/textview_order_detail_quantity_ordered"
+        style="@style/TableContent"></TextView>
+    <TextView
+        android:id="@+id/textview_order_detail_quantity_received"
+        style="@style/TableContent"
+        android:visibility="gone"></TextView>
+    <EditText
+        android:id="@+id/edittext_order_detail_quantity_received"
+        style="@style/TableContent"
+        android:visibility="gone"
+        android:inputType="number"></EditText>
+</LinearLayout>

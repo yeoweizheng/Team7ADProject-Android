@@ -31,6 +31,7 @@ import sg.edu.nus.team7adproject.Store.AddAdjustmentVoucherFragment;
 import sg.edu.nus.team7adproject.Store.AddOrderFragment;
 import sg.edu.nus.team7adproject.Store.AdjustmentVoucherDetailFragment;
 import sg.edu.nus.team7adproject.Store.AdjustmentVouchersFragmentDirections;
+import sg.edu.nus.team7adproject.Store.OrderDetailFragment;
 import sg.edu.nus.team7adproject.Store.ScheduledJobsFragment;
 import sg.edu.nus.team7adproject.Store.StockDetailFragment;
 import sg.edu.nus.team7adproject.Store.StockListFragmentDirections;
@@ -41,6 +42,7 @@ import sg.edu.nus.team7adproject.Store.StoreDepartmentRequestsFragmentDirections
 import sg.edu.nus.team7adproject.Store.StoreDisbursementListFragment;
 import sg.edu.nus.team7adproject.Store.StoreDisbursementListFragmentDirections;
 import sg.edu.nus.team7adproject.Store.StoreOrdersFragment;
+import sg.edu.nus.team7adproject.Store.StoreOrdersFragmentDirections;
 import sg.edu.nus.team7adproject.Store.StoreStationeryRetrievalListFragment;
 import sg.edu.nus.team7adproject.Store.StockListFragment;
 import sg.edu.nus.team7adproject.Store.StoreStationeryRetrievalListFragmentDirections;
@@ -58,6 +60,7 @@ public class StoreClerkActivity extends AppCompatActivity
         AdjustmentVoucherDetailFragment.IAdjustmentVoucherDetailFragment,
         StoreOrdersFragment.IStoreOrdersFragment,
         AddOrderFragment.IAddOrderFragment,
+        OrderDetailFragment.IOrderDetailFragment,
         NotificationsFragment.INotificationsFragment,
         ScheduledJobsFragment.IScheduledJobsFragment,
         LogoutFragment.ILogoutFragment {
@@ -189,6 +192,9 @@ public class StoreClerkActivity extends AppCompatActivity
                 break;
             case "adjustmentVoucherDetail":
                 action = AdjustmentVouchersFragmentDirections.actionNavAdjustmentVouchersToNavAdjustmentVoucherDetail(id);
+                break;
+            case "orderDetail":
+                action = StoreOrdersFragmentDirections.actionNavStoreOrdersToNavOrderDetail(id);
                 break;
         }
         navController.navigate(action);

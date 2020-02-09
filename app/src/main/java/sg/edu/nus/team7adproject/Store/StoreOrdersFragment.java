@@ -94,7 +94,7 @@ public class StoreOrdersFragment extends Fragment
     @Override
     public void onItemClick(AdapterView<?> adapter, View view, int pos, long id){
         RowItem rowItem = (RowItem) adapter.getItemAtPosition(pos);
-        iStoreOrdersFragment.gotoFragment("stockDetail", rowItem.id);
+        iStoreOrdersFragment.gotoFragment("orderDetail", rowItem.id);
     }
     public interface IStoreOrdersFragment{
         void sendRequest(JSONObject request);

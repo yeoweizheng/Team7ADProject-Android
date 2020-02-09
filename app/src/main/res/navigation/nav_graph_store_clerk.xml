@@ -87,6 +87,19 @@
         android:name="sg.edu.nus.team7adproject.Store.StoreOrdersFragment"
         android:label="Orders"
         tools:layout="@layout/fragment_store_orders" >
+        <action
+            android:id="@+id/action_nav_store_orders_to_nav_order_detail"
+            app:destination="@id/nav_order_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_order_detail"
+        android:name="sg.edu.nus.team7adproject.Store.OrderDetailFragment"
+        android:label="Order Detail"
+        tools:layout="@layout/fragment_order_detail" >
+        <argument
+            android:name="orderId"
+            app:argType="integer" />
     </fragment>
 
     <fragment

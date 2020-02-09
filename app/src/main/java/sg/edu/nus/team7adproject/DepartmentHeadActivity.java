@@ -27,6 +27,9 @@ import java.util.HashMap;
 
 import sg.edu.nus.team7adproject.Department.AddStationeryRequestFragment;
 import sg.edu.nus.team7adproject.Department.AssignRepresentativeFragment;
+import sg.edu.nus.team7adproject.Department.AuthorizeStaffDetailFragment;
+import sg.edu.nus.team7adproject.Department.AuthorizeStaffFragment;
+import sg.edu.nus.team7adproject.Department.AuthorizeStaffFragmentDirections;
 import sg.edu.nus.team7adproject.Department.HeadStationeryRequestsFragment;
 import sg.edu.nus.team7adproject.Department.HeadStationeryRequestsFragmentDirections;
 import sg.edu.nus.team7adproject.Department.StaffDepartmentRequestsFragment;
@@ -42,6 +45,8 @@ public class DepartmentHeadActivity extends AppCompatActivity
         HeadStationeryRequestsFragment.IHeadStationeryRequestsFragment,
         StationeryRequestDetailFragment.IStationeryRequestDetailFragment,
         AssignRepresentativeFragment.IAssignRepresentativeFragment,
+        AuthorizeStaffFragment.IAuthorizeStaffFragment,
+        AuthorizeStaffDetailFragment.IAuthorizeStaffDetailFragment,
         NotificationsFragment.INotificationsFragment,
         LogoutFragment.ILogoutFragment{
     private AppBarConfiguration appBarConfiguration;
@@ -157,6 +162,9 @@ public class DepartmentHeadActivity extends AppCompatActivity
         switch(name){
             case "stationeryRequestDetail":
                 action = HeadStationeryRequestsFragmentDirections.actionNavHeadStationeryRequestsToNavStationeryRequestDetail(id);
+                break;
+            case "authorizeStaffDetail":
+                action = AuthorizeStaffFragmentDirections.actionNavAuthorizeStaffToNavAuthorizeStaffDetail(id);
                 break;
         }
         navController.navigate(action);

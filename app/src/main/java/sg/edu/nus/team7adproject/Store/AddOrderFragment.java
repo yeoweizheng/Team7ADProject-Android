@@ -8,9 +8,11 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,13 +27,21 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import sg.edu.nus.team7adproject.R;
 
 public class AddOrderFragment extends Fragment implements View.OnClickListener{
 
-    AddOrderFragment.IAddOrderFragment iAddOrderFragment;
+    IAddOrderFragment iAddOrderFragment;
     HashMap<Integer, EditText> quantityOrderedEditTexts;
+    HashMap<Integer, ArrayList<String>> supplierNamesList;
+    HashMap<Integer, String[]> supplierNamesStr;
+    // stationeryId -> (pos, supplierName)
+    HashMap<Integer, HashMap<Integer, String>> posToSupplierName;
+    HashMap<AdapterView.OnItemSelectedListener, Integer> listenerToStationeryId;
+    HashMap<Integer, String> stationeryIdToSupplierName;
+    HashMap<String, Integer> supplierNameToSupplierId;
     public AddOrderFragment() {
     }
 
@@ -39,7 +49,14 @@ public class AddOrderFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         quantityOrderedEditTexts = new HashMap<Integer, EditText>();
-        getStationeries();
+        supplierNamesList = new HashMap<Integer, ArrayList<String>>();
+        supplierNamesStr = new HashMap<Integer, String[]>();
+        posToSupplierName = new HashMap<Integer, HashMap<Integer, String>>();
+        listenerToStationeryId = new HashMap<AdapterView.OnItemSelectedListener, Integer>();
+        supplierNameToSupplierId = new HashMap<String, Integer>();
+        stationeryIdToSupplierName = new HashMap<Integer, String>();
+        getSupplierList();
+        getSupplierPrices();
         return inflater.inflate(R.layout.fragment_add_order, container, false);
     }
 
@@ -52,7 +69,7 @@ public class AddOrderFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        iAddOrderFragment = (AddOrderFragment.IAddOrderFragment) context;
+        iAddOrderFragment = (IAddOrderFragment) context;
         iAddOrderFragment.setFragment("addOrderFragment", this);
     }
     public void getStationeries(){
@@ -84,6 +101,68 @@ public class AddOrderFragment extends Fragment implements View.OnClickListener{
         RowAdapter rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_add_order, rowItemList);
         listView.setAdapter(rowAdapter);
     }
+    public void getSupplierPrices(){
+        JSONObject request = new JSONObject();
+        JSONObject body = new JSONObject();
+        try {
+            body.put("action", "getSupplierPrices");
+            request.put("url", "GetSupplierPrices");
+            request.put("requestBody", body);
+            request.put("callbackFragment", "addOrderFragment");
+            request.put("callbackMethod", "getSupplierPricesCallback");
+            iAddOrderFragment.sendRequest(request);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+    }
+    public void getSupplierPricesCallback(String response) throws JSONException{
+        JSONArray supplierPrices = new JSONArray(response);
+        for(int i = 0; i < supplierPrices.length(); i++) {
+            JSONObject supplierPrice = supplierPrices.getJSONObject(i);
+            int stationeryId = supplierPrice.getInt("stationeryId");
+            int supplierId = supplierPrice.getInt("supplierId");
+            String supplierName = supplierPrice.getString("supplierName");
+            if (!supplierNamesList.containsKey(stationeryId)) {
+                supplierNamesList.put(stationeryId, new ArrayList<String>());
+            }
+            supplierNamesList.get(stationeryId).add(supplierName);
+        }
+        // Convert List<String> to string[]
+        for(Map.Entry<Integer, ArrayList<String>> entry : supplierNamesList.entrySet()){
+            ArrayList<String> list = entry.getValue();
+            String[] temp = new String[list.size()];
+            for(int i = 0; i < list.size(); i++){
+                temp[i] = list.get(i);
+            }
+            supplierNamesStr.put(entry.getKey(), temp);
+            posToSupplierName.put(entry.getKey(), new HashMap<Integer, String>());
+            for(int i = 0; i < list.size(); i++){
+                posToSupplierName.get(entry.getKey()).put(i, list.get(i));
+            }
+        }
+        getStationeries();
+    }
+    public void getSupplierList(){
+        JSONObject request = new JSONObject();
+        JSONObject body = new JSONObject();
+        try {
+            body.put("action", "getSupplierList");
+            request.put("url", "GetSuppliers");
+            request.put("requestBody", body);
+            request.put("callbackFragment", "addOrderFragment");
+            request.put("callbackMethod", "getSupplierListCallback");
+            iAddOrderFragment.sendRequest(request);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+    }
+    public void getSupplierListCallback(String response) throws JSONException {
+        JSONArray suppliers = new JSONArray(response);
+        for(int i = 0; i < suppliers.length(); i++){
+            JSONObject supplier = suppliers.getJSONObject(i);
+            supplierNameToSupplierId.put(supplier.getString("name"), supplier.getInt("id"));
+        }
+    }
     public void submitOrder(){
         JSONObject request = new JSONObject();
         JSONObject body = new JSONObject();
@@ -95,7 +174,8 @@ public class AddOrderFragment extends Fragment implements View.OnClickListener{
                 int quantityOrdered = Integer.parseInt(quantityOrderedStr);
                 orders.put(new JSONObject("{"
                         +"\"stationeryId\":" + i + ","
-                        +"\"quantity\":" + quantityOrdered
+                        +"\"quantity\":" + quantityOrdered + ","
+                        +"\"supplierId\":" + supplierNameToSupplierId.get(stationeryIdToSupplierName.get(i))
                         + "}"));
             }
             body.put("action", "addOrder");
@@ -110,7 +190,10 @@ public class AddOrderFragment extends Fragment implements View.OnClickListener{
         }
     }
     public void submitOrderCallback(String response) throws JSONException{
-        iAddOrderFragment.onBackPressed();
+        JSONObject responseObj = new JSONObject(response);
+        if(responseObj.getString("result").equals("success")){
+            iAddOrderFragment.onBackPressed();
+        }
     }
     @Override
     public void onClick(View view){
@@ -130,7 +213,6 @@ public class AddOrderFragment extends Fragment implements View.OnClickListener{
         int id;
         String description;
         String unitOfMeasure;
-        String[] suppliers;
         public RowItem(int id, String description, String unitOfMeasure){
             this.id = id;
             this.description = description;
@@ -164,12 +246,28 @@ public class AddOrderFragment extends Fragment implements View.OnClickListener{
                 row.descriptionView = view.findViewById(R.id.textview_add_order_description);
                 row.unitOfMeasureView= view.findViewById(R.id.textview_add_order_unit_of_measure);
                 row.quantityOrderedView = view.findViewById(R.id.edittext_add_order_quantity);
+                row.supplierView = view.findViewById(R.id.spinner_add_order_supplier);
                 view.setTag(row);
             } else {
                 row = (RowItemView) view.getTag();
             }
             row.descriptionView.setText(rowItem.description);
             row.unitOfMeasureView.setText(rowItem.unitOfMeasure);
+            quantityOrderedEditTexts.put(rowItem.id, row.quantityOrderedView);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
+                    android.R.layout.simple_spinner_item, supplierNamesStr.get(rowItem.id));
+            row.supplierView.setAdapter(adapter);
+            AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    stationeryIdToSupplierName.put(listenerToStationeryId.get(this),
+                            posToSupplierName.get(listenerToStationeryId.get(this)).get(position));
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) { }
+            };
+            listenerToStationeryId.put(listener, rowItem.id);
+            row.supplierView.setOnItemSelectedListener(listener);
             return view;
         }
     }

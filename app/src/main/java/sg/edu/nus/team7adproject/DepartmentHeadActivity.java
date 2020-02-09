@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import sg.edu.nus.team7adproject.Department.AddStationeryRequestFragment;
+import sg.edu.nus.team7adproject.Department.AssignRepresentativeFragment;
 import sg.edu.nus.team7adproject.Department.HeadStationeryRequestsFragment;
 import sg.edu.nus.team7adproject.Department.HeadStationeryRequestsFragmentDirections;
 import sg.edu.nus.team7adproject.Department.StaffDepartmentRequestsFragment;
@@ -40,6 +41,7 @@ public class DepartmentHeadActivity extends AppCompatActivity
         implements ServiceConnection, ServerService.IServerService,
         HeadStationeryRequestsFragment.IHeadStationeryRequestsFragment,
         StationeryRequestDetailFragment.IStationeryRequestDetailFragment,
+        AssignRepresentativeFragment.IAssignRepresentativeFragment,
         NotificationsFragment.INotificationsFragment,
         LogoutFragment.ILogoutFragment{
     private AppBarConfiguration appBarConfiguration;

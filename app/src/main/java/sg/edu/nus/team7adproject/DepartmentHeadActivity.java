@@ -27,6 +27,7 @@ import java.util.HashMap;
 
 import sg.edu.nus.team7adproject.Department.AddStationeryRequestFragment;
 import sg.edu.nus.team7adproject.Department.HeadStationeryRequestsFragment;
+import sg.edu.nus.team7adproject.Department.HeadStationeryRequestsFragmentDirections;
 import sg.edu.nus.team7adproject.Department.StaffDepartmentRequestsFragment;
 import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragment;
 import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragmentDirections;
@@ -37,7 +38,10 @@ import sg.edu.nus.team7adproject.Store.StockListFragment;
 
 public class DepartmentHeadActivity extends AppCompatActivity
         implements ServiceConnection, ServerService.IServerService,
-        StockListFragment.IStockListFragment, LogoutFragment.ILogoutFragment{
+        HeadStationeryRequestsFragment.IHeadStationeryRequestsFragment,
+        StationeryRequestDetailFragment.IStationeryRequestDetailFragment,
+        NotificationsFragment.INotificationsFragment,
+        LogoutFragment.ILogoutFragment{
     private AppBarConfiguration appBarConfiguration;
     private ServerService serverService;
     private SharedPreferences serverAddressPref;
@@ -51,7 +55,11 @@ public class DepartmentHeadActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view_department_head);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department_head);
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_stock_list, R.id.nav_logout)
+                R.id.nav_head_stationery_requests,
+                R.id.nav_authorize_staff,
+                R.id.nav_assign_representative,
+                R.id.nav_notifications,
+                R.id.nav_logout)
                 .setDrawerLayout(drawer)
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -145,6 +153,9 @@ public class DepartmentHeadActivity extends AppCompatActivity
         NavDirections action = null;
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department_head);
         switch(name){
+            case "stationeryRequestDetail":
+                action = HeadStationeryRequestsFragmentDirections.actionNavHeadStationeryRequestsToNavStationeryRequestDetail(id);
+                break;
         }
         navController.navigate(action);
     }

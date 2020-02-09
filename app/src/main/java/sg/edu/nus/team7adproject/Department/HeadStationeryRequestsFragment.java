@@ -37,7 +37,7 @@ public class HeadStationeryRequestsFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //getStationeryRequests();
+        getStationeryRequests();
         return inflater.inflate(R.layout.fragment_head_stationery_requests, container, false);
     }
 
@@ -48,7 +48,7 @@ public class HeadStationeryRequestsFragment extends Fragment implements
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        iHeadStationeryRequestsFragment = (HeadStationeryRequestsFragment.IHeadStationeryRequestsFragment) context;
+        iHeadStationeryRequestsFragment = (IHeadStationeryRequestsFragment) context;
         iHeadStationeryRequestsFragment.setFragment("headStationeryRequestsFragment", this);
     }
     public void getStationeryRequests(){
@@ -88,11 +88,6 @@ public class HeadStationeryRequestsFragment extends Fragment implements
     }
     @Override
     public void onClick(View view){
-        switch(view.getId()){
-            case R.id.fab_head_stationery_requests:
-                iHeadStationeryRequestsFragment.gotoFragment("addStationeryRequest");
-                break;
-        }
     }
     public interface IHeadStationeryRequestsFragment{
         void sendRequest(JSONObject request);

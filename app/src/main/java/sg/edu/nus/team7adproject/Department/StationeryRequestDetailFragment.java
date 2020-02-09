@@ -14,10 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,11 +27,16 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import sg.edu.nus.team7adproject.DepartmentHeadActivity;
 import sg.edu.nus.team7adproject.R;
 
-public class StationeryRequestDetailFragment extends Fragment {
+public class StationeryRequestDetailFragment extends Fragment implements View.OnClickListener{
 
     StationeryRequestDetailFragment.IStationeryRequestDetailFragment iStationeryRequestDetailFragment;
+    Button approveButton;
+    Button rejectButton;
+    EditText remarksEditText;
+    int stationeryRequestId;
 
     public StationeryRequestDetailFragment(){
     }
@@ -43,8 +49,13 @@ public class StationeryRequestDetailFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
-        int id = StationeryRequestDetailFragmentArgs.fromBundle(getArguments()).getId();
-        getStationeryRequestDetail(id);
+        stationeryRequestId = StationeryRequestDetailFragmentArgs.fromBundle(getArguments()).getId();
+        approveButton = view.findViewById(R.id.button_stationery_request_detail_approve);
+        rejectButton = view.findViewById(R.id.button_stationery_request_detail_reject);
+        remarksEditText = getActivity().findViewById(R.id.edittext_stationery_request_detail_remarks);
+        approveButton.setOnClickListener(this);
+        rejectButton.setOnClickListener(this);
+        getStationeryRequestDetail();
     }
 
     @Override
@@ -53,12 +64,12 @@ public class StationeryRequestDetailFragment extends Fragment {
         iStationeryRequestDetailFragment = (StationeryRequestDetailFragment.IStationeryRequestDetailFragment) context;
         iStationeryRequestDetailFragment.setFragment("stationeryRequestDetailFragment", this);
     }
-    public void getStationeryRequestDetail(int id){
+    public void getStationeryRequestDetail(){
         JSONObject request = new JSONObject();
         JSONObject body = new JSONObject();
         try {
             body.put("action", "getStationeryRequestDetail");
-            body.put("stationeryRequestId", id);
+            body.put("stationeryRequestId", stationeryRequestId);
             request.put("url", "StationeryRequestDetail");
             request.put("requestBody", body);
             request.put("callbackFragment", "stationeryRequestDetailFragment");
@@ -75,10 +86,10 @@ public class StationeryRequestDetailFragment extends Fragment {
         TextView dateView = getActivity().findViewById(R.id.textview_stationery_request_detail_date);
         TextView remarksView = getActivity().findViewById(R.id.textview_stationery_request_detail_remarks);
         TextView statusView = getActivity().findViewById(R.id.textview_stationery_request_detail_status);
-        idView.setText(stationeryRequestDetail.get("id").toString());
-        dateView.setText(stationeryRequestDetail.get("date").toString());
-        remarksView.setText(stationeryRequestDetail.get("remarks").toString());
-        statusView.setText(stationeryRequestDetail.get("status").toString());
+        idView.setText(stationeryRequestDetail.getString("id"));
+        dateView.setText(stationeryRequestDetail.getString("date"));
+        remarksView.setText(stationeryRequestDetail.getString("remarks"));
+        statusView.setText(stationeryRequestDetail.getString("status"));
         ListView listView = getActivity().findViewById(R.id.listview_stationery_request_detail);
         ArrayList<RowItem> rowItemList = new ArrayList<>();
         for(int i = 0; i < stationeryQuantities.length(); i++){
@@ -91,6 +102,76 @@ public class StationeryRequestDetailFragment extends Fragment {
         }
         RowAdapter rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_stationery_request_detail, rowItemList);
         listView.setAdapter(rowAdapter);
+        if(iStationeryRequestDetailFragment.getClass().equals(DepartmentHeadActivity.class)
+            && stationeryRequestDetail.getString("status").equals("Pending")){
+            remarksView.setVisibility(View.GONE);
+            remarksEditText.setVisibility(View.VISIBLE);
+            approveButton.setVisibility(View.VISIBLE);
+            rejectButton.setVisibility(View.VISIBLE);
+        } else {
+            remarksView.setVisibility(View.VISIBLE);
+            remarksEditText.setVisibility(View.GONE);
+            approveButton.setVisibility(View.GONE);
+            rejectButton.setVisibility(View.GONE);
+        }
+    }
+    public void approveStationeryRequest(){
+        JSONObject request = new JSONObject();
+        JSONObject body = new JSONObject();
+        try {
+            body.put("action", "approveStationeryRequest");
+            body.put("stationeryRequestId", stationeryRequestId);
+            body.put("remarks", remarksEditText.getText().toString());
+            request.put("url", "ApproveStationeryRequest");
+            request.put("requestBody", body);
+            request.put("callbackFragment", "stationeryRequestDetailFragment");
+            request.put("callbackMethod", "approveStationeryRequestCallback");
+            iStationeryRequestDetailFragment.sendRequest(request);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+    }
+    public void approveStationeryRequestCallback(String response) throws JSONException{
+        JSONObject responseObj = new JSONObject(response);
+        if(responseObj.getString("result").equals("success")){
+            Toast.makeText(getActivity().getApplicationContext(), "Approved stationery request", Toast.LENGTH_SHORT).show();
+            getStationeryRequestDetail();
+        }
+    }
+    public void rejectStationeryRequest(){
+        JSONObject request = new JSONObject();
+        JSONObject body = new JSONObject();
+        try {
+            body.put("action", "rejectStationeryRequest");
+            body.put("stationeryRequestId", stationeryRequestId);
+            body.put("remarks", remarksEditText.getText().toString());
+            request.put("url", "RejectStationeryRequest");
+            request.put("requestBody", body);
+            request.put("callbackFragment", "stationeryRequestDetailFragment");
+            request.put("callbackMethod", "rejectStationeryRequestCallback");
+            iStationeryRequestDetailFragment.sendRequest(request);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+    }
+    public void rejectStationeryRequestCallback(String response) throws JSONException{
+        JSONObject responseObj = new JSONObject(response);
+        if(responseObj.getString("result").equals("success")){
+            Toast.makeText(getActivity().getApplicationContext(), "Rejected stationery request", Toast.LENGTH_SHORT).show();
+            getStationeryRequestDetail();
+        }
+    }
+
+    @Override
+    public void onClick(View view){
+        switch(view.getId()){
+            case R.id.button_stationery_request_detail_approve:
+                approveStationeryRequest();
+                break;
+            case R.id.button_stationery_request_detail_reject:
+                rejectStationeryRequest();
+                break;
+        }
     }
     public interface IStationeryRequestDetailFragment{
         void sendRequest(JSONObject request);

@@ -9,6 +9,36 @@
         android:name="sg.edu.nus.team7adproject.Department.HeadStationeryRequestsFragment"
         android:label="Stationery Requests"
         tools:layout="@layout/fragment_head_stationery_requests" >
+        <action
+            android:id="@+id/action_nav_head_stationery_requests_to_nav_stationery_request_detail"
+            app:destination="@id/nav_stationery_request_detail" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_stationery_request_detail"
+        android:name="sg.edu.nus.team7adproject.Department.StationeryRequestDetailFragment"
+        android:label="Stationery Request Detail"
+        tools:layout="@layout/fragment_stationery_request_detail" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_authorize_staff"
+        android:name="sg.edu.nus.team7adproject.Department.AuthorizeStaffFragment"
+        android:label="Authorize Staff"
+        tools:layout="@layout/fragment_authorize_staff" >
+    </fragment>
+    <fragment
+        android:id="@+id/nav_assign_representative"
+        android:name="sg.edu.nus.team7adproject.Department.AssignRepresentativeFragment"
+        android:label="Assign Representative"
+        tools:layout="@layout/fragment_assign_representative" >
+    </fragment>
+    <fragment
+        android:id="@+id/nav_notifications"
+        android:name="sg.edu.nus.team7adproject.Shared.NotificationsFragment"
+        android:label="Notifications"
+        tools:layout="@layout/fragment_notifications" >
     </fragment>
     <fragment
         android:id="@+id/nav_logout"

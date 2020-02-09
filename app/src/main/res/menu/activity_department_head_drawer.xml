@@ -7,6 +7,15 @@
             android:id="@+id/nav_head_stationery_requests"
             android:title="Stationery Requests" />
         <item
+            android:id="@+id/nav_authorize_staff"
+            android:title="Authorize Staff" />
+        <item
+            android:id="@+id/nav_assign_representative"
+            android:title="Assign Representative" />
+        <item
+            android:id="@+id/nav_notifications"
+            android:title="Notifications" />
+        <item
             android:id="@+id/nav_logout"
             android:title="Logout" />
     </group>

@@ -16,6 +16,9 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -52,12 +55,13 @@ public class DepartmentStaffActivity extends AppCompatActivity
     private SharedPreferences serverAddressPref;
     private SharedPreferences sessionPref;
     private HashMap<String, Fragment> fragmentHashMap = new HashMap<String, Fragment>();
+    private NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_department_staff);
         DrawerLayout drawer = findViewById(R.id.drawer_layout_department_staff);
-        NavigationView navigationView = findViewById(R.id.nav_view_department_staff);
+        navigationView = findViewById(R.id.nav_view_department_staff);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department_staff);
         appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_staff_stationery_requests, R.id.nav_staff_department_requests,
@@ -70,6 +74,7 @@ public class DepartmentStaffActivity extends AppCompatActivity
         bindService(intent, this, BIND_AUTO_CREATE);
         serverAddressPref = getSharedPreferences("serverAddress", Context.MODE_PRIVATE);
         sessionPref = getSharedPreferences("session", Context.MODE_PRIVATE);
+        getStaffAuthorization();
     }
     @Override
     public void onResume(){
@@ -99,6 +104,28 @@ public class DepartmentStaffActivity extends AppCompatActivity
     @Override
     public String getServerPortFromSharedPref(){
         return serverAddressPref.getString("port", "");
+    }
+    public void getStaffAuthorization(){
+        JSONObject request = new JSONObject();
+        JSONObject body = new JSONObject();
+        try {
+            body.put("action", "getStaffAuthorization");
+            request.put("url", "GetStaffAuthorization");
+            request.put("requestBody", body);
+            request.put("callbackFragment", "departmentStaffActivity");
+            request.put("callbackMethod", "getStaffAuthorizationCallback");
+            sendRequest(request);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+    }
+    public void getStaffAuthorizationCallback(String response) throws JSONException{
+        JSONObject responseObj = new JSONObject(response);
+        Menu menu = navigationView.getMenu();
+        if(responseObj.getBoolean("isRepresentative")){
+            menu.findItem(R.id.nav_staff_department_requests).setVisible(true);
+        }
+        menu.getItem(0).setChecked(true);
     }
     @Override
     public void sendRequest(final JSONObject request){
@@ -136,8 +163,13 @@ public class DepartmentStaffActivity extends AppCompatActivity
                     return;
                 }
             } catch(JSONException e){}
-            Method method = fragmentHashMap.get(callbackFragment).getClass().getMethod(callbackMethod, String.class);
-            method.invoke(fragmentHashMap.get(callbackFragment), response);
+            if(callbackFragment.equals("departmentStaffActivity")){
+                Method method = this.getClass().getMethod(callbackMethod, String.class);
+                method.invoke(this, response);
+            } else {
+                Method method = fragmentHashMap.get(callbackFragment).getClass().getMethod(callbackMethod, String.class);
+                method.invoke(fragmentHashMap.get(callbackFragment), response);
+            }
         } catch(Exception e){
             e.printStackTrace();
         }

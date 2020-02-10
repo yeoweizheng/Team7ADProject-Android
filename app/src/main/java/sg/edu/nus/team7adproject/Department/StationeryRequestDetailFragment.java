@@ -37,6 +37,7 @@ public class StationeryRequestDetailFragment extends Fragment implements View.On
     Button rejectButton;
     EditText remarksEditText;
     int stationeryRequestId;
+    boolean isStaffAuthorized;
 
     public StationeryRequestDetailFragment(){
     }
@@ -55,7 +56,7 @@ public class StationeryRequestDetailFragment extends Fragment implements View.On
         remarksEditText = getActivity().findViewById(R.id.edittext_stationery_request_detail_remarks);
         approveButton.setOnClickListener(this);
         rejectButton.setOnClickListener(this);
-        getStationeryRequestDetail();
+        getStaffAuthorization();
     }
 
     @Override
@@ -63,6 +64,25 @@ public class StationeryRequestDetailFragment extends Fragment implements View.On
         super.onAttach(context);
         iStationeryRequestDetailFragment = (StationeryRequestDetailFragment.IStationeryRequestDetailFragment) context;
         iStationeryRequestDetailFragment.setFragment("stationeryRequestDetailFragment", this);
+    }
+    public void getStaffAuthorization(){
+        JSONObject request = new JSONObject();
+        JSONObject body = new JSONObject();
+        try {
+            body.put("action", "getStaffAuthorization");
+            request.put("url", "GetStaffAuthorization");
+            request.put("requestBody", body);
+            request.put("callbackFragment", "stationeryRequestDetailFragment");
+            request.put("callbackMethod", "getStaffAuthorizationCallback");
+            iStationeryRequestDetailFragment.sendRequest(request);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+        getStationeryRequestDetail();
+    }
+    public void getStaffAuthorizationCallback(String response) throws JSONException{
+        JSONObject responseObj = new JSONObject(response);
+        isStaffAuthorized = responseObj.getBoolean("isAuthorized");
     }
     public void getStationeryRequestDetail(){
         JSONObject request = new JSONObject();
@@ -102,7 +122,7 @@ public class StationeryRequestDetailFragment extends Fragment implements View.On
         }
         RowAdapter rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_stationery_request_detail, rowItemList);
         listView.setAdapter(rowAdapter);
-        if(iStationeryRequestDetailFragment.getClass().equals(DepartmentHeadActivity.class)
+        if((iStationeryRequestDetailFragment.getClass().equals(DepartmentHeadActivity.class) || isStaffAuthorized)
             && stationeryRequestDetail.getString("status").equals("Pending")){
             remarksView.setVisibility(View.GONE);
             remarksEditText.setVisibility(View.VISIBLE);

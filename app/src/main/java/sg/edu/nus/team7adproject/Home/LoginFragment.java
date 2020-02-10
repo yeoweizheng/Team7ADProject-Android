@@ -74,8 +74,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
     public void loginWithSessionCallback(String response) throws JSONException{
         JSONObject responseObj = new JSONObject(response);
-        if(responseObj.has("user")){
-            iLoginFragment.launchActivity(responseObj.getJSONObject("user").get("UserType").toString());
+        if(responseObj.has("userId")){
+            iLoginFragment.launchActivity(responseObj.getString("userType"));
         }
     }
     private void login(){
@@ -100,13 +100,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         passwordEditText.getText().clear();
         usernameEditText.requestFocus();
         JSONObject responseObj = new JSONObject(response);
-        if(!responseObj.has("user")){
+        if(!responseObj.has("userId")){
             Toast.makeText(getContext(), "Login failed", Toast.LENGTH_SHORT).show();
             return;
         }
         sessionPrefEditor.putString("sessionId", responseObj.get("sessionId").toString());
         sessionPrefEditor.commit();
-        iLoginFragment.launchActivity(responseObj.getJSONObject("user").get("UserType").toString());
+        iLoginFragment.launchActivity(responseObj.getString("userType"));
     }
     public interface ILoginFragment{
         void sendRequest(JSONObject request);

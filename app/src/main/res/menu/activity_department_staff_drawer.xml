@@ -8,7 +8,8 @@ tools:showIn="navigation_view">
         android:title="Stationery Requests" />
     <item
         android:id="@+id/nav_staff_department_requests"
-        android:title="Department Requests" />
+        android:title="Department Requests"
+        android:visible="false"/>
     <item
         android:id="@+id/nav_notifications"
         android:title="Notifications" />

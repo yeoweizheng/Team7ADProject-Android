@@ -38,6 +38,7 @@ public class StationeryRequestDetailFragment extends Fragment implements View.On
     EditText remarksEditText;
     int stationeryRequestId;
     boolean isStaffAuthorized;
+    boolean isAuthorityDelegated;
 
     public StationeryRequestDetailFragment(){
     }
@@ -83,6 +84,7 @@ public class StationeryRequestDetailFragment extends Fragment implements View.On
     public void getStaffAuthorizationCallback(String response) throws JSONException{
         JSONObject responseObj = new JSONObject(response);
         isStaffAuthorized = responseObj.getBoolean("isAuthorized");
+        isAuthorityDelegated = responseObj.getBoolean("isAuthorityDelegated");
     }
     public void getStationeryRequestDetail(){
         JSONObject request = new JSONObject();
@@ -122,7 +124,8 @@ public class StationeryRequestDetailFragment extends Fragment implements View.On
         }
         RowAdapter rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_stationery_request_detail, rowItemList);
         listView.setAdapter(rowAdapter);
-        if((iStationeryRequestDetailFragment.getClass().equals(DepartmentHeadActivity.class) || isStaffAuthorized)
+        if(((iStationeryRequestDetailFragment.getClass().equals(DepartmentHeadActivity.class) && !isAuthorityDelegated)
+                || isStaffAuthorized)
             && stationeryRequestDetail.getString("status").equals("Pending")){
             remarksView.setVisibility(View.GONE);
             remarksEditText.setVisibility(View.VISIBLE);

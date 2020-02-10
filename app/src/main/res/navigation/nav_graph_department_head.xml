@@ -41,6 +41,12 @@
             app:argType="integer" />
     </fragment>
     <fragment
+        android:id="@+id/nav_add_authorize_staff"
+        android:name="sg.edu.nus.team7adproject.Department.AddAuthorizeStaffFragment"
+        android:label="Add Authorize Staff"
+        tools:layout="@layout/fragment_add_authorize_staff" >
+    </fragment>
+    <fragment
         android:id="@+id/nav_assign_representative"
         android:name="sg.edu.nus.team7adproject.Department.AssignRepresentativeFragment"
         android:label="Assign Representative"

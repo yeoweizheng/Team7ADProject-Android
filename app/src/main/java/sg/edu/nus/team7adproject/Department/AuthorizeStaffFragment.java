@@ -2,6 +2,7 @@ package sg.edu.nus.team7adproject.Department;
 
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -12,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,14 +22,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import sg.edu.nus.team7adproject.R;
 
-public class AuthorizeStaffFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class AuthorizeStaffFragment extends Fragment implements
+        AdapterView.OnItemClickListener, View.OnClickListener{
     IAuthorizeStaffFragment iAuthorizeStaffFragment;
-
+    Button addButton;
     public AuthorizeStaffFragment() {
     }
 
@@ -35,6 +41,12 @@ public class AuthorizeStaffFragment extends Fragment implements AdapterView.OnIt
                              Bundle savedInstanceState) {
         getAuthorizeStaff();
         return inflater.inflate(R.layout.fragment_authorize_staff, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        addButton = view.findViewById(R.id.button_authorize_staff_add);
+        addButton.setOnClickListener(this);
     }
 
     @Override
@@ -78,6 +90,14 @@ public class AuthorizeStaffFragment extends Fragment implements AdapterView.OnIt
     public void onItemClick(AdapterView<?> adapter, View view, int pos, long id){
         RowItem rowItem = (RowItem) adapter.getItemAtPosition(pos);
         iAuthorizeStaffFragment.gotoFragment("authorizeStaffDetail", rowItem.id);
+    }
+    @Override
+    public void onClick(View view){
+        switch(view.getId()){
+            case R.id.button_authorize_staff_add:
+                iAuthorizeStaffFragment.gotoFragment("addAuthorizedStaff");
+                break;
+        }
     }
     public interface IAuthorizeStaffFragment{
         void sendRequest(JSONObject request);

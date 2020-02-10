@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
+import sg.edu.nus.team7adproject.Department.AddAuthorizeStaffFragment;
 import sg.edu.nus.team7adproject.Department.AddStationeryRequestFragment;
 import sg.edu.nus.team7adproject.Department.AssignRepresentativeFragment;
 import sg.edu.nus.team7adproject.Department.AuthorizeStaffDetailFragment;
@@ -47,6 +48,7 @@ public class DepartmentHeadActivity extends AppCompatActivity
         AssignRepresentativeFragment.IAssignRepresentativeFragment,
         AuthorizeStaffFragment.IAuthorizeStaffFragment,
         AuthorizeStaffDetailFragment.IAuthorizeStaffDetailFragment,
+        AddAuthorizeStaffFragment.IAddAuthorizeStaffFragment,
         NotificationsFragment.INotificationsFragment,
         LogoutFragment.ILogoutFragment{
     private AppBarConfiguration appBarConfiguration;
@@ -173,6 +175,8 @@ public class DepartmentHeadActivity extends AppCompatActivity
     public void gotoFragment(String name){
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_department_head);
         switch(name){
+            case "addAuthorizedStaff":
+                navController.navigate(R.id.nav_add_authorize_staff);
         }
     }
     @Override

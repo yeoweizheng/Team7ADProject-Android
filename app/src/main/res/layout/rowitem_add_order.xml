@@ -14,5 +14,5 @@ android:layout_height="match_parent">
     <Spinner
         android:id="@+id/spinner_add_order_supplier"
         style="@style/TableContent"
-        android:spinnerMode="dialog"></Spinner>
+        android:spinnerMode="dropdown"></Spinner>
 </LinearLayout>

@@ -26,14 +26,19 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import sg.edu.nus.team7adproject.Shared.LogoutFragment;
+import sg.edu.nus.team7adproject.Shared.NotificationDetailFragment;
 import sg.edu.nus.team7adproject.Shared.NotificationsFragment;
+import sg.edu.nus.team7adproject.Shared.NotificationsFragmentDirections;
+import sg.edu.nus.team7adproject.Store.AddOrderFragment;
 import sg.edu.nus.team7adproject.Store.AdjustmentVoucherDetailFragment;
 import sg.edu.nus.team7adproject.Store.AdjustmentVouchersFragment;
 import sg.edu.nus.team7adproject.Store.AdjustmentVouchersFragmentDirections;
+import sg.edu.nus.team7adproject.Store.OrderDetailFragment;
 import sg.edu.nus.team7adproject.Store.StockDetailFragment;
 import sg.edu.nus.team7adproject.Store.StockListFragment;
 import sg.edu.nus.team7adproject.Store.StockListFragmentDirections;
 import sg.edu.nus.team7adproject.Store.StoreOrdersFragment;
+import sg.edu.nus.team7adproject.Store.StoreOrdersFragmentDirections;
 
 public class StoreSupActivity extends AppCompatActivity
         implements ServiceConnection, ServerService.IServerService,
@@ -42,7 +47,10 @@ public class StoreSupActivity extends AppCompatActivity
         AdjustmentVouchersFragment.IAdjustmentVouchersFragment,
         AdjustmentVoucherDetailFragment.IAdjustmentVoucherDetailFragment,
         StoreOrdersFragment.IStoreOrdersFragment,
+        AddOrderFragment.IAddOrderFragment,
+        OrderDetailFragment.IOrderDetailFragment,
         NotificationsFragment.INotificationsFragment,
+        NotificationDetailFragment.INotificationDetailFragment,
         LogoutFragment.ILogoutFragment {
     private AppBarConfiguration appBarConfiguration;
     private ServerService serverService;
@@ -164,12 +172,23 @@ public class StoreSupActivity extends AppCompatActivity
             case "adjustmentVoucherDetail":
                 action = AdjustmentVouchersFragmentDirections.actionNavAdjustmentVouchersToNavAdjustmentVoucherDetail(id);
                 break;
+            case "orderDetail":
+                action = StoreOrdersFragmentDirections.actionNavStoreOrdersToNavOrderDetail(id);
+                break;
+            case "notificationDetail":
+                action = NotificationsFragmentDirections.actionNavNotificationsToNavNotificationDetail(id);
+                break;
         }
         navController.navigate(action);
     }
     @Override
     public void gotoFragment(String name) {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_store_sup);
+        switch(name){
+            case "addOrder":
+                navController.navigate(R.id.nav_add_order);
+                break;
+        }
     }
     @Override
     public void onBackPressed(){

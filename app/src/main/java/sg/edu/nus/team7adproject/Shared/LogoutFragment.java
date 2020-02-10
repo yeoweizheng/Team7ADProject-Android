@@ -2,6 +2,7 @@ package sg.edu.nus.team7adproject.Shared;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,6 +19,8 @@ import sg.edu.nus.team7adproject.R;
 
 public class LogoutFragment extends Fragment {
     LogoutFragment.ILogoutFragment iLogoutFragment;
+    SharedPreferences sessionPref;
+    SharedPreferences.Editor sessionPrefEditor;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -29,8 +32,12 @@ public class LogoutFragment extends Fragment {
         super.onAttach(context);
         iLogoutFragment = (LogoutFragment.ILogoutFragment) context;
         iLogoutFragment.setFragment("logoutFragment", this);
+        sessionPref = this.getActivity().getSharedPreferences("session", Context.MODE_PRIVATE);
+        sessionPrefEditor = sessionPref.edit();
     }
     public void logout(){
+        sessionPrefEditor.clear();
+        sessionPrefEditor.commit();
         JSONObject request = new JSONObject();
         JSONObject body = new JSONObject();
         try{
@@ -40,12 +47,12 @@ public class LogoutFragment extends Fragment {
             request.put("callbackFragment", "logoutFragment");
             request.put("callbackMethod", "logoutCallback");
             iLogoutFragment.sendRequest(request);
+            iLogoutFragment.finish();
         } catch(JSONException e){
             e.printStackTrace();
         }
     }
     public void logoutCallback(String response){
-        iLogoutFragment.finish();
     }
     public interface ILogoutFragment{
         void sendRequest(JSONObject request);

@@ -38,7 +38,9 @@ import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragment;
 import sg.edu.nus.team7adproject.Department.StaffStationeryRequestsFragmentDirections;
 import sg.edu.nus.team7adproject.Department.StationeryRequestDetailFragment;
 import sg.edu.nus.team7adproject.Shared.LogoutFragment;
+import sg.edu.nus.team7adproject.Shared.NotificationDetailFragment;
 import sg.edu.nus.team7adproject.Shared.NotificationsFragment;
+import sg.edu.nus.team7adproject.Shared.NotificationsFragmentDirections;
 import sg.edu.nus.team7adproject.Store.StockListFragment;
 
 public class DepartmentHeadActivity extends AppCompatActivity
@@ -50,6 +52,7 @@ public class DepartmentHeadActivity extends AppCompatActivity
         AuthorizeStaffDetailFragment.IAuthorizeStaffDetailFragment,
         AddAuthorizeStaffFragment.IAddAuthorizeStaffFragment,
         NotificationsFragment.INotificationsFragment,
+        NotificationDetailFragment.INotificationDetailFragment,
         LogoutFragment.ILogoutFragment{
     private AppBarConfiguration appBarConfiguration;
     private ServerService serverService;
@@ -167,6 +170,9 @@ public class DepartmentHeadActivity extends AppCompatActivity
                 break;
             case "authorizeStaffDetail":
                 action = AuthorizeStaffFragmentDirections.actionNavAuthorizeStaffToNavAuthorizeStaffDetail(id);
+                break;
+            case "notificationDetail":
+                action = NotificationsFragmentDirections.actionNavNotificationsToNavNotificationDetail(id);
                 break;
         }
         navController.navigate(action);

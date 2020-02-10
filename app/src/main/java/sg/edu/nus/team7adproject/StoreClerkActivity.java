@@ -26,7 +26,9 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import sg.edu.nus.team7adproject.Shared.LogoutFragment;
+import sg.edu.nus.team7adproject.Shared.NotificationDetailFragment;
 import sg.edu.nus.team7adproject.Shared.NotificationsFragment;
+import sg.edu.nus.team7adproject.Shared.NotificationsFragmentDirections;
 import sg.edu.nus.team7adproject.Store.AddAdjustmentVoucherFragment;
 import sg.edu.nus.team7adproject.Store.AddOrderFragment;
 import sg.edu.nus.team7adproject.Store.AdjustmentVoucherDetailFragment;
@@ -62,6 +64,7 @@ public class StoreClerkActivity extends AppCompatActivity
         AddOrderFragment.IAddOrderFragment,
         OrderDetailFragment.IOrderDetailFragment,
         NotificationsFragment.INotificationsFragment,
+        NotificationDetailFragment.INotificationDetailFragment,
         ScheduledJobsFragment.IScheduledJobsFragment,
         LogoutFragment.ILogoutFragment {
     private AppBarConfiguration appBarConfiguration;
@@ -195,6 +198,9 @@ public class StoreClerkActivity extends AppCompatActivity
                 break;
             case "orderDetail":
                 action = StoreOrdersFragmentDirections.actionNavStoreOrdersToNavOrderDetail(id);
+                break;
+            case "notificationDetail":
+                action = NotificationsFragmentDirections.actionNavNotificationsToNavNotificationDetail(id);
                 break;
         }
         navController.navigate(action);

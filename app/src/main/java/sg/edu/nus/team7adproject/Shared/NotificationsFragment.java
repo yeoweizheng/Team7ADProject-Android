@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,7 +25,7 @@ import java.util.List;
 
 import sg.edu.nus.team7adproject.R;
 
-public class NotificationsFragment extends Fragment {
+public class NotificationsFragment extends Fragment implements AdapterView.OnItemClickListener{
     public INotificationsFragment iNotificationsFragment;
     public NotificationsFragment() {
     }
@@ -63,12 +64,19 @@ public class NotificationsFragment extends Fragment {
         for(int i = 0; i < notifications.length(); i++){
             JSONObject notification = notifications.getJSONObject(i);
             RowItem rowItem = new RowItem(
+                    notification.getInt("id"),
                     notification.getString("date"),
                     notification.getString("subject"));
             rowItemList.add(rowItem);
         }
         RowAdapter rowAdapter = new RowAdapter(getActivity(), R.layout.fragment_notifications, rowItemList);
         listView.setAdapter(rowAdapter);
+        listView.setOnItemClickListener(this);
+    }
+    @Override
+    public void onItemClick(AdapterView<?> adapter, View view, int pos, long id){
+        RowItem rowItem = (RowItem) adapter.getItemAtPosition(pos);
+        iNotificationsFragment.gotoFragment("notificationDetail", rowItem.id);
     }
     public interface INotificationsFragment{
         void sendRequest(JSONObject request);
@@ -78,9 +86,11 @@ public class NotificationsFragment extends Fragment {
     }
 
     public class RowItem{
+        int id;
         String date;
         String subject;
-        public RowItem(String date, String subject){
+        public RowItem(int id, String date, String subject){
+            this.id = id;
             this.date = date;
             this.subject = subject;
         }

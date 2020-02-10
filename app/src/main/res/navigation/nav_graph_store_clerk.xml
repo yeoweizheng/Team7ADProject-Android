@@ -114,8 +114,20 @@
         android:name="sg.edu.nus.team7adproject.Shared.NotificationsFragment"
         android:label="Notifications"
         tools:layout="@layout/fragment_notifications" >
+        <action
+            android:id="@+id/action_nav_notifications_to_nav_notification_detail"
+            app:destination="@id/nav_notification_detail" />
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_notification_detail"
+        android:name="sg.edu.nus.team7adproject.Shared.NotificationDetailFragment"
+        android:label="Notification Detail"
+        tools:layout="@layout/fragment_notification_detail" >
+        <argument
+            android:name="notificationStatusId"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/nav_scheduled_jobs"
         android:name="sg.edu.nus.team7adproject.Store.ScheduledJobsFragment"

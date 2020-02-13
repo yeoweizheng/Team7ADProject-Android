@@ -31,6 +31,7 @@ public class HomeActivity extends AppCompatActivity
     private AppBarConfiguration appBarConfiguration;
     private ServerService serverService;
     private SharedPreferences serverAddressPref;
+    private SharedPreferences.Editor serverAddressPrefEditor;
     private HashMap<String, Fragment> fragmentHashMap = new HashMap<String, Fragment>();
 
     @Override
@@ -49,6 +50,15 @@ public class HomeActivity extends AppCompatActivity
         Intent intent = new Intent(HomeActivity.this, ServerService.class);
         bindService(intent, this, BIND_AUTO_CREATE);
         serverAddressPref = getSharedPreferences("serverAddress", Context.MODE_PRIVATE);
+        serverAddressPrefEditor = serverAddressPref.edit();
+        if(!serverAddressPref.contains("serverAddress")){
+            serverAddressPrefEditor.putString("serverAddress", "10.0.2.2");
+            serverAddressPrefEditor.commit();
+        }
+        if(!serverAddressPref.contains("port")){
+            serverAddressPrefEditor.putString("port", "10000");
+            serverAddressPrefEditor.commit();
+        }
     }
     @Override
     public boolean onSupportNavigateUp(){

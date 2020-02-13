@@ -31,13 +31,14 @@ import sg.edu.nus.team7adproject.R;
 public class StaffStationeryRequestsFragment extends Fragment implements
         AdapterView.OnItemClickListener, View.OnClickListener {
     IStaffStationeryRequestsFragment iStaffStationeryRequestsFragment;
+    boolean isStaffAuthorized;
     public StaffStationeryRequestsFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getStationeryRequests();
+        getStaffAuthorization();
         return inflater.inflate(R.layout.fragment_staff_stationery_requests, container, false);
     }
 
@@ -53,12 +54,35 @@ public class StaffStationeryRequestsFragment extends Fragment implements
         iStaffStationeryRequestsFragment = (StaffStationeryRequestsFragment.IStaffStationeryRequestsFragment) context;
         iStaffStationeryRequestsFragment.setFragment("staffStationeryRequestsFragment", this);
     }
+    public void getStaffAuthorization(){
+        JSONObject request = new JSONObject();
+        JSONObject body = new JSONObject();
+        try {
+            body.put("action", "getStaffAuthorization");
+            request.put("url", "GetStaffAuthorization");
+            request.put("requestBody", body);
+            request.put("callbackFragment", "staffStationeryRequestsFragment");
+            request.put("callbackMethod", "getStaffAuthorizationCallback");
+            iStaffStationeryRequestsFragment.sendRequest(request);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+    }
+    public void getStaffAuthorizationCallback(String response) throws JSONException{
+        JSONObject responseObj = new JSONObject(response);
+        isStaffAuthorized = responseObj.getBoolean("isAuthorized");
+        getStationeryRequests();
+    }
     public void getStationeryRequests(){
         JSONObject request = new JSONObject();
         JSONObject body = new JSONObject();
         try {
             body.put("action", "getStationeryRequests");
-            request.put("url", "StaffStationeryRequests");
+            if(isStaffAuthorized){
+                request.put("url", "HeadStationeryRequests");
+            } else {
+                request.put("url", "StaffStationeryRequests");
+            }
             request.put("requestBody", body);
             request.put("callbackFragment", "staffStationeryRequestsFragment");
             request.put("callbackMethod", "getStationeryRequestsCallback");
